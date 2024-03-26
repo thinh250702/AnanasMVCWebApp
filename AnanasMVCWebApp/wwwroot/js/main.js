@@ -4,16 +4,6 @@ $(document).ready(function(){
     $(this).parent().toggleClass("checked");
     $(this).siblings("span").toggleClass("checked");
     });
-    // Product Card Hover - Only for product-list
-    /*var imageName = ""
-    $(".product-card").hover(function () {
-        imageName = $(this).find("img").attr("src").replace("~/public/image/","");
-        $(this).find("img").attr("src", "~/public/image/product-1.jpg");
-        $(this).find("div:first-child > div a").fadeIn({queue: false, duration: 'fast'}).animate({marginBottom: "14px", }, "fast")
-    }, function() {
-        $(this).find("img").attr("src", `~/public/image/${imageName}`);
-        $(this).find("div:first-child > div a").fadeOut({queue: false, duration: 'fast'}).animate({marginBottom: "0px"}, "fast")
-    })*/
 
     // Header Dropdown Menu
     var userNav = $("#user-nav");

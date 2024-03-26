@@ -1,0 +1,218 @@
+﻿@{
+    ViewData["Title"] = "Product Detail";
+}
+
+<div class="product-breadcrumb wide">
+    <ul class="breadcrumb">
+        <li><a href="#">Giày</a></li>
+        <li><a href="#">Vintas</a></li>
+        <li>Vintas Public 2000s - Low Top</li>
+    </ul>
+</div>
+<div class="product-detail-wrapper wide">
+    <div class="wrapper__column left">
+        <div class="product__image-container">
+            <img id="image-display" src="~/public/image/product-1.jpg" alt="">
+            <div class="image-list-wrapper">
+                <button class="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="image-list">
+                    <img class="image-item" src="~/public/image/product.jpg" alt="">
+                    <img class="image-item" src="~/public/image/product.jpg" alt="">
+                    <img class="image-item" src="~/public/image/product-1.jpg" alt="">
+                    <img class="image-item" src="~/public/image/product-1.jpg" alt="">
+                    <img class="image-item" src="~/public/image/product-1.jpg" alt="">
+                    <img class="image-item" src="~/public/image/product-1.jpg" alt="">
+                    <img class="image-item" src="~/public/image/product-1.jpg" alt="">
+                </div>
+                <button class="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="wrapper__column right">
+        <div class="product__main-container">
+            <div class="product-name-wrapper">
+                <p class="product-info-name">GRAPHIC TEE - SKATE 4P - SNOW WHITE</p>
+                <p class="product-info-sku">Mã sản phẩm: AV00149</p>
+            </div>
+            <div class="product-info-price">580.000 VND</div>
+            <div class="product-add-form">
+                <form action="">
+                    <div class="product-options-wrapper">
+                        <div class="option-attribute color">
+                            <div class="option-label">Color</div>
+                            <ul id="colors-wrapper">
+                                <li><a href="" class="selected"></a></li>
+                                <li><a href=""></a></li>
+                                <li><a href=""></a></li>
+                                <li><a href=""></a></li>
+                                <li><a href=""></a></li>
+                            </ul>
+                        </div>
+                        <div class="option-attribute size">
+                            <div class="option-label">
+                                <span>Size</span>
+                                <span id="size-chart-label">Size Chart</span>
+                            </div>
+                            <div id="size-wrapper">
+                                <label for="36">
+                                    36
+                                    <input type="radio" name="size" id="36" hidden>
+                                </label>
+                                <label for="37">
+                                    37
+                                    <input type="radio" name="size" id="37" hidden>
+                                </label>
+                                <label for="38">
+                                    38
+                                    <input type="radio" name="size" id="38" hidden>
+                                </label>
+                                <label for="39">
+                                    39
+                                    <input type="radio" name="size" id="39" hidden>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="option-attribute quantity">
+                            <div class="option-label">Quantity</div>
+                            <div id="select-control">
+                                <i class="fa-solid fa-angle-down"></i>
+                                <select name="" id="">
+                                    <option value="">1</option>
+                                    <option value="">2</option>
+                                    <option value="">3</option>
+                                    <option value="">4</option>
+                                    <option value="">5</option>
+                                    <option value="">6</option>
+                                    <option value="">7</option>
+                                    <option value="">8</option>
+                                    <option value="">9</option>
+                                    <option value="">10</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="add-form-button">
+                        <button id="add-to-cart-btn" type="submit">Thêm vào giỏ hàng</button>
+                        <button id="like-btn" type="button"><i class="fa-regular fa-heart"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="product__info-container">
+            <div class="info-item">
+                <div>
+                    <h6>Thông tin sản phẩm</h6>
+                    <i class="fa-solid fa-chevron-down dropdown-arrow rotate"></i>
+                </div>
+                <div style="display: block;">
+                    Gender: Unisex <br>
+                    Size run: 35 – 46 <br>
+                    Upper: Canvas NE <br>
+                    Outsole: Rubber <br>
+                    Có thêm 01 bộ dây đi kèm <br>
+                </div>
+            </div>
+            <div class="info-item">
+                <div>
+                    <h6>Quy định đổi sản phẩm</h6>
+                    <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+                </div>
+                <div>
+                    <ul>
+                        <li>Chỉ đổi hàng 1 lần duy nhất, mong bạn cân nhắc kĩ trước khi quyết định.</li>
+                        <li>Thời hạn đổi sản phẩm khi mua trực tiếp tại cửa hàng là 07 ngày, kể từ ngày mua. Đổi sản phẩm khi mua online là 14 ngày, kể từ ngày nhận hàng.</li>
+                        <li>Sản phẩm đổi phải kèm hóa đơn. Bắt buộc phải còn nguyên tem, hộp, nhãn mác.</li>
+                        <li>Sản phẩm đổi không có dấu hiệu đã qua sử dụng, không giặt tẩy, bám bẩn, biến dạng.</li>
+                        <li>Trong trường hợp sản phẩm - size bạn muốn đổi không còn hàng trong hệ thống. Vui lòng chọn sản phẩm khác.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info-item">
+                <div>
+                    <h6>Bảo hành thế nào?</h6>
+                    <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+                </div>
+                <div>
+                    Mỗi đôi giày Ananas trước khi xuất xưởng đều trải qua nhiều khâu kiểm tra. Tuy vậy, trong quá trình sử dụng, nếu nhận thấy các lỗi: gãy đế, hở đế, đứt chỉ may,...trong thời gian 6 tháng từ ngày mua hàng, mong bạn sớm gửi sản phẩm về Ananas nhằm giúp chúng tôi có cơ hội phục vụ bạn tốt hơn. Vui lòng gửi sản phẩm về bất kỳ cửa hàng Ananas nào, hoặc gửi đến trung tâm bảo hành Ananas ngay trong trung tâm TP.HCM trong giờ hành chính:
+                    <br>
+                    <b>Địa chỉ:</b> 5C Tân Cảng, P.25, Q.Bình Thạnh , TP. Hồ Chí Minh.
+                    <b>Hotline:</b> 028 2211 0067
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="recomended-wrapper wide">
+    <h4>Sản phẩm liên quan</h4>
+    <button class="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
+    <div class="recomended-product-wrapper">
+        <div class="recomended-product-list">
+            <div class="product-card recommended">
+                <div>
+                    <div>
+                        <a href="">Mua ngay <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    <img src="~/public/image/product.jpg" alt="">
+                </div>
+                <div>
+                    <a href="">Vintas Public 2000s - Low Top</a>
+                    <p>Caviar Black</p>
+                    <p>620.000 VND</p>
+                </div>
+            </div>
+            <div class="product-card recommended">
+                <div>
+                    <div>
+                        <a href="">Mua ngay <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    <img src="~/public/image/product.jpg" alt="">
+                </div>
+                <div>
+                    <a href="">Vintas Public 2000s - Low Top</a>
+                    <p>Caviar Black</p>
+                    <p>620.000 VND</p>
+                </div>
+            </div>
+            <div class="product-card recommended">
+                <div>
+                    <div>
+                        <a href="">Mua ngay <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    <img src="~/public/image/product.jpg" alt="">
+                </div>
+                <div>
+                    <a href="">Vintas Public 2000s - Low Top</a>
+                    <p>Caviar Black</p>
+                    <p>620.000 VND</p>
+                </div>
+            </div>
+            <div class="product-card recommended">
+                <div>
+                    <div>
+                        <a href="">Mua ngay <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    <img src="~/public/image/product.jpg" alt="">
+                </div>
+                <div>
+                    <a href="">Vintas Public 2000s - Low Top</a>
+                    <p>Caviar Black</p>
+                    <p>620.000 VND</p>
+                </div>
+            </div>
+            <div class="product-card recommended">
+                <div>
+                    <div>
+                        <a href="">Mua ngay <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    <img src="~/public/image/product.jpg" alt="">
+                </div>
+                <div>
+                    <a href="">Vintas Public 2000s - Low Top</a>
+                    <p>Caviar Black</p>
+                    <p>620.000 VND</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

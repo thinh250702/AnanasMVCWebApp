@@ -2,17 +2,6 @@
     ViewData["Title"] = "Home Page";
 }
 
-@section Scripts {
-    <script type="text/javascript">
-        // Product Card Hover
-        $(".product-card").hover(function () {
-            $(this).find("div:first-child > div a").fadeIn({queue: false, duration: 'fast'}).animate({marginBottom: "14px", }, "fast")
-        }, function() {
-            $(this).find("div:first-child > div a").fadeOut({queue: false, duration: 'fast'}).animate({marginBottom: "0px"}, "fast")
-        })
-    </script>
-}
-
 <div class="main__banner">
     <img src="~/public/image/cover.jpg" alt="">
 </div>

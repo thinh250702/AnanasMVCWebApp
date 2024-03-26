@@ -1,0 +1,128 @@
+﻿@{
+    ViewData["Title"] = "Profile";
+}
+
+<div class="user-nav wide">
+    <ul>
+        <li class="active"><a href="">My Account (&#8594; <i class="fa-solid fa-address-card"></i>)</a></li>
+        <li><a href="">My Orders (&#8594; <i class="fa-solid fa-box-open"></i>)</a></li>
+        <li><a href="">My Wish List (&#8594; <i class="fa-solid fa-heart"></i>)</a></li>
+    </ul>
+</div>
+<div class="user-container wide">
+    <form action="" autocomplete="off">
+        <div class="user-profile-container">
+            <div class="user-profile__column basic">
+                <div class="form-panel">
+                    <h4>Account Information</h4>
+                    <hr class="divider top">
+                    <div>
+                        <div class="form-row multiple">
+                            <div class="input-group">
+                                <label for="">First Name</label>
+                                <input type="text" name="" id="" placeholder="First Name">
+                                <span class="input-error">Error message</span>
+                            </div>
+                            <div class="input-group">
+                                <label for="">Last Name</label>
+                                <input type="text" name="" id="" placeholder="Last Name">
+                                <span class="input-error">Error message</span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label for="">Số điện thoại</label>
+                                <input type="text" name="" id="" placeholder="Số điện thoại">
+                                <span class="input-error">Error message</span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label for="">Email</label>
+                                <input type="text" name="" id="" placeholder="Email">
+                                <span class="input-error">Error message</span>
+                            </div>
+                        </div>
+                        <div class="form-row multiple">
+                            <div class="input-group">
+                                <label for="">Date of Birth</label>
+                                <input type="date" name="" id="" placeholder="First Name">
+                                <span class="input-error">Error message</span>
+                            </div>
+                            <div class="input-group">
+                                <label for="">Gender</label>
+                                <select name="" id="">
+                                    <option value="" selected disabled>Gender</option>
+                                    <option value="">Male</option>
+                                    <option value="">Female</option>
+                                </select>
+                                <span class="input-error">Error message</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="actions-group">
+                        <label for="1">
+                            Change Password
+                            <input type="checkbox" name="changePassword" id="1" hidden>
+                        </label>
+                        <label for="2">
+                            Change Email
+                            <input type="checkbox" name="changeEmail" id="2" hidden>
+                        </label>
+                    </div>
+                </div>
+                <button id="leftSubmit" class="primary-btn" type="submit">Save Changes</button>
+            </div>
+            <div class="user-profile__column change hidden">
+                <div id="passwordPanel" class="form-panel hidden">
+                    <h4>Change Password</h4>
+                    <hr class="divider top">
+                    <div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label for="">Current Password</label>
+                                <input type="password" name="" id="" placeholder="Số điện thoại">
+                                <span class="input-error">Error message</span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label for="">New Password</label>
+                                <input type="password" name="" id="" placeholder="Số điện thoại">
+                                <span class="input-error">Error message</span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label for="">Confirm New Password</label>
+                                <input type="password" name="" id="" placeholder="Số điện thoại">
+                                <span class="input-error">Error message</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="emailPanel" class="form-panel hidden">
+                    <h4>Change Email</h4>
+                    <hr class="divider top">
+                    <div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label for="">Số điện thoại</label>
+                                <input type="text" name="" id="" placeholder="Số điện thoại">
+                                <span class="input-error">Error message</span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label for="">Current Password</label>
+                                <input type="password" name="" id="" placeholder="Số điện thoại">
+                                <span class="input-error">Error message</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button id="rightSubmit" class="primary-btn" type="submit">Save Changes</button>
+            </div>
+        </div>
+    </form>
+</div>
