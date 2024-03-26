@@ -4,46 +4,153 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - AnanasMVCWebApp</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/AnanasMVCWebApp.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/material.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">AnanasMVCWebApp</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+    <div class="header-wrapper">
+        <div class="navbar wide">
+            <div class="navbar__logo-wrapper">
+                <img class="navbar__logo" src="~/public/graphic/Logo_Ananas.svg" alt="">
+            </div>
+            <div class="navbar__category">
+                <ul>
+                    <li><a href="">Shoes</a></li>
+                    <li><a href="">Clothing</a></li>
+                    <li><a href="">Accessories</a></li>
+                    <li><a href="">Sale Off</a></li>
+                </ul>
+            </div>
+            <div class="navbar__action">
+                <ul>
+                    <!-- <li class="navbar__action__item user">
+                        <a id="signin" href="">Sign In <i class="fa-solid fa-user"></i></a>
+                    </li> -->
+                    <li id="user-nav" class="navbar__action__item user">
+                        <a href="">Hi, Thịnh Nguyễn <i class="fa-solid fa-user"></i></a>
+                        <div id="user-dropdown">
+                            <div>
+                                <p>Thinh Nguyen</p>
+                                <p>thinhnguyen2572@gmail.com</p>
+                            </div>
+                            <hr>
+                            <div class="actions">
+                                <a href=""><i class="fa-solid fa-address-card"></i> My Account</a>
+                                <a href=""><i class="fa-solid fa-box-open"></i> My Orders</a>
+                                <a href=""><i class="fa-solid fa-heart"></i> My Wish list</a>
+                            </div>
+                            <hr>
+                            <div class="actions">
+                                <a href=""><i class="fa-solid fa-arrow-right-from-bracket"></i> Log out</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li id="cart-nav" class="navbar__action__item cart">
+                        <a href=""><i class="fa-solid fa-cart-shopping"></i></a>
+                        <div id="cart-dropdown">
+                            <h6>Giỏ hàng</h6>
+                            <!-- <div class="empty-wrapper">
+                                Không có sản phẩm nào trong giỏ hàng!
+                            </div> -->
+                            <div class="wrapper">
+                                <div class="product-row--ver2">
+                                    <img src="~/public/image/product.jpg" alt="">
+                                    <div>
+                                        <div>
+                                            <p>Long Sleeve Graphic Tee - Love, Peace & Music</p>
+                                            <p>Size: 36 | Số lượng: 2</p>
+                                            <p>580.000 VND</p>
+                                        </div>
+                                        <div>12.980.000 VND</div>
+                                    </div>
+                                </div>
+                                <div class="product-row--ver2">
+                                    <img src="~/public/image/product.jpg" alt="">
+                                    <div>
+                                        <div>
+                                            <p>Long Sleeve Graphic Tee - Love, Peace & Music</p>
+                                            <p>Size: 36 | Số lượng: 2</p>
+                                            <p>580.000 VND</p>
+                                        </div>
+                                        <div>12.980.000 VND</div>
+                                    </div>
+                                </div>
+                                <div class="product-row--ver2">
+                                    <img src="~/public/image/product.jpg" alt="">
+                                    <div>
+                                        <div>
+                                            <p>Long Sleeve Graphic Tee - Love, Peace & Music</p>
+                                            <p>Size: 36 | Số lượng: 2</p>
+                                            <p>580.000 VND</p>
+                                        </div>
+                                        <div>12.980.000 VND</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <span>5 sản phẩm</span>
+                                <a href="">Xem giỏ hàng</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="navbar__action__item"><a href=""><i class="fa-solid fa-heart"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="carousel">
+            <p>Free Shipping với hoá đơn từ 900k!</p>
+        </div>
+    </div>
+    <div class="main-wrapper">
+        @RenderBody()
+    </div>
+    <div class="footer-wrapper">
+        <div class="footer-content wide">
+            <div class="footer__info">
+                <div class="footer__column">
+                    <h6>Sản phẩm</h6>
+                    <ul>
+                        <li>Giày</li>
+                        <li>Quần áo</li>
+                        <li>Phụ kiện</li>
+                        <li>Sale off</li>
+                    </ul>
+                </div>
+                <div class="footer__column">
+                    <h6>Về công ty</h6>
+                    <ul>
+                        <li>Dứa tuyển dụng</li>
+                        <li>Liên hệ nhượng quyền</li>
+                        <li>Về Ananas</li>
+                    </ul>
+                </div>
+                <div class="footer__column">
+                    <h6>Hỗ trợ</h6>
+                    <ul>
+                        <li>FAQs</li>
+                        <li>Bảo mật thông tin</li>
+                        <li>Chính sách chung</li>
+                    </ul>
+                </div>
+                <div class="footer__column">
+                    <h6>Social Media</h6>
+                    <ul>
+                        <li><i class="fa-brands fa-square-facebook"></i></li>
+                        <li><i class="fa-brands fa-square-instagram"></i></li>
+                        <li><i class="fa-brands fa-square-youtube"></i></li>
                     </ul>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - AnanasMVCWebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="footer__find-store">
+                <img src="~/public/graphic/Store.svg" alt="">
+                <a href=""><p>Tìm cửa hàng</p><i class="fa-solid fa-arrow-right"></i></a>
+            </div>
         </div>
-    </footer>
+        <p>Copyright © 2022 Ananas. All rights reserved.</p>
+    </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/main.js" asp-append-version="true"></script>
+    <script src="https://kit.fontawesome.com/a142c3e58b.js" crossorigin="anonymous"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

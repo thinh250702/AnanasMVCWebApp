@@ -2,7 +2,200 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@section Scripts {
+    <script type="text/javascript">
+        // Product Card Hover
+        $(".product-card").hover(function () {
+            $(this).find("div:first-child > div a").fadeIn({queue: false, duration: 'fast'}).animate({marginBottom: "14px", }, "fast")
+        }, function() {
+            $(this).find("div:first-child > div a").fadeOut({queue: false, duration: 'fast'}).animate({marginBottom: "0px"}, "fast")
+        })
+    </script>
+}
+
+<div class="main__banner">
+    <img src="~/public/image/cover.jpg" alt="">
+</div>
+<div class="main__posts wide">
+    <div class="posts__wrapper">
+        <div class="posts-banner">
+            <img src="~/public/image/Banner_Collection.jpg" alt="">
+        </div>
+        <div class="posts-info">
+            <h4>All Black In Black</h4>
+            <p class="body-l">Mặc dù được ứng dụng rất nhiều, nhưng sắc đen lúc nào cũng toát lên một vẻ hyền bí không nhàm chán.</p>
+        </div>
+        <a href=""><p>Xem chi tiết</p><i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    <div class="posts__wrapper">
+        <div class="posts-banner">
+            <img src="~/public/image/Banner_Sale-off-1.jpg" alt="">
+        </div>
+        <div class="posts-info">
+            <h4>Outlet Sale</h4>
+            <p class="body-l">Danh mục những sản phẩm bán tại "giá tốt hơn" chỉ được bán kênh online - Online Only, chúng đã từng làm mưa làm gió một thời gian và hiện đang rơi vào tình trạng bể size, bể số.</p>
+        </div>
+        <a href=""><p>Xem chi tiết</p><i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+</div>
+<div class="main__product-category-wrapper">
+    <div class="main__product-category wide">
+        <div class="product-category__item">
+            <div class="item__header">
+                <h4>(Shoes)</h4>
+                <a href=""><i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+            <ul class="item__list">
+                <li>News Arrival</li>
+                <li>Best Seller</li>
+                <li>Sale-off</li>
+            </ul>
+        </div>
+        <div class="product-category__item">
+            <div class="item__header">
+                <h4>(Clothing)</h4>
+                <a href=""><i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+            <ul class="item__list">
+                <li>News Arrival</li>
+                <li>Best Seller</li>
+                <li>Sale-off</li>
+            </ul>
+        </div>
+        <div class="product-category__item">
+            <div class="item__header">
+                <h4>(Accessories)</h4>
+                <a href=""><i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+            <ul class="item__list">
+                <li>News Arrival</li>
+                <li>Best Seller</li>
+                <li>Sale-off</li>
+                <li>Sale-off</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="recomended-wrapper wide" style="margin: 32px auto 46px;">
+    <h4>Sản phẩm bán chạy</h4>
+    <button class="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
+    <div class="recomended-product-wrapper">
+        <div class="recomended-product-list">
+            <div class="product-card recommended">
+                <div>
+                    <div>
+                        <a href="">Mua ngay <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    <img src="~/public/image/product.jpg" alt="">
+                </div>
+                <div>
+                    <a href="">Vintas Public 2000s - Low Top</a>
+                    <p>Caviar Black</p>
+                    <p>620.000 VND</p>
+                </div>
+            </div>
+            <div class="product-card recommended">
+                <div>
+                    <div>
+                        <a href="">Mua ngay <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    <img src="~/public/image/product.jpg" alt="">
+                </div>
+                <div>
+                    <a href="">Vintas Public 2000s - Low Top</a>
+                    <p>Caviar Black</p>
+                    <p>620.000 VND</p>
+                </div>
+            </div>
+            <div class="product-card recommended">
+                <div>
+                    <div>
+                        <a href="">Mua ngay <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    <img src="~/public/image/product.jpg" alt="">
+                </div>
+                <div>
+                    <a href="">Vintas Public 2000s - Low Top</a>
+                    <p>Caviar Black</p>
+                    <p>620.000 VND</p>
+                </div>
+            </div>
+            <div class="product-card recommended">
+                <div>
+                    <div>
+                        <a href="">Mua ngay <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    <img src="~/public/image/product.jpg" alt="">
+                </div>
+                <div>
+                    <a href="">Vintas Public 2000s - Low Top</a>
+                    <p>Caviar Black</p>
+                    <p>620.000 VND</p>
+                </div>
+            </div>
+            <div class="product-card recommended">
+                <div>
+                    <div>
+                        <a href="">Mua ngay <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    <img src="~/public/image/product.jpg" alt="">
+                </div>
+                <div>
+                    <a href="">Vintas Public 2000s - Low Top</a>
+                    <p>Caviar Black</p>
+                    <p>620.000 VND</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="main__banner">
+    <img src="~/public/image/cover-3.jpg" alt="">
+</div>
+<div class="main__news wide">
+    <h4>Tin tức & Bài viết</h4>
+    <div class="news-wrapper">
+        <div class="news__item">
+            <img src="~/public/image/news-1.jpg" alt="">
+            <div>
+                <div>
+                    <h5>URBAS CORLURAY PACK</h5>
+                    <p>Urbas Corluray Pack đem đến lựa chọn “làm mới mình” với sự kết hợp 5 gam màu mang sắc thu; phù hợp với những người trẻ năng động, mong muốn thể hiện cá tính riêng biệt khó trùng lặp.</p>
+                </div>
+                <a href="">Đọc thêm</a>
+            </div>
+        </div>
+        <div class="news__item">
+            <img src="~/public/image/news-2.jpg" alt="">
+            <div>
+                <div>
+                    <h5>VINTAS SAIGON 1980s</h5>
+                    <p>Với bộ 5 sản phẩm, Vintas Saigon 1980s Pack đem đến một sự lựa chọn “cũ kỹ thú vị” cho những người trẻ sống giữa thời hiện đại nhưng lại yêu nét bình dị của Sài Gòn ngày xưa.</p>
+                </div>
+                <a href="">Đọc thêm</a>
+            </div>
+        </div>
+        <div class="news__item">
+            <img src="~/public/image/news-3.jpg" alt="">
+            <div>
+                <div>
+                    <h5>SNEAKER FEST VIETNAM VÀ SỰ KẾT HỢP</h5>
+                    <p>Việc sử dụng dáng giày Vulcanized High Top của Ananas trong thiết kế và cảm hứng bắt nguồn từ linh vật Peeping - đại diện cho tinh thần xuyên suốt 6 năm qua Sneaker Fest Vietnam, chúng tôi tự tin đây sẽ là sản phẩm đáng mong chờ cho mọi “đầu giày” vào mùa hè năm nay.</p>
+                </div>
+                <a href="">Đọc thêm</a>
+            </div>
+        </div>
+        <div class="news__item">
+            <img src="~/public/image/news-4.jpg" alt="">
+            <div>
+                <div>
+                    <h5>"GIẢI PHẪU" GIÀY VULCANIZED</h5>
+                    <p>Trong phạm vi bài viết ngắn, hãy cùng nhau tìm hiểu cấu tạo giày Vulcanized Sneaker - loại sản phẩm mà Ananas đã chọn làm "cốt lõi" để theo đuổi trong suốt hành trình của mình.</p>
+                </div>
+                <a href="">Đọc thêm</a>
+            </div>
+        </div>
+    </div>
+    <a href=""><p>Muốn xem nữa</p><i class="fa-solid fa-arrow-right"></i></a>
 </div>
