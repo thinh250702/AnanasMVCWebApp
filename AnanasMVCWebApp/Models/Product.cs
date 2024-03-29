@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AnanasMVCWebApp.Models
 {
     public class Product
     {
         [Key]
-        public int Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid Id { get; set; }
         [Required(ErrorMessage = "Product Name is required")]
         public string Name { get; set; }
         [Required(ErrorMessage = "Description is required")]

@@ -8,7 +8,7 @@ namespace AnanasMVCWebApp.Models {
     public class ProductSKU {
         public string SKU { get; set; }
         public int SizeId { get; set; }
-        public int ProductVariantId { get; set; }
+        public Guid ProductVariantId { get; set; }
         public int StockQuantity { get; set; }
         public virtual Size Size { get; set; }
         public virtual ProductVariant ProductVariant { get; set; }

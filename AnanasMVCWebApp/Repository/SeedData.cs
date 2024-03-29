@@ -5,14 +5,11 @@ namespace AnanasMVCWebApp.Repository {
     public class SeedData {
         public static void SeedingData(DataContext _context) {
             _context.Database.Migrate();
-
-            Category shoes = new Category() { Name = "Giày", Slug = "shoes" };
-            Category clothing = new Category() { Name = "Quần áo", Slug = "clothing" };
-            Category accessories = new Category() { Name = "Phụ kiện", Slug = "accessories" };
-
             if (!_context.Categories.Any()) {
                 _context.Categories.AddRange(new List<Category>() {
-                    shoes, clothing, accessories
+                    new Category() { Name = "Giày", Slug = "shoes" },
+                    new Category() { Name = "Quần áo", Slug = "clothing" },
+                    new Category() { Name = "Phụ kiện", Slug = "accessories" }
                 });
                 _context.SaveChanges();
             }
