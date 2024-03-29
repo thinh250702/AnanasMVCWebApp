@@ -1,11 +1,6 @@
 $(document).ready(function(){
-    // Product Filter
-    $(".product-wrapper__filter input[type='checkbox']").click(function(event){
-    $(this).parent().toggleClass("checked");
-    $(this).siblings("span").toggleClass("checked");
-    });
-
-    // Header Dropdown Menu
+    // INDEX:
+    // ---Header Dropdown Menu
     var userNav = $("#user-nav");
     var cartNav = $("#cart-nav");
     var userDropdown = $("#user-dropdown");
@@ -21,7 +16,32 @@ $(document).ready(function(){
         cartDropdown.filter(':not(:animated)').slideUp();
     });
 
-    // Preview Image
+    // PRODUCT LIST
+    // ---Product Filter
+    $(".product-wrapper__filter input[type='checkbox']").click(function(event){
+        $(this).parent().toggleClass("checked");
+        $(this).siblings("span").toggleClass("checked");
+    });
+    // ---Product Card Hover
+    $(".product-card").hover(function () {
+        $(this).find("img.normal").hide();
+        $(this).find("img.hover").show();
+        $(this).find("div:first-child > div:first-child a").fadeIn({queue: false, duration: 'fast'}).animate({marginBottom: "14px", }, "fast")
+    }, function() {
+        $(this).find("img.normal").show();
+        $(this).find("img.hover").hide();
+        $(this).find("div:first-child > div:first-child a").fadeOut({queue: false, duration: 'fast'}).animate({marginBottom: "0px"}, "fast")
+    })
+    // ---Dropdown Filter
+    $(".dropdown-arrow--filter").click(function(){
+        var item = $(this).parent().parent();
+        item.children("div:last-child").toggle();
+        $(this).toggleClass("rotate");
+        // $(this).parent().toggleClass("active");
+    });
+
+    // PRODUCT DETAIL
+    // ---Preview Image Slider
     const prevButton = $(".image-list-wrapper .prevBtn");
     const nextButton = $(".image-list-wrapper .nextBtn");
     const imageList = $(".image-list-wrapper .image-list");
@@ -31,7 +51,14 @@ $(document).ready(function(){
     nextButton.click(() => {
         imageList.animate({scrollLeft: 1000}, 500, 'swing')
     })
-
+    // ---Dropdown Info
+    $(".dropdown-arrow").click(function(){
+        var item = $(this).parent().parent();
+        item.children("div:last-child").slideToggle();
+        $(this).toggleClass("rotate");
+        // $(this).parent().toggleClass("active");
+    });
+    // ---Size Radio Button
     var sizeRadios = $("input:radio[name='size']");
     sizeRadios.on("change", function(){
         sizeRadios.each(function(index, element){
@@ -39,8 +66,9 @@ $(document).ready(function(){
         })
         $(this).parent().addClass("active");
     });
-
-    // Vietnam Location Select
+    
+    // CHECKOUT
+    //  ---Vietnam Location Select
     var cities = $("#city-select");
     var districts = $("#district-select");
     var wards = $("#ward-select");
@@ -52,6 +80,7 @@ $(document).ready(function(){
         },
         dataType: "json",
         success: (data) => {
+            // console.log(data)
             renderData(data)
         }
     })
@@ -81,6 +110,7 @@ $(document).ready(function(){
         })
     }
 
+    // ---Checkout Radio Option
     var shippingRadios = $("input:radio[name='shippingMethod']");
     var paymentRadios = $("input:radio[name='paymentMethod']");
     shippingRadios.on("change", function(){
@@ -96,23 +126,7 @@ $(document).ready(function(){
         $(this).parent().addClass("checked");
     });
 
-    // Dropdown Info
-    $(".dropdown-arrow").click(function(){
-        var item = $(this).parent().parent();
-        item.children("div:last-child").slideToggle();
-        $(this).toggleClass("rotate");
-        // $(this).parent().toggleClass("active");
-    });
-
-    // Dropdown Filter
-    $(".dropdown-arrow--filter").click(function(){
-        var item = $(this).parent().parent();
-        item.children("div:last-child").toggle();
-        $(this).toggleClass("rotate");
-        // $(this).parent().toggleClass("active");
-    });
-
-    // Recommended Product
+    // ---Recommended Product Slider (INDEX & PRODUCT DETAIL)
     const productPrevButton = $(".recomended-wrapper .prevBtn");
     const productNextButton = $(".recomended-wrapper .nextBtn");
     const productList = $(".recomended-product-wrapper");
@@ -125,13 +139,14 @@ $(document).ready(function(){
         console.log("Next clicked")
     })
 
+    // PROFILE
+    // ---Toggle Email and Password Panel
     var passwordPanel = $("#passwordPanel");
     var emailPanel = $("#emailPanel");
     var leftSubmit = $("#leftSubmit");
     var rightColumn = $(".user-profile__column.change");
     var changePassword = $("input[name='changePassword']");
     var changeEmail = $("input[name='changeEmail']");
-
     function switchButton(email, passworld) {
         changeEmail.prop("checked", email)
         changePassword.prop("checked", passworld)
@@ -140,7 +155,6 @@ $(document).ready(function(){
         emailPanel.toggleClass("hidden");
         passwordPanel.toggleClass("hidden");
     }
-
     changePassword.click(function(){
         if (!changeEmail.prop("checked")){
             changePassword.parent().toggleClass("checked");

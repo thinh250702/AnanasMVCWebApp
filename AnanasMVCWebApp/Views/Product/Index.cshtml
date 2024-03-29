@@ -2,21 +2,6 @@
     ViewData["Title"] = "Product List";
 }
 
-@section Scripts {
-    <script type="text/javascript">
-        // Product Card Hover
-        var imageName = ""
-        $(".product-card").hover(function () {
-            // imageName = $(this).find("img").attr("src").replace("~/public/image/","");
-            // $(this).find("img").attr("src", "~/public/image/product-1.jpg");
-            $(this).find("div:first-child > div a").fadeIn({queue: false, duration: 'fast'}).animate({marginBottom: "14px", }, "fast")
-        }, function() {
-            // $(this).find("img").attr("src", `~/public/image/${imageName}`);
-            $(this).find("div:first-child > div a").fadeOut({queue: false, duration: 'fast'}).animate({marginBottom: "0px"}, "fast")
-        })
-    </script>
-}
-
 <div class="category-banner wide">
     Category(-> <em>Shoes</em>)
 </div>
@@ -117,7 +102,42 @@
                     <div>
                         <a href="">Mua ngay <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
-                    <img src="~/public/image/product.jpg" alt="">
+                    <div class="product-image">
+                        <img class="normal" src="~/public/image/product.jpg" alt="">
+                        <img class="hover" src="~/public/image/product-1.jpg" alt="">
+                    </div>
+                </div>
+                <div>
+                    <a href="">Vintas Public 2000s - Low Top</a>
+                    <p>Caviar Black</p>
+                    <p>620.000 VND</p>
+                </div>
+            </div>
+            <div class="product-card">
+                <div>
+                    <div>
+                        <a href="">Mua ngay <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    <div class="product-image">
+                        <img class="normal" src="~/public/image/product.jpg" alt="">
+                        <img class="hover" src="~/public/image/product-1.jpg" alt="">
+                    </div>
+                </div>
+                <div>
+                    <a href="">Vintas Public 2000s - Low Top</a>
+                    <p>Caviar Black</p>
+                    <p>620.000 VND</p>
+                </div>
+            </div>
+            <div class="product-card">
+                <div>
+                    <div>
+                        <a href="">Mua ngay <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    <div class="product-image">
+                        <img class="normal" src="~/public/image/product.jpg" alt="">
+                        <img class="hover" src="~/public/image/product-1.jpg" alt="">
+                    </div>
                 </div>
                 <div>
                     <a href="">Vintas Public 2000s - Low Top</a>
