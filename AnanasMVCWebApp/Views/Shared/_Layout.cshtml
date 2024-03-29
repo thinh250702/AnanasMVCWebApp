@@ -11,14 +11,14 @@
     <div class="header-wrapper">
         <div class="navbar wide">
             <div class="navbar__logo-wrapper">
-                <img class="navbar__logo" src="~/public/graphic/Logo_Ananas.svg" alt="">
+                <a asp-controller="Home" asp-action="Index"><img class="navbar__logo" src="~/public/graphic/Logo_Ananas.svg" alt=""></a>
             </div>
             <div class="navbar__category">
                 <ul>
-                    <li><a href="">Shoes</a></li>
-                    <li><a href="">Clothing</a></li>
-                    <li><a href="">Accessories</a></li>
-                    <li><a href="">Sale Off</a></li>
+                    <li><a asp-controller="Product" asp-action="Index" asp-route-category="shoes">Shoes</a></li>
+                    <li><a asp-controller="Product" asp-action="Index" asp-route-category="clothing">Clothing</a></li>
+                    <li><a asp-controller="Product" asp-action="Index" asp-route-category="accessories">Accessories</a></li>
+                    <li><a href="#">Sale Off</a></li>
                 </ul>
             </div>
             <div class="navbar__action">
