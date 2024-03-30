@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace AnanasMVCWebApp.Models {
-    public class Size {
+    public class ShippingMethod {
         [Key]
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
     }
 }

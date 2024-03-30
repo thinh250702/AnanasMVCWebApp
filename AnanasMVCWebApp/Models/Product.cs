@@ -6,8 +6,7 @@ namespace AnanasMVCWebApp.Models
     public class Product
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         [Required(ErrorMessage = "Product Name is required")]
         public string Name { get; set; }
         [Required(ErrorMessage = "Description is required")]
@@ -23,5 +22,8 @@ namespace AnanasMVCWebApp.Models
         public virtual Style Style { get; set; }
         public virtual Category Category { get; set; }
         public virtual Collection Collection { get; set; }
+        public Product() {
+            Id = Guid.NewGuid().ToString("N").Substring(0,8);
+        }
     }
 }
