@@ -22,19 +22,17 @@ namespace AnanasMVCWebApp.Controllers {
                 products.Add(new ProductViewModel() {
                     ProductId = item.Id,
                     ProductName = product.Name,
-                    Description = product.Description,
                     Price = product.Price,
                     ColorName = item.ColorName,
-                    HexCode = item.HexCode,
-                    Category = product.Category,
-                    Collection = product.Collection,
                     ImageList = GetAllImageById(item.Id),
                     Style = product.Style
                 });
             });
+            Category queryCategory = _context.Categories.Where(c => c.Slug == category).FirstOrDefault();
+            ViewBag.Category = queryCategory;
+            ViewBag.Collection = _context.Collections.Where(c => c.CategoryId == queryCategory.Id).ToList();
+            ViewBag.Style = (category == "shoes") ? _context.Styles.ToList() : null;
             ViewBag.ColorList = _context.Colors.ToList();
-            ViewBag.Category = _context.Categories.Where(c => c.Slug == category).FirstOrDefault(); ;
-            /*ViewBag.Collection = */
             return View(products);
         }
         public async Task<IActionResult> Detail(string id = "") {
@@ -48,14 +46,14 @@ namespace AnanasMVCWebApp.Controllers {
                 Price = product.Price,
                 ColorName = variantById.ColorName,
                 HexCode = variantById.HexCode,
-                Category = product.Category,
+                Category = product.Collection.Category,
                 Collection = product.Collection,
                 Style = product.Style,
                 ImageList = GetAllImageById(variantById.Id),
-                SiblingProducts = GetAllSiblingProducts(variantById)
+                SiblingProducts = GetAllSiblingProducts(variantById),
+                SKUList = GetAllUnitOfVariant(variantById.Id)
             };
             return View(productViewModel);
-            // return Content("Hello");
         }
         [NonAction]
         public List<string> GetAllImageById(string id) {
@@ -75,11 +73,19 @@ namespace AnanasMVCWebApp.Controllers {
             var siblingVariants = _context.ProductVariants.Where(x => x.ProductId == variant.ProductId && x.Id != variant.Id).ToList();
             siblingVariants.ForEach(x => {
                 siblings.Add(new Dictionary<string, string>() {
-                    {"productId", x.Id },
-                    {"hexCode", x.HexCode },
+                    { "productId", x.Id },
+                    { "hexCode", x.HexCode },
                 });
             });
             return siblings;
+        }
+        [NonAction]
+        public List<ProductSKU> GetAllUnitOfVariant(string variantId) {
+            var list = new List<ProductSKU>();
+            _context.ProductSKUs.Where(i => i.ProductVariantId == variantId).ToList().ForEach(x => {
+                list.Add(x);
+            });
+            return list;
         }
     }
 }

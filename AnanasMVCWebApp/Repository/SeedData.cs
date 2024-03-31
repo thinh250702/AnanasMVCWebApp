@@ -13,19 +13,19 @@ namespace AnanasMVCWebApp.Repository {
                 _context.Categories.AddRange(new List<Category>() { shoes, clothing, accessories });
                 _context.SaveChanges();
             }
-            Collection basas = new Collection("BS", "Basas", "basas");
-            Collection vintas = new Collection("VT", "Vintas", "vintas");
-            Collection urbas = new Collection("UB", "Urbas", "urbas");
-            Collection pattas = new Collection("PR", "Pattas", "pattas");
-            Collection basicTee = new Collection("BT", "Basic Tee", "basic-tee");
-            Collection graphicTee = new Collection("GY", "Graphic Tee", "graphic-tee");
-            Collection sweatshirt = new Collection("SW", "Sweatshirt", "sweatshirt");
-            Collection hoodie = new Collection("HD", "Hoodie", "hoodie");
-            Collection truckerHat = new Collection("TH", "Trucker Hat", "trucker-hat");
-            Collection shoelaces = new Collection("LB", "Dây giày", "shoelaces");
-            Collection highCrewSock = new Collection("HC", "High Crew Sock", "high-crew-sock");
-            Collection crewSock = new Collection("CS", "Crew Sock", "crew-sock");
-            Collection toteBag = new Collection("TB", "Tote Bag", "tote-bag");
+            Collection basas = new Collection("BS", "Basas", "basas") { Category = shoes };
+            Collection vintas = new Collection("VT", "Vintas", "vintas") { Category = shoes };
+            Collection urbas = new Collection("UB", "Urbas", "urbas") { Category = shoes };
+            Collection pattas = new Collection("PR", "Pattas", "pattas") { Category = shoes };
+            Collection basicTee = new Collection("BT", "Basic Tee", "basic-tee") { Category = clothing };
+            Collection graphicTee = new Collection("GY", "Graphic Tee", "graphic-tee") { Category = clothing };
+            Collection sweatshirt = new Collection("SW", "Sweatshirt", "sweatshirt") { Category = clothing };
+            Collection hoodie = new Collection("HD", "Hoodie", "hoodie") { Category = clothing };
+            Collection truckerHat = new Collection("TH", "Trucker Hat", "trucker-hat") { Category = accessories };
+            Collection shoelaces = new Collection("LB", "Dây giày", "shoelaces") { Category = accessories };
+            Collection highCrewSock = new Collection("HC", "High Crew Sock", "high-crew-sock") { Category = accessories };
+            Collection crewSock = new Collection("CS", "Crew Sock", "crew-sock") { Category = accessories };
+            Collection toteBag = new Collection("TB", "Tote Bag", "tote-bag") { Category = accessories };
             if (!_context.Collections.Any()) {
                 _context.Collections.AddRange(new List<Collection>() {
                     basas, vintas, urbas, pattas, 
@@ -95,7 +95,6 @@ namespace AnanasMVCWebApp.Repository {
                 Name = "Basas Workaday",
                 Description = "Lorem ipsum",
                 Price = 650000,
-                Category = shoes,
                 Collection = basas,
                 Style = highTop
             };
@@ -103,7 +102,6 @@ namespace AnanasMVCWebApp.Repository {
                 Name = "Basas Workaday",
                 Description = "Lorem ipsum",
                 Price = 580000,
-                Category = shoes,
                 Collection = basas,
                 Style = lowTop
             };
@@ -111,7 +109,6 @@ namespace AnanasMVCWebApp.Repository {
                 Name = "Vintas Public 2000s",
                 Description = "Lorem ipsum",
                 Price = 620000,
-                Category = shoes,
                 Collection = vintas,
                 Style = lowTop
             };

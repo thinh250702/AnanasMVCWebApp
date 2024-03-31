@@ -51,6 +51,9 @@ namespace AnanasMVCWebApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -64,6 +67,8 @@ namespace AnanasMVCWebApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Collections");
                 });
@@ -101,9 +106,6 @@ namespace AnanasMVCWebApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<int>("CollectionId")
                         .HasColumnType("int");
 
@@ -122,8 +124,6 @@ namespace AnanasMVCWebApp.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
 
                     b.HasIndex("CollectionId");
 
@@ -226,7 +226,7 @@ namespace AnanasMVCWebApp.Migrations
                     b.ToTable("Styles");
                 });
 
-            modelBuilder.Entity("AnanasMVCWebApp.Models.Product", b =>
+            modelBuilder.Entity("AnanasMVCWebApp.Models.Collection", b =>
                 {
                     b.HasOne("AnanasMVCWebApp.Models.Category", "Category")
                         .WithMany()
@@ -234,6 +234,11 @@ namespace AnanasMVCWebApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("AnanasMVCWebApp.Models.Product", b =>
+                {
                     b.HasOne("AnanasMVCWebApp.Models.Collection", "Collection")
                         .WithMany()
                         .HasForeignKey("CollectionId")
@@ -243,8 +248,6 @@ namespace AnanasMVCWebApp.Migrations
                     b.HasOne("AnanasMVCWebApp.Models.Style", "Style")
                         .WithMany()
                         .HasForeignKey("StyleId");
-
-                    b.Navigation("Category");
 
                     b.Navigation("Collection");
 

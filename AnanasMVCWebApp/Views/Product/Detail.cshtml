@@ -8,7 +8,7 @@
     <ul class="breadcrumb">
         <li>@Html.ActionLink(Model.Category.Name, "Index", "Product", new { category = Model.Category.Slug })</li>
         <li>@Html.ActionLink(Model.Collection.Name, "Index", "Product", new { category = Model.Category.Slug, collection = Model.Collection.Slug })</li>
-        <li>@Model.ProductName - @Model.Style.Name</li>
+        <li>@(Model.Style != null ? $"{Model.ProductName} - {Model.Style.Name}" : $"{Model.Collection.Name} - {Model.ProductName}")</li>
     </ul>
 </div>
 <div class="product-detail-wrapper wide">
@@ -29,7 +29,7 @@
     <div class="wrapper__column right">
         <div class="product__main-container">
             <div class="product-name-wrapper">
-                <p class="product-info-name">@Model.ProductName - @Model.Style.Name - @Model.ColorName</p>
+                <p class="product-info-name">@(Model.Style != null ? $"{Model.ProductName} - {Model.Style.Name}" : $"{Model.Collection.Name} - {Model.ProductName}") - @Model.ColorName</p>
                 <p class="product-info-sku">Mã sản phẩm: @Model.ProductId</p>
             </div>
             <div class="product-info-price">@Html.FormatValue(Model.Price, "{0:0,0}") VND</div>
@@ -51,22 +51,14 @@
                                 <span id="size-chart-label">Size Chart</span>
                             </div>
                             <div id="size-wrapper">
-                                <label for="36">
-                                    36
-                                    <input type="radio" name="size" id="36" hidden>
-                                </label>
-                                <label for="37">
-                                    37
-                                    <input type="radio" name="size" id="37" hidden>
-                                </label>
-                                <label for="38">
-                                    38
-                                    <input type="radio" name="size" id="38" hidden>
-                                </label>
-                                <label for="39">
-                                    39
-                                    <input type="radio" name="size" id="39" hidden>
-                                </label>
+                                @if (Model.SKUList != null) {
+                                    @foreach (var sku in Model.SKUList) {
+                                        <label class=@(sku.StockQuantity == 0 ? "disabled" : "" ) for="@sku.Size.Code">
+                                            @sku.Size.Name
+                                            <input type="radio" name="size" id="@sku.Size.Code" value="@sku.Id" hidden>
+                                        </label>
+                                    }
+                                }
                             </div>
                         </div>
                         <div class="option-attribute quantity">

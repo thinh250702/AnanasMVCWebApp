@@ -91,48 +91,34 @@
 </div>
 <div class="product-wrapper wide">
     <div class="product-wrapper__filter">
-        <div class="filter-item">
-            <div>
-                <h6>Kiểu dáng</h6>
-                <i class="fa-solid fa-angle-up dropdown-arrow--filter"></i>
+        @if (ViewBag.Style != null) {
+            <div class="filter-item">
+                <div>
+                    <h6>Kiểu dáng</h6>
+                    <i class="fa-solid fa-angle-up dropdown-arrow--filter"></i>
+                </div>
+                <div id="style-filter">
+                    @foreach (var style in ViewBag.Style) {
+                        <label class="filter-label" for="@style.Slug">
+                            @style.Name
+                            <input type="checkbox" name="styles" id="@style.Slug" value="@style.Slug" hidden>
+                        </label>
+                    }
+                </div>
             </div>
-            <div id="style-filter">
-                <label class="filter-label" for="low-top">
-                    Low Top
-                    <input type="checkbox" name="styles" id="low-top" value="low-top" hidden>
-                </label>
-                <label class="filter-label" for="high-top">
-                    High Top
-                    <input type="checkbox" name="styles" id="high-top" value="high-top" hidden>
-                </label>
-                <label class="filter-label" for="mid-top">
-                    Mid Top
-                    <input type="checkbox" name="styles" id="mid-top" value="mid-top" hidden>
-                </label>
-                <label class="filter-label" for="mule">
-                    Mule
-                    <input type="checkbox" name="styles" id="mule" value="mule" hidden>
-                </label>
-            </div>
-        </div>
+        }
         <div class="filter-item">
             <div>
                 <h6>Dòng sản phẩm</h6>
                 <i class="fa-solid fa-angle-up dropdown-arrow--filter"></i>
             </div>
             <div id="collection-filter">
-                <label class="filter-label" for="basas">
-                    Basas
-                    <input type="checkbox" name="collections" id="basas" value="basas" hidden>
-                </label>
-                <label class="filter-label" for="vintas">
-                    Vintas
-                    <input type="checkbox" name="collections" id="vintas" value="vintas" hidden>
-                </label>
-                <label class="filter-label" for="urbas">
-                    Urbas
-                    <input type="checkbox" name="collections" id="urbas" value="urbas" hidden>
-                </label>
+                @foreach (var collection in ViewBag.Collection) {
+                    <label class="filter-label" for="@collection.Slug">
+                        @collection.Name
+                        <input type="checkbox" name="collections" id="@collection.Slug" value="@collection.Slug" hidden>
+                    </label>
+                }
             </div>
         </div>
         <div class="filter-item--color">
@@ -185,7 +171,9 @@
                         </div>
                     </div>
                     <div>
-                        <a asp-controller="Product" asp-action="Detail" asp-route-id="@item.ProductId">@item.ProductName - @item.Style.Name</a>
+                        <a asp-controller="Product" asp-action="Detail" asp-route-id="@item.ProductId">
+                            @(item.Style != null ? $"{item.ProductName} - {item.Style.Name}" : $"{item.Collection.Name} - {item.ProductName}")
+                        </a>
                         <p>@item.ColorName</p>
                         <p>@Html.FormatValue(item.Price, "{0:0,0}") VND</p>
                     </div>

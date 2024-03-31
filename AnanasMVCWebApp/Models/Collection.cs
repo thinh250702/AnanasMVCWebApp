@@ -7,6 +7,8 @@ namespace AnanasMVCWebApp.Models {
         public string Code { get; set; }
         public string Name { get; set; }
         public string Slug { get; set; }
+        public int CategoryId { get; set; }
+        public virtual Category Category { get; set; }
         public Collection(string code, string name, string slug) {
             Code = code;
             Name = name;
