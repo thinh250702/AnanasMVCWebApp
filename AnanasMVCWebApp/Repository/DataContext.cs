@@ -12,7 +12,7 @@ namespace AnanasMVCWebApp.Repository {
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductVariant> ProductVariants { get; set; }
         public DbSet<ProductSKU> ProductSKUs { get; set; }
-        public DbSet<Order> Orders { get; set; }
+        /*public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<OrderStatus> OrderStatus { get; set; }
         public DbSet<ShippingMethod> ShippingMethods { get; set; }
@@ -22,6 +22,7 @@ namespace AnanasMVCWebApp.Repository {
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.Entity<OrderDetail>().HasKey(t => new { t.ProductSKUId, t.OrderId });
             modelBuilder.Entity<ShippingInfo>().HasNoKey();
-        }
+        }*/
+
     }
 }

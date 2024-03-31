@@ -167,6 +167,7 @@
     padding: 12px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     display: none;
+    z-index: 1;
 }
 
     #cart-dropdown h6 {
@@ -683,7 +684,8 @@
                 width: 30px;
                 height: 30px;
                 display: inline-block;
-                background-color: var(--primary);
+                /*background-color: var(--primary);*/
+                border: 1px solid #e1e1e1;
                 border-radius: 50px;
             }
 
@@ -701,29 +703,31 @@
     padding-bottom: 14px;
 }
 
-    .product-breadcrumb ul {
-        list-style: none;
-        /* background-color: yellow; */
-        padding-left: 6px;
-    }
+.product-breadcrumb ul {
+    list-style: none;
+    padding-left: 6px;
+}
 
-        .product-breadcrumb ul li {
-            display: inline;
-        }
+.product-breadcrumb ul li {
+    display: inline;
+}
 
-            .product-breadcrumb ul li:last-child {
-                font-weight: 600;
-            }
+.product-breadcrumb ul li:last-child {
+    font-weight: 600;
+}
 
-        .product-breadcrumb ul a {
-            text-decoration: none;
-        }
+.product-breadcrumb ul a {
+    text-decoration: none;
+}
 
-    .product-breadcrumb li + li:before {
-        padding: 6px;
-        color: var(--neutral-0);
-        content: "/\00a0";
-    }
+.product-breadcrumb li + li:before {
+    padding: 6px;
+    color: var(--neutral-0);
+    content: "/\00a0";
+}
+.product-breadcrumb ul li:hover {
+    color: var(--primary);
+}
 
 .product-detail-wrapper {
     display: flex;
@@ -801,7 +805,13 @@
     display: inline-block;
     border-radius: 20px;
     padding: 6px;
+    cursor: pointer;
 }
+
+    .image-item:hover {
+        filter: brightness(80%);
+        transition: 0.3s;
+    }
 
 .product__info-container {
     display: flex;
@@ -953,7 +963,7 @@ ul#colors-wrapper {
 
     ul#colors-wrapper a {
         display: inline-block;
-        background-color: var(--primary);
+        /*background-color: var(--primary);*/
         width: 40px;
         height: 40px;
         border-radius: 50px;

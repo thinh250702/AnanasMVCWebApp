@@ -8,5 +8,12 @@ namespace AnanasMVCWebApp.Models {
         public virtual Order Order { get; set; }
         public int Quantity { get; set; }
         public int SubTotal { get; set; }
+
+        public OrderDetail(ProductSKU productSKU, Order order, int quantity, int subTotal) {
+            ProductSKU = productSKU;
+            Order = order;
+            Quantity = quantity;
+            SubTotal = subTotal;
+        }
     }
 }

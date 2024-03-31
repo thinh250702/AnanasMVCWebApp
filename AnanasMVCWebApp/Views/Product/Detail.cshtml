@@ -1,28 +1,26 @@
-﻿@{
+﻿@using AnanasMVCWebApp.Models.ViewModels
+@model ProductViewModel
+@{
     ViewData["Title"] = "Product Detail";
 }
 
 <div class="product-breadcrumb wide">
     <ul class="breadcrumb">
-        <li><a href="#">Giày</a></li>
-        <li><a href="#">Vintas</a></li>
-        <li>Vintas Public 2000s - Low Top</li>
+        <li>@Html.ActionLink(Model.Category.Name, "Index", "Product", new { category = Model.Category.Slug })</li>
+        <li>@Html.ActionLink(Model.Collection.Name, "Index", "Product", new { category = Model.Category.Slug, collection = Model.Collection.Slug })</li>
+        <li>@Model.ProductName - @Model.Style.Name</li>
     </ul>
 </div>
 <div class="product-detail-wrapper wide">
     <div class="wrapper__column left">
         <div class="product__image-container">
-            <img id="image-display" src="~/public/image/product-1.jpg" alt="">
+            <img id="image-display" src="~/uploads/@Model.ImageList[0]" alt="">
             <div class="image-list-wrapper">
                 <button class="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
                 <div class="image-list">
-                    <img class="image-item" src="~/public/image/product.jpg" alt="">
-                    <img class="image-item" src="~/public/image/product.jpg" alt="">
-                    <img class="image-item" src="~/public/image/product-1.jpg" alt="">
-                    <img class="image-item" src="~/public/image/product-1.jpg" alt="">
-                    <img class="image-item" src="~/public/image/product-1.jpg" alt="">
-                    <img class="image-item" src="~/public/image/product-1.jpg" alt="">
-                    <img class="image-item" src="~/public/image/product-1.jpg" alt="">
+                    @foreach (var image in Model.ImageList) {
+                        <img class="image-item" src="~/uploads/@image" alt="">
+                    }
                 </div>
                 <button class="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
@@ -31,21 +29,20 @@
     <div class="wrapper__column right">
         <div class="product__main-container">
             <div class="product-name-wrapper">
-                <p class="product-info-name">GRAPHIC TEE - SKATE 4P - SNOW WHITE</p>
-                <p class="product-info-sku">Mã sản phẩm: AV00149</p>
+                <p class="product-info-name">@Model.ProductName - @Model.Style.Name - @Model.ColorName</p>
+                <p class="product-info-sku">Mã sản phẩm: @Model.ProductId</p>
             </div>
-            <div class="product-info-price">580.000 VND</div>
+            <div class="product-info-price">@Html.FormatValue(Model.Price, "{0:0,0}") VND</div>
             <div class="product-add-form">
                 <form action="">
                     <div class="product-options-wrapper">
                         <div class="option-attribute color">
                             <div class="option-label">Color</div>
                             <ul id="colors-wrapper">
-                                <li><a href="" class="selected"></a></li>
-                                <li><a href=""></a></li>
-                                <li><a href=""></a></li>
-                                <li><a href=""></a></li>
-                                <li><a href=""></a></li>
+                                <li><a style="background-color: #@Model.HexCode;" class="selected"></a></li>
+                                @foreach (var sibling in Model.SiblingProducts) {
+                                    <li><a style="background-color: #@sibling["hexCode"]" asp-controller="Product" asp-action="Detail" asp-route-id="@sibling["productId"]"></a></li>
+                                }
                             </ul>
                         </div>
                         <div class="option-attribute size">
@@ -105,11 +102,7 @@
                     <i class="fa-solid fa-chevron-down dropdown-arrow rotate"></i>
                 </div>
                 <div style="display: block;">
-                    Gender: Unisex <br>
-                    Size run: 35 – 46 <br>
-                    Upper: Canvas NE <br>
-                    Outsole: Rubber <br>
-                    Có thêm 01 bộ dây đi kèm <br>
+                    @Model.Description
                 </div>
             </div>
             <div class="info-item">

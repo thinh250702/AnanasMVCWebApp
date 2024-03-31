@@ -9,6 +9,16 @@
         public string Ward { get; set; }
         public string OrderId { get; set; }
         public virtual Order Order { get; set; }
-
+        public ShippingInfo(string name, string phone, string email, string address, string city, string district, string ward, string orderId, Order order) {
+            Name = name;
+            Phone = phone;
+            Email = email;
+            Address = address;
+            City = city;
+            District = district;
+            Ward = ward;
+            OrderId = orderId;
+            Order = order;
+        }
     }
 }

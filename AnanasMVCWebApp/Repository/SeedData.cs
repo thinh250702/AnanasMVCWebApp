@@ -6,26 +6,26 @@ namespace AnanasMVCWebApp.Repository {
         public static void SeedingData(DataContext _context) {
             _context.Database.Migrate();
 
-            Category shoes = new Category() { Name = "Giày", Slug = "shoes" };
-            Category clothing = new Category() { Name = "Quần áo", Slug = "clothing" };
-            Category accessories = new Category() { Name = "Phụ kiện", Slug = "accessories" };
+            Category shoes = new Category("Giày", "shoes");
+            Category clothing = new Category("Quần áo", "clothing");
+            Category accessories = new Category("Phụ kiện", "accessories");
             if (!_context.Categories.Any()) {
                 _context.Categories.AddRange(new List<Category>() { shoes, clothing, accessories });
                 _context.SaveChanges();
             }
-            Collection basas = new Collection() { Id = "BS", Name = "Basas", Slug = "basas" };
-            Collection vintas = new Collection() { Id = "VT", Name = "Vintas", Slug = "vintas" };
-            Collection urbas = new Collection() { Id = "UB", Name = "Urbas", Slug = "urbas" };
-            Collection pattas = new Collection() { Id = "PR", Name = "Pattas", Slug = "pattas" };
-            Collection basicTee = new Collection() { Id = "BT", Name = "Basic Tee", Slug = "basic-tee" };
-            Collection graphicTee = new Collection() { Id = "GY", Name = "Graphic Tee", Slug = "graphic-tee" };
-            Collection sweatshirt = new Collection() { Id = "SW", Name = "Sweatshirt", Slug = "sweatshirt" };
-            Collection hoodie = new Collection() { Id = "HD", Name = "Hoodie", Slug = "hoodie" };
-            Collection truckerHat = new Collection() { Id = "TH", Name = "Trucker Hat", Slug = "trucker-hat" };
-            Collection shoelaces = new Collection() { Id = "LB", Name = "Dây giày", Slug = "shoelaces" };
-            Collection highCrewSock = new Collection() { Id = "HC", Name = "High Crew Sock", Slug = "high-crew-sock" };
-            Collection crewSock = new Collection() { Id = "CS", Name = "Crew Sock", Slug = "crew-sock" };
-            Collection toteBag = new Collection() { Id = "TB", Name = "Tote Bag", Slug = "tote-bag" };
+            Collection basas = new Collection("BS", "Basas", "basas");
+            Collection vintas = new Collection("VT", "Vintas", "vintas");
+            Collection urbas = new Collection("UB", "Urbas", "urbas");
+            Collection pattas = new Collection("PR", "Pattas", "pattas");
+            Collection basicTee = new Collection("BT", "Basic Tee", "basic-tee");
+            Collection graphicTee = new Collection("GY", "Graphic Tee", "graphic-tee");
+            Collection sweatshirt = new Collection("SW", "Sweatshirt", "sweatshirt");
+            Collection hoodie = new Collection("HD", "Hoodie", "hoodie");
+            Collection truckerHat = new Collection("TH", "Trucker Hat", "trucker-hat");
+            Collection shoelaces = new Collection("LB", "Dây giày", "shoelaces");
+            Collection highCrewSock = new Collection("HC", "High Crew Sock", "high-crew-sock");
+            Collection crewSock = new Collection("CS", "Crew Sock", "crew-sock");
+            Collection toteBag = new Collection("TB", "Tote Bag", "tote-bag");
             if (!_context.Collections.Any()) {
                 _context.Collections.AddRange(new List<Collection>() {
                     basas, vintas, urbas, pattas, 
@@ -34,24 +34,24 @@ namespace AnanasMVCWebApp.Repository {
                 });
                 _context.SaveChanges();
             }
-            Size size35 = new Size() { Id = "35", Name = "35" };
-            Size size36 = new Size() { Id = "36", Name = "36" };
-            Size size37 = new Size() { Id = "37", Name = "37" };
-            Size size38 = new Size() { Id = "38", Name = "38" };
-            Size size39 = new Size() { Id = "39", Name = "39" };
-            Size size40 = new Size() { Id = "40", Name = "40" };
-            Size size41 = new Size() { Id = "41", Name = "41" };
-            Size size42 = new Size() { Id = "42", Name = "42" };
-            Size size43 = new Size() { Id = "43", Name = "43" };
-            Size size44 = new Size() { Id = "44", Name = "44" };
-            Size size45 = new Size() { Id = "45", Name = "45" };
-            Size size46 = new Size() { Id = "46", Name = "46" };
-            Size freesize = new Size() { Id = "00", Name = "Freesize" };
-            Size sizeS = new Size() { Id = "01", Name = "S" };
-            Size sizeM = new Size() { Id = "02", Name = "M" };
-            Size sizeL = new Size() { Id = "03", Name = "L" };
-            Size sizeXL = new Size() { Id = "04", Name = "XL" };
-            Size sizeXXL = new Size() { Id = "05", Name = "XXL" };
+            Size size35 = new Size("35");
+            Size size36 = new Size("36");
+            Size size37 = new Size("37");
+            Size size38 = new Size("38");
+            Size size39 = new Size("39");
+            Size size40 = new Size("40");
+            Size size41 = new Size("41");
+            Size size42 = new Size("42");
+            Size size43 = new Size("43");
+            Size size44 = new Size("44");
+            Size size45 = new Size("45");
+            Size size46 = new Size("46");
+            Size freesize = new Size("00");
+            Size sizeS = new Size("01");
+            Size sizeM = new Size("02");
+            Size sizeL = new Size("03");
+            Size sizeXL = new Size("04");
+            Size sizeXXL = new Size("05");
             if (!_context.Sizes.Any()) {
                 _context.Sizes.AddRange(new List<Size>() {
                     size35, size36, size37, size38, size39, size40, 
@@ -60,63 +60,100 @@ namespace AnanasMVCWebApp.Repository {
                 });
                 _context.SaveChanges();
             }
-            Style highTop = new Style() { Name = "High Top", Slug = "high-top" };
-            Style lowTop = new Style() { Name = "Low Top", Slug = "low-top" };
-            Style midTop = new Style() { Name = "Mid Top", Slug = "mid-top" };
-            Style mule = new Style() { Name = "Mule", Slug = "mule" };
+            Style highTop = new Style("High Top", "high-top");
+            Style lowTop = new Style("Low Top", "low-top");
+            Style midTop = new Style("Mid Top", "mid-top");
+            Style mule = new Style("Mule", "mule");
             if (!_context.Styles.Any()) {
                 _context.Styles.AddRange(new List<Style>() {
                     highTop, lowTop, midTop, mule
                 });
                 _context.SaveChanges();
             }
+            Color black = new Color("464646", "Black", "black");
+            Color white = new Color("ffffff", "White", "white");
+            Color grey = new Color("c3c3c3", "Grey", "grey");
+            Color red = new Color("c10013", "Red", "red");
+            Color orange = new Color("e9662c", "Orange", "orange");
+            Color yellow = new Color("f5d255", "Yellow", "yellow");
+            Color green = new Color("6d9951", "Green", "green");
+            Color teal = new Color("006964", "Teal", "teal");
+            Color pink = new Color("f1778a", "Pink", "pink");
+            Color purple = new Color("8a5ca0", "Purple", "purple");
+            Color navy = new Color("1c487c", "Navy", "navy");
+            Color skyBlue = new Color("4cc9f0", "Sky Blue", "sky-blue");
+            Color brown = new Color("865439", "Brown", "brown");
+            Color beige = new Color("ebd0a2", "Beige", "beige");
             if (!_context.Colors.Any()) {
                 _context.Colors.AddRange(new List<Color>() {
-                    new Color(){ Id = "464646", Name = "Black", Slug = "black"},
-                    new Color(){ Id = "ffffff", Name = "White", Slug = "white"},
-                    new Color(){ Id = "c3c3c3", Name = "Grey", Slug = "grey"},
-                    new Color(){ Id = "c10013", Name = "Red", Slug = "red"},
-                    new Color(){ Id = "e9662c", Name = "Orange", Slug = "orange"},
-                    new Color(){ Id = "f5d255", Name = "Yellow", Slug = "yellow"},
-                    new Color(){ Id = "6d9951", Name = "Green", Slug = "green"},
-                    new Color(){ Id = "006964", Name = "Teal", Slug = "teal"},
-                    new Color(){ Id = "f1778a", Name = "Pink", Slug = "pink"},
-                    new Color(){ Id = "8a5ca0", Name = "Purple", Slug = "purple"},
-                    new Color(){ Id = "1c487c", Name = "Navy", Slug = "navy"},
-                    new Color(){ Id = "4cc9f0", Name = "Sky Blue", Slug = "sky-blue"},
-                    new Color(){ Id = "865439", Name = "Brown", Slug = "brown"},
-                    new Color(){ Id = "ebd0a2", Name = "Beige", Slug = "beige"},
+                    black, white, grey, red, orange, yellow, green, teal,
+                    pink, purple, skyBlue, brown, navy, beige
                 });
                 _context.SaveChanges();
             }
             Product product1 = new Product() {
                 Name = "Basas Workaday",
                 Description = "Lorem ipsum",
-                Price = 500000,
-                Style = highTop,
+                Price = 650000,
                 Category = shoes,
-                Collection = basas
+                Collection = basas,
+                Style = highTop
             };
             Product product2 = new Product() {
                 Name = "Basas Workaday",
                 Description = "Lorem ipsum",
-                Price = 500000,
-                Style = lowTop,
+                Price = 580000,
                 Category = shoes,
-                Collection = basas
+                Collection = basas,
+                Style = lowTop
             };
             Product product3 = new Product() {
                 Name = "Vintas Public 2000s",
                 Description = "Lorem ipsum",
-                Price = 500000,
-                Style = lowTop,
+                Price = 620000,
                 Category = shoes,
-                Collection = vintas
+                Collection = vintas,
+                Style = lowTop
             };
             if (!_context.Products.Any()) {
                 _context.Products.AddRange(new List<Product>() {
                     product1, product2, product3
                 });
+                _context.SaveChanges();
+            }
+            ProductVariant variant1 = new ProductVariant {
+                Id = $"A{product2.Collection.Code}001",
+                ColorName = "Black",
+                HexCode = "2c2f32",
+                Color = black,
+                Product = product2
+            };
+            ProductVariant variant2 = new ProductVariant {
+                Id = $"A{product2.Collection.Code}002",
+                ColorName = "Real Teal",
+                HexCode = "405e74",
+                Color = teal,
+                Product = product2
+            };
+            if (!_context.ProductVariants.Any()) {
+                _context.ProductVariants.AddRange(new List<ProductVariant>() {
+                    variant1, variant2
+                });
+                _context.SaveChanges();
+            }
+            List<ProductSKU> variant1SKUs = new List<ProductSKU>();
+            for (int i = 35; i <= 46; i++)
+            {
+                var size = _context.Sizes.Where(x => x.Code == i.ToString()).FirstOrDefault();
+                variant1SKUs.Add(new ProductSKU {
+                    Id = $"{variant1.Id}-{size.Code}",
+                    StockQuantity = 10,
+                    Size = size,
+                    ProductVariant = variant1
+                });
+            }
+            if (!_context.ProductSKUs.Any()) {
+                _context.ProductSKUs.AddRange(variant1SKUs);
                 _context.SaveChanges();
             }
         }

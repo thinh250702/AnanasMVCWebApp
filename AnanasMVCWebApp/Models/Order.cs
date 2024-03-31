@@ -16,9 +16,12 @@ namespace AnanasMVCWebApp.Models {
         public virtual ShippingMethod ShippingMethod { get; set; }
         public string CustomerId { get; set; }
         public virtual Customer Customer { get; set; }
-        public Order() {
-            Id = Guid.NewGuid().ToString("N").Substring(0, 8);
-        }
 
+        public Order(DateTime orderDate, int orderTotal, int shippingFee) {
+            Id = Guid.NewGuid().ToString("N").Substring(0, 8);
+            OrderDate = orderDate;
+            OrderTotal = orderTotal;
+            ShippingFee = shippingFee;
+        }
     }
 }

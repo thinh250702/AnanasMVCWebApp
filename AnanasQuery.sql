@@ -1,0 +1,17 @@
+USE AnanasMVC
+GO
+DELETE FROM ProductVariants
+GO
+DELETE FROM Products
+GO
+DELETE FROM Categories
+GO
+DELETE FROM Collections
+GO
+DELETE FROM Sizes
+GO
+DELETE FROM Styles
+GO
+DELETE FROM Colors
+GO
+

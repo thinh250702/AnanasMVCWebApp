@@ -41,6 +41,11 @@ $(document).ready(function(){
     });
 
     // PRODUCT DETAIL
+    // ---Change preview image on click
+    var imageDisplay = $("#image-display");
+    $(".image-item").click(function () {
+        imageDisplay.attr("src", $(this).attr("src"))
+    });
     // ---Preview Image Slider
     const prevButton = $(".image-list-wrapper .prevBtn");
     const nextButton = $(".image-list-wrapper .nextBtn");

@@ -14,9 +14,18 @@ namespace AnanasMVCWebApp.Models {
         public string? City { get; set; }
         public string? District { get; set; }
         public string? Ward { get; set; }
-        public Customer() {
-            Id = Guid.NewGuid().ToString("N").Substring(0, 8);
-        }
 
+        public Customer(string name, DateTime dob, string phone, string email, bool gender, string address = "", string city = "", string district = "", string ward = "") {
+            Id = Guid.NewGuid().ToString("N").Substring(0, 8);
+            Name = name;
+            Dob = dob;
+            Phone = phone;
+            Email = email;
+            Gender = gender;
+            Address = address;
+            City = city;
+            District = district;
+            Ward = ward;
+        }
     }
 }

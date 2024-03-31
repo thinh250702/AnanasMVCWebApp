@@ -1,0 +1,187 @@
+﻿@{
+    ViewData["Title"] = "Checkout";
+}
+
+<form action="">
+    <div class="checkout-wrapper wide">
+        <div class="checkout-info-wrapper">
+            <div class="checkout-info__item-container">
+                <div class="checkout-info-header">
+                    <i class="fa-solid fa-address-book"></i>
+                    <h6>Thông tin giao hàng</h6>
+                </div>
+                <div class="checkout-info-body">
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="">Họ tên</label>
+                            <input type="text" name="" id="" placeholder="Họ tên">
+                            <span class="input-error">Error message</span>
+                        </div>
+                    </div>
+                    <div class="form-row multiple">
+                        <div class="input-group">
+                            <label for="">Số điện thoại</label>
+                            <input type="text" name="" id="" placeholder="Số điện thoại">
+                            <span class="input-error">Error message</span>
+                        </div>
+                        <div class="input-group">
+                            <label for="">Email</label>
+                            <input type="text" name="" id="" placeholder="Email">
+                            <span class="input-error">Error message</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="">Địa chỉ</label>
+                            <input type="text" name="" id="" placeholder="Địa chỉ">
+                            <span class="input-error">Error message</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="">Tỉnh/Thành phố</label>
+                            <select name="" id="city-select">
+                                <option value="" selected disabled>Tỉnh/Thành phố</option>
+                            </select>
+                            <span class="input-error">Error message</span>
+                        </div>
+                    </div>
+                    <div class="form-row multiple">
+                        <div class="input-group">
+                            <label for="">Quận/Huyện</label>
+                            <select name="" id="district-select">
+                                <option value="" selected disabled>Quận/Huyện</option>
+                            </select>
+                            <span class="input-error">Error message</span>
+                        </div>
+                        <div class="input-group">
+                            <label for="">Phường/Xã</label>
+                            <select name="" id="ward-select">
+                                <option value="" selected disabled>Phường/Xã</option>
+                            </select>
+                            <span class="input-error">Error message</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="checkout-info__item-container">
+                <div class="checkout-info-header">
+                    <i class="fa-solid fa-truck"></i>
+                    <h6>Phương thức giao hàng</h6>
+                </div>
+                <div class="checkout-info-body">
+                    <label for="default-shipping" class="radio-container">
+                        <div>
+                            <div>
+                                <p class="label-title">Tốc độ tiêu chuẩn (từ 2 - 5 ngày làm việc)</p>
+                                <p class="label-subtitle">Tuỳ vào địa chỉ giao hàng mà tốc độ giao hàng tiêu chuẩn sẽ khác nhau. Chúng tôi luôn cố gắng để đơn hàng đến tay bạn sớm nhất.</p>
+                            </div>
+                            <div>
+                                <span class="label-price">20.000 VND</span>
+                                <span class="checkmark"><i class="fa-solid fa-circle-check"></i></span>
+                            </div>
+                        </div>
+                        <input type="radio" name="shippingMethod" id="default-shipping" value="">
+                    </label>
+                </div>
+            </div>
+            <div class="checkout-info__item-container">
+                <div class="checkout-info-header">
+                    <i class="fa-solid fa-credit-card"></i>
+                    <h6>Phương thức thanh toán</h6>
+                </div>
+                <div class="checkout-info-body">
+                    <label for="cod-pay" class="radio-container">
+                        <div>
+                            <div>
+                                <p class="label-title">Thanh toán trực tiếp khi giao hàng</p>
+                                <p class="label-subtitle">Là phương thức thanh toán bằng tiền mặt trực tiếp khi nhận hàng</p>
+                            </div>
+                            <div>
+                                <span class="checkmark"><i class="fa-solid fa-circle-check"></i></span>
+                            </div>
+                        </div>
+                        <input type="radio" name="paymentMethod" id="cod-pay" value="cod-pay">
+                    </label>
+                    <label for="card-pay" class="radio-container">
+                        <div>
+                            <div>
+                                <p class="label-title">Thanh toán bằng Thẻ quốc tế / Thẻ nội địa / QR Code</p>
+                                <p class="label-subtitle">Phương thức thanh toán sử dụng các loại thẻ quốc tế như Visa, Master, JCB,… hoặc các loại thẻ thanh toán nội địa (ATM) hoặc thanh toán bằng QR ngân hàng hoặc ví điện tử. Vui lòng đọc kĩ các cam kết thanh toán khi chọn phương thức này.</p>
+                            </div>
+                            <div>
+                                <span class="checkmark"><i class="fa-solid fa-circle-check"></i></span>
+                            </div>
+                        </div>
+                        <input type="radio" name="paymentMethod" id="card-pay" value="card-pay">
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="order-summary-wrapper">
+            <div class="order-total__title">
+                <i class="fa-solid fa-cube"></i>
+                <h6>Order Summary</h6>
+            </div>
+            <div class="order-summary__list">
+                <div class="product-row">
+                    <img src="./public/image/product.jpg" alt="">
+                    <div>
+                        <div>
+                            <p>Long Sleeve Graphic Tee - Love, Peace & Music</p>
+                            <p>Size: 36 | Số lượng: 2</p>
+                            <p>580.000 VND</p>
+                        </div>
+                        <div>12.980.000 VND</div>
+                    </div>
+                </div>
+                <div class="product-row">
+                    <img src="./public/image/product.jpg" alt="">
+                    <div>
+                        <div>
+                            <p>Long Sleeve Graphic Tee - Love, Peace & Music</p>
+                            <p>Size: 36 | Số lượng: 2</p>
+                            <p>580.000 VND</p>
+                        </div>
+                        <div>12.980.000 VND</div>
+                    </div>
+                </div>
+                <div class="product-row">
+                    <img src="./public/image/product.jpg" alt="">
+                    <div>
+                        <div>
+                            <p>Long Sleeve Graphic Tee - Love, Peace & Music</p>
+                            <p>Size: 36 | Số lượng: 2</p>
+                            <p>580.000 VND</p>
+                        </div>
+                        <div>12.980.000 VND</div>
+                    </div>
+                </div>
+            </div>
+            <div class="order-summary__total summary-panel">
+                <ul>
+                    <li>
+                        <span>Đơn hàng</span>
+                        <span>2.140.000 VND</span>
+                    </li>
+                    <li>
+                        <span>Giảm</span>
+                        <span>0 VND</span>
+                    </li>
+                    <li>
+                        <span>Phí vận chuyển</span>
+                        <span>20.000 VND</span>
+                    </li>
+                </ul>
+                <hr class="divider">
+                <ul class="total">
+                    <li>
+                        <span>Tổng cộng</span>
+                        <span class="primary-text-color">2.140.000 VND</span>
+                    </li>
+                </ul>
+                <button type="submit">Hoàn tất đặt hàng</button>
+            </div>
+        </div>
+    </div>
+</form>

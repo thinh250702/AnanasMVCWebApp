@@ -1,9 +1,93 @@
-﻿@{
+﻿@using AnanasMVCWebApp.Models.ViewModels
+@model IEnumerable<ProductViewModel>
+@{
     ViewData["Title"] = "Product List";
 }
 
+@section Scripts {
+    <script>
+        var styleCheckbox = $("input[name='styles']");
+        var collectionCheckbox = $("input[name='collections']");
+        var colorCheckbox = $("input[name='colors']");
+        var priceCheckbox = $("input[name='prices']");
+        var currentUrl = window.location.href
+        function getParameterValues(param) {
+            if (!currentUrl.includes(param)) {
+                return ''
+            }
+            var queryString = currentUrl.slice(currentUrl.indexOf('?') + 1).split('&');
+            for (var i = 0; i < queryString.length; i++) {
+                var queryParam = queryString[i].split('=');
+                if (queryParam[0] == param) {
+                    return queryParam[1];
+                }
+            }
+        }
+        var category = getParameterValues("category")
+        var filterDict = {
+            "styles": getParameterValues("style").split(",").filter(i => i),
+            "collections": getParameterValues("collection").split(",").filter(i => i),
+            "colors": getParameterValues("color").split(",").filter(i => i),
+            "prices": getParameterValues("price").split(",").filter(i => i)
+        }
+        Object.keys(filterDict).forEach(name => {
+            $(`input[name='${name}']`).each(function (index, item) {
+                filterDict[name].forEach(value => {
+                    if ($(item).prop('value') == value) {
+                        $(item).prop('checked', true)
+                        $(item).parent().addClass("checked")
+                        $(item).siblings("span").addClass("checked")
+                    }
+                })
+            })
+        })
+
+        styleCheckbox.change(function () {
+            temp = []
+            styleCheckbox.each(function (index, item) {
+                if ($(item).prop('checked') == true) {
+                    temp.push($(item).val())
+                }
+            })
+            filterDict["styles"] = temp
+        });
+        collectionCheckbox.change(function () {
+            temp = []
+            collectionCheckbox.each(function (index, item) {
+                if ($(item).prop('checked') == true) {
+                    temp.push($(item).val())
+                }
+            })
+            filterDict["collections"] = temp
+        });
+        colorCheckbox.change(function () {
+            temp = []
+            colorCheckbox.each(function (index, item) {
+                if ($(item).prop('checked') == true) {
+                    temp.push($(item).val())
+                }
+            })
+            filterDict["colors"] = temp
+        });
+        priceCheckbox.change(function () {
+            temp = []
+            priceCheckbox.each(function (index, item) {
+                if ($(item).prop('checked') == true) {
+                    temp.push($(item).val())
+                }
+            })
+            filterDict["prices"] = temp
+        });
+
+        $("input[type='checkbox']").change(function () {
+            // history.replaceState({}, null, currentUrl.slice(0, currentUrl.indexOf('?')) + `?category=${category}&collection=${filterDict["collections"]}&style=${filterDict["styles"]}&color=${filterDict["colors"]}&price=${filterDict["prices"]}`)
+            window.location.replace(currentUrl.slice(0, currentUrl.indexOf('?')) + `?category=${category}&collection=${filterDict["collections"]}&style=${filterDict["styles"]}&color=${filterDict["colors"]}&price=${filterDict["prices"]}`);
+        })
+    </script>
+}
+
 <div class="category-banner wide">
-    Category(-> <em>Shoes</em>)
+    Category(-> <em>@ViewBag.Category.Name</em>)
 </div>
 <div class="product-wrapper wide">
     <div class="product-wrapper__filter">
@@ -13,21 +97,21 @@
                 <i class="fa-solid fa-angle-up dropdown-arrow--filter"></i>
             </div>
             <div id="style-filter">
-                <label class="filter-label" for="1">
+                <label class="filter-label" for="low-top">
                     Low Top
-                    <input type="checkbox" name="" id="1" hidden>
+                    <input type="checkbox" name="styles" id="low-top" value="low-top" hidden>
                 </label>
-                <label class="filter-label" for="2">
+                <label class="filter-label" for="high-top">
                     High Top
-                    <input type="checkbox" name="" id="2" hidden>
+                    <input type="checkbox" name="styles" id="high-top" value="high-top" hidden>
                 </label>
-                <label class="filter-label" for="3">
-                    Slip-on
-                    <input type="checkbox" name="" id="3" hidden>
+                <label class="filter-label" for="mid-top">
+                    Mid Top
+                    <input type="checkbox" name="styles" id="mid-top" value="mid-top" hidden>
                 </label>
-                <label class="filter-label" for="4">
+                <label class="filter-label" for="mule">
                     Mule
-                    <input type="checkbox" name="" id="4" hidden>
+                    <input type="checkbox" name="styles" id="mule" value="mule" hidden>
                 </label>
             </div>
         </div>
@@ -37,17 +121,17 @@
                 <i class="fa-solid fa-angle-up dropdown-arrow--filter"></i>
             </div>
             <div id="collection-filter">
-                <label class="filter-label" for="5">
+                <label class="filter-label" for="basas">
                     Basas
-                    <input type="checkbox" name="" id="5" hidden>
+                    <input type="checkbox" name="collections" id="basas" value="basas" hidden>
                 </label>
-                <label class="filter-label" for="6">
+                <label class="filter-label" for="vintas">
                     Vintas
-                    <input type="checkbox" name="" id="6" hidden>
+                    <input type="checkbox" name="collections" id="vintas" value="vintas" hidden>
                 </label>
-                <label class="filter-label" for="7">
+                <label class="filter-label" for="urbas">
                     Urbas
-                    <input type="checkbox" name="" id="7" hidden>
+                    <input type="checkbox" name="collections" id="urbas" value="urbas" hidden>
                 </label>
             </div>
         </div>
@@ -57,21 +141,13 @@
                 <i class="fa-solid fa-angle-up dropdown-arrow--filter"></i>
             </div>
             <div id="color-filter">
-                <label for="black">
-                    <span></span>
-                    <p>Black</p>
-                    <input type="checkbox" name="" id="black" hidden>
-                </label>
-                <label for="red">
-                    <span></span>
-                    <p>Black</p>
-                    <input type="checkbox" name="" id="red" hidden>
-                </label>
-                <label for="yellow">
-                    <span></span>
-                    <p>Black</p>
-                    <input type="checkbox" name="" id="yellow" hidden>
-                </label>
+                @foreach (var color in ViewBag.ColorList) {
+                    <label for="@color.Slug">
+                        <span style="background-color: #@color.HexCode"></span>
+                        <p>@color.Name</p>
+                        <input type="checkbox" name="colors" id="@color.Slug" value="@color.Slug" hidden>
+                    </label>
+                }
             </div>
         </div>
         <div class="filter-item">
@@ -82,69 +158,39 @@
             <div id="price-filter">
                 <label class="filter-label" for="8">
                     &gt; 600k
-                    <input type="checkbox" name="" id="8" hidden>
+                    <input type="checkbox" name="prices" id="8" value="300" hidden>
                 </label>
                 <label class="filter-label" for="9">
                     200k - 299k
-                    <input type="checkbox" name="" id="9" hidden>
+                    <input type="checkbox" name="prices" id="9" value="200-299" hidden>
                 </label>
                 <label class="filter-label" for="10">
                     &lt; 200k
-                    <input type="checkbox" name="" id="10" hidden>
+                    <input type="checkbox" name="prices" id="10" value="200" hidden>
                 </label>
             </div>
         </div>
     </div>
     <div class="product-wrapper__product-list">
         <div class="product-list__container">
-            <div class="product-card">
-                <div>
+            @foreach (var item in Model) {
+                <div class="product-card">
                     <div>
-                        <a href="">Mua ngay <i class="fa-solid fa-arrow-right"></i></a>
+                        <div>
+                            <a asp-controller="Product" asp-action="Detail" asp-route-id="@item.ProductId">Mua ngay <i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                        <div class="product-image">
+                            <img class="normal" src="~/uploads/@item.ImageList[0]" alt="">
+                            <img class="hover" src="~/uploads/@item.ImageList[1]" alt="">
+                        </div>
                     </div>
-                    <div class="product-image">
-                        <img class="normal" src="~/public/image/product.jpg" alt="">
-                        <img class="hover" src="~/public/image/product-1.jpg" alt="">
-                    </div>
-                </div>
-                <div>
-                    <a href="">Vintas Public 2000s - Low Top</a>
-                    <p>Caviar Black</p>
-                    <p>620.000 VND</p>
-                </div>
-            </div>
-            <div class="product-card">
-                <div>
                     <div>
-                        <a href="">Mua ngay <i class="fa-solid fa-arrow-right"></i></a>
-                    </div>
-                    <div class="product-image">
-                        <img class="normal" src="~/public/image/product.jpg" alt="">
-                        <img class="hover" src="~/public/image/product-1.jpg" alt="">
+                        <a asp-controller="Product" asp-action="Detail" asp-route-id="@item.ProductId">@item.ProductName - @item.Style.Name</a>
+                        <p>@item.ColorName</p>
+                        <p>@Html.FormatValue(item.Price, "{0:0,0}") VND</p>
                     </div>
                 </div>
-                <div>
-                    <a href="">Vintas Public 2000s - Low Top</a>
-                    <p>Caviar Black</p>
-                    <p>620.000 VND</p>
-                </div>
-            </div>
-            <div class="product-card">
-                <div>
-                    <div>
-                        <a href="">Mua ngay <i class="fa-solid fa-arrow-right"></i></a>
-                    </div>
-                    <div class="product-image">
-                        <img class="normal" src="~/public/image/product.jpg" alt="">
-                        <img class="hover" src="~/public/image/product-1.jpg" alt="">
-                    </div>
-                </div>
-                <div>
-                    <a href="">Vintas Public 2000s - Low Top</a>
-                    <p>Caviar Black</p>
-                    <p>620.000 VND</p>
-                </div>
-            </div>
+            }
         </div>
         <div class="product-list__pagination">
             <div class="prevBtn">(Prev)</div>
