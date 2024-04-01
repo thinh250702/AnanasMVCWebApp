@@ -1,6 +1,7 @@
-﻿namespace AnanasMVCWebApp.Models.ViewModels {
+﻿namespace AnanasMVCWebApp.Models.ViewModels
+{
     public class CartViewModel {
-        public List<CartItem> CartItems { get; set; }
+        public List<CartItemViewModel> CartItems { get; set; }
         public int GrandTotal { 
             get {
                 int grandTotal = 0;
@@ -11,5 +12,6 @@
                 return grandTotal;
             } 
         }
+        public CartViewModel() { }
     }
 }

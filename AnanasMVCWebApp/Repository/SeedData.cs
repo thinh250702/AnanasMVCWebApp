@@ -18,7 +18,7 @@ namespace AnanasMVCWebApp.Repository {
             Collection urbas = new Collection("UB", "Urbas", "urbas") { Category = shoes };
             Collection pattas = new Collection("PR", "Pattas", "pattas") { Category = shoes };
             Collection basicTee = new Collection("BT", "Basic Tee", "basic-tee") { Category = clothing };
-            Collection graphicTee = new Collection("GY", "Graphic Tee", "graphic-tee") { Category = clothing };
+            Collection graphicTee = new Collection("GT", "Graphic Tee", "graphic-tee") { Category = clothing };
             Collection sweatshirt = new Collection("SW", "Sweatshirt", "sweatshirt") { Category = clothing };
             Collection hoodie = new Collection("HD", "Hoodie", "hoodie") { Category = clothing };
             Collection truckerHat = new Collection("TH", "Trucker Hat", "trucker-hat") { Category = accessories };
@@ -112,9 +112,21 @@ namespace AnanasMVCWebApp.Repository {
                 Collection = vintas,
                 Style = lowTop
             };
+            Product product4 = new Product() {
+                Name = "Logos Packed",
+                Description = "Lorem ipsum",
+                Price = 350000,
+                Collection = graphicTee,
+            };
+            Product product5 = new Product() {
+                Name = "Go Skate",
+                Description = "Lorem ipsum",
+                Price = 220000,
+                Collection = toteBag,
+            };
             if (!_context.Products.Any()) {
                 _context.Products.AddRange(new List<Product>() {
-                    product1, product2, product3
+                    product1, product2, product3, product4, product5
                 });
                 _context.SaveChanges();
             }
@@ -132,9 +144,23 @@ namespace AnanasMVCWebApp.Repository {
                 Color = teal,
                 Product = product2
             };
+            ProductVariant variant3 = new ProductVariant {
+                Id = $"A{product4.Collection.Code}001",
+                ColorName = "Snow White",
+                HexCode = "f0f0ec",
+                Color = white,
+                Product = product4
+            };
+            ProductVariant variant4 = new ProductVariant {
+                Id = $"A{product5.Collection.Code}001",
+                ColorName = "Orion Blue",
+                HexCode = "2a4656",
+                Color = navy,
+                Product = product5
+            };
             if (!_context.ProductVariants.Any()) {
                 _context.ProductVariants.AddRange(new List<ProductVariant>() {
-                    variant1, variant2
+                    variant1, variant2, variant3, variant4
                 });
                 _context.SaveChanges();
             }

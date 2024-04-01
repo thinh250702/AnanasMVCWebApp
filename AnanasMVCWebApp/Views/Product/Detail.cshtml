@@ -4,6 +4,36 @@
     ViewData["Title"] = "Product Detail";
 }
 
+@section Scripts {
+    <script type="text/javascript">
+        var selectQuantity = $("select[name='quantity']")
+        $("input[name='size']").change(function(){
+            var skuId = $(this).val();
+            selectQuantity.prop("disabled", false);
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetStock", "Product")',
+                dataType: "json",
+                data: { id: skuId },
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    var stock = result.stock;
+                    selectQuantity.empty();
+                    if (stock != -1) {
+                        for (let i = 1; i<= stock; i++) {
+                            selectQuantity.append(`<option value="${i}">${i}</option>`)
+                        }
+                    }
+                    
+                },
+                error: function () {
+                    alert("Some errors occured!");
+                }
+            });
+        });
+    </script>
+}
+
 <div class="product-breadcrumb wide">
     <ul class="breadcrumb">
         <li>@Html.ActionLink(Model.Category.Name, "Index", "Product", new { category = Model.Category.Slug })</li>
@@ -14,16 +44,18 @@
 <div class="product-detail-wrapper wide">
     <div class="wrapper__column left">
         <div class="product__image-container">
-            <img id="image-display" src="~/uploads/@Model.ImageList[0]" alt="">
-            <div class="image-list-wrapper">
-                <button class="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
-                <div class="image-list">
-                    @foreach (var image in Model.ImageList) {
-                        <img class="image-item" src="~/uploads/@image" alt="">
-                    }
+            @if (Model.ImageList.Count > 1) {
+                <img id="image-display" src="~/uploads/@Model.ImageList[0]" alt="">
+                <div class="image-list-wrapper">
+                    <button class="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div class="image-list">
+                        @foreach (var image in Model.ImageList) {
+                            <img class="image-item" src="~/uploads/@image" alt="">
+                        }
+                    </div>
+                    <button class="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
                 </div>
-                <button class="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
-            </div>
+            }
         </div>
     </div>
     <div class="wrapper__column right">
@@ -34,7 +66,7 @@
             </div>
             <div class="product-info-price">@Html.FormatValue(Model.Price, "{0:0,0}") VND</div>
             <div class="product-add-form">
-                <form action="">
+                @using (Html.BeginForm("Add", "Cart", FormMethod.Post)) {
                     <div class="product-options-wrapper">
                         <div class="option-attribute color">
                             <div class="option-label">Color</div>
@@ -65,18 +97,7 @@
                             <div class="option-label">Quantity</div>
                             <div id="select-control">
                                 <i class="fa-solid fa-angle-down"></i>
-                                <select name="" id="">
-                                    <option value="">1</option>
-                                    <option value="">2</option>
-                                    <option value="">3</option>
-                                    <option value="">4</option>
-                                    <option value="">5</option>
-                                    <option value="">6</option>
-                                    <option value="">7</option>
-                                    <option value="">8</option>
-                                    <option value="">9</option>
-                                    <option value="">10</option>
-                                </select>
+                                <select disabled name="quantity"></select>
                             </div>
                         </div>
                     </div>
@@ -84,7 +105,7 @@
                         <button id="add-to-cart-btn" type="submit">Thêm vào giỏ hàng</button>
                         <button id="like-btn" type="button"><i class="fa-regular fa-heart"></i></button>
                     </div>
-                </form>
+                }
             </div>
         </div>
         <div class="product__info-container">

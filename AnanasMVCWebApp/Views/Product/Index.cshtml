@@ -87,7 +87,7 @@
 }
 
 <div class="category-banner wide">
-    Category(-> <em>@ViewBag.Category.Name</em>)
+    Category(-> <em>@(ViewBag.Category != null ? ViewBag.Category.Name : "Sản phẩm")</em>)
 </div>
 <div class="product-wrapper wide">
     <div class="product-wrapper__filter">
@@ -166,8 +166,10 @@
                             <a asp-controller="Product" asp-action="Detail" asp-route-id="@item.ProductId">Mua ngay <i class="fa-solid fa-arrow-right"></i></a>
                         </div>
                         <div class="product-image">
-                            <img class="normal" src="~/uploads/@item.ImageList[0]" alt="">
-                            <img class="hover" src="~/uploads/@item.ImageList[1]" alt="">
+                            @if (@item.ImageList.Count > 1) {
+                                <img class="normal" src="~/uploads/@item.ImageList[0]" alt="">
+                                <img class="hover" src="~/uploads/@item.ImageList[1]" alt="">
+                            }
                         </div>
                     </div>
                     <div>

@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="~/css/material.css" asp-append-version="true" />
 </head>
 <body>
+    @await Html.PartialAsync("_NotificationPartial")
     <div class="header-wrapper">
         <div class="navbar wide">
             <div class="navbar__logo-wrapper">
@@ -15,9 +16,9 @@
             </div>
             <div class="navbar__category">
                 <ul>
-                    <li><a asp-controller="Product" asp-action="Index" asp-route-category="shoes">Shoes</a></li>
-                    <li><a asp-controller="Product" asp-action="Index" asp-route-category="clothing">Clothing</a></li>
-                    <li><a asp-controller="Product" asp-action="Index" asp-route-category="accessories">Accessories</a></li>
+                    <li>@Html.ActionLink("Shoes", "Index", "Product", new { category = "shoes" })</li>
+                    <li>@Html.ActionLink("Clothing", "Index", "Product", new { category = "clothing" })</li>
+                    <li>@Html.ActionLink("Accessories", "Index", "Product", new { category = "accessories" })</li>
                     <li>Sale Off</li>
                 </ul>
             </div>
@@ -46,50 +47,28 @@
                         </div>
                     </li>
                     <li id="cart-nav" class="navbar__action__item cart">
-                        <a href=""><i class="fa-solid fa-cart-shopping"></i></a>
+                        <a asp-action="Index" asp-controller="Cart"><i class="fa-solid fa-cart-shopping"></i></a>
                         <div id="cart-dropdown">
                             <h6>Giỏ hàng</h6>
-                            <!-- <div class="empty-wrapper">
+                            <div class="empty-wrapper">
                                 Không có sản phẩm nào trong giỏ hàng!
-                            </div> -->
-                            <div class="wrapper">
-                                <div class="product-row--ver2">
-                                    <img src="~/public/image/product.jpg" alt="">
-                                    <div>
-                                        <div>
-                                            <p>Long Sleeve Graphic Tee - Love, Peace & Music</p>
-                                            <p>Size: 36 | Số lượng: 2</p>
-                                            <p>580.000 VND</p>
-                                        </div>
-                                        <div>12.980.000 VND</div>
-                                    </div>
-                                </div>
-                                <div class="product-row--ver2">
-                                    <img src="~/public/image/product.jpg" alt="">
-                                    <div>
-                                        <div>
-                                            <p>Long Sleeve Graphic Tee - Love, Peace & Music</p>
-                                            <p>Size: 36 | Số lượng: 2</p>
-                                            <p>580.000 VND</p>
-                                        </div>
-                                        <div>12.980.000 VND</div>
-                                    </div>
-                                </div>
-                                <div class="product-row--ver2">
-                                    <img src="~/public/image/product.jpg" alt="">
-                                    <div>
-                                        <div>
-                                            <p>Long Sleeve Graphic Tee - Love, Peace & Music</p>
-                                            <p>Size: 36 | Số lượng: 2</p>
-                                            <p>580.000 VND</p>
-                                        </div>
-                                        <div>12.980.000 VND</div>
-                                    </div>
-                                </div>
                             </div>
+                            @* <div class="wrapper">
+                                <div class="product-row--ver2">
+                                    <img src="~/public/image/product.jpg" alt="">
+                                    <div>
+                                        <div>
+                                            <p>Long Sleeve Graphic Tee - Love, Peace & Music</p>
+                                            <p>Size: 36 | Số lượng: 2</p>
+                                            <p>580.000 VND</p>
+                                        </div>
+                                        <div>12.980.000 VND</div>
+                                    </div>
+                                </div>
+                            </div> *@
                             <div>
                                 <span>5 sản phẩm</span>
-                                <a href="">Xem giỏ hàng</a>
+                                @Html.ActionLink("Xem giỏ hàng", "Index", "Cart")
                             </div>
                         </div>
                     </li>
@@ -152,5 +131,8 @@
     <script src="~/js/main.js" asp-append-version="true"></script>
     <script src="https://kit.fontawesome.com/a142c3e58b.js" crossorigin="anonymous"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <script>
+
+    </script>
 </body>
 </html>
