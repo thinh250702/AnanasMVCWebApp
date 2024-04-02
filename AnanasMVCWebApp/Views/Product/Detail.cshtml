@@ -9,7 +9,6 @@
         var selectQuantity = $("select[name='quantity']")
         $("input[name='size']").change(function(){
             var skuId = $(this).val();
-            selectQuantity.prop("disabled", false);
             $.ajax({
                 type: "GET",
                 url: '@Url.Action("GetStock", "Product")',
@@ -19,10 +18,13 @@
                 success: function (result) {
                     var stock = result.stock;
                     selectQuantity.empty();
-                    if (stock != -1) {
+                    if (stock != 0) {
+                        selectQuantity.prop("disabled", false);
                         for (let i = 1; i<= stock; i++) {
                             selectQuantity.append(`<option value="${i}">${i}</option>`)
                         }
+                    } else {
+                        selectQuantity.prop("disabled", true);
                     }
                     
                 },
@@ -72,8 +74,10 @@
                             <div class="option-label">Color</div>
                             <ul id="colors-wrapper">
                                 <li><a style="background-color: #@Model.HexCode;" class="selected"></a></li>
-                                @foreach (var sibling in Model.SiblingProducts) {
-                                    <li><a style="background-color: #@sibling["hexCode"]" asp-controller="Product" asp-action="Detail" asp-route-id="@sibling["productId"]"></a></li>
+                                @if (Model.SiblingProducts != null) {
+                                    @foreach (var sibling in Model.SiblingProducts) {
+                                        <li><a style="background-color: #@sibling["hexCode"]" asp-controller="Product" asp-action="Detail" asp-route-id="@sibling["productId"]"></a></li>
+                                    }
                                 }
                             </ul>
                         </div>

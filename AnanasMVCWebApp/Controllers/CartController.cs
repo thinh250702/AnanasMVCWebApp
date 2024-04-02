@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using NuGet.Protocol;
 using System.Diagnostics;
 using System.Security.Cryptography;
+using System.Security.Policy;
 
 namespace AnanasMVCWebApp.Controllers
 {
@@ -39,6 +40,36 @@ namespace AnanasMVCWebApp.Controllers
             }
             HttpContext.Session.SetJson("Cart", cart);
             return Redirect(Request.Headers["Referer"].ToString());
+        }
+        [HttpGet]
+        public async Task<IActionResult> ModifyQuantity(string id, int quantity) {
+            ProductSKU? sku = await _context.ProductSKUs.FindAsync(id);
+            List<CartItemViewModel> cart = HttpContext.Session.GetJson<List<CartItemViewModel>>("Cart");
+            CartItemViewModel? item = cart.Where(c => c.ProductId == id).FirstOrDefault();
+            if (item != null) {
+                item.Quantity = quantity;
+            }
+            HttpContext.Session.SetJson("Cart", cart);
+            return Json(new { redirectToUrl = Url.Action("Index", "Cart") });
+        }
+        public async Task<IActionResult> ModifySize(string id, string sizeCode) {
+            var size = _context.Sizes.Where(s => s.Code == sizeCode).FirstOrDefault();
+            string newId = id.Split("-")[0] + "-" + sizeCode;
+            ProductSKU? sku = await _context.ProductSKUs.FindAsync(id);
+            List<CartItemViewModel> cart = HttpContext.Session.GetJson<List<CartItemViewModel>>("Cart");
+            CartItemViewModel? item = cart.Where(c => c.ProductId == id).FirstOrDefault();
+            if (item != null) {
+                // Find if the new size already exist in the cart
+                CartItemViewModel? itemNewSize = cart.Where(c => c.ProductId == (newId)).FirstOrDefault();
+                if (itemNewSize != null) {
+                    item.Quantity += itemNewSize.Quantity;
+                    cart.RemoveAll(p => p.ProductId == itemNewSize.ProductId);
+                }
+                item.ProductId = newId;
+                item.Size = (size != null) ? size.Name : "";
+            }
+            HttpContext.Session.SetJson("Cart", cart);
+            return Json(new { redirectToUrl = Url.Action("Index", "Cart") });
         }
         [NonAction]
         public string GetImage(string id) {

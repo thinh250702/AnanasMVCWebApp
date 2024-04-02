@@ -4,6 +4,43 @@
     ViewData["Title"] = "Cart";
 }
 
+@section Scripts {
+    <script type="text/javascript">
+        $("select[name='quantity']").change(function () {
+            var skuId = $(this).closest(".cart-list__item").attr("id");
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("ModifyQuantity", "Cart")',
+                dataType: "json",
+                data: { id: skuId, quantity: parseInt($(this).val()) },
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    window.location.href = result.redirectToUrl;
+                },
+                error: function () {
+                    alert("Some errors occured!");
+                }
+            });
+        })
+        $("select[name='size']").change(function () {
+            var skuId = $(this).closest(".cart-list__item").attr("id");
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("ModifySize", "Cart")',
+                dataType: "json",
+                data: { id: skuId, sizeCode: $(this).val() },
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    window.location.href = result.redirectToUrl;
+                },
+                error: function () {
+                    alert("Some errors occured!");
+                }
+            });
+        })
+    </script>
+}
+
 @if(Model.CartItems.Count == 0){
     <div class="empty-cart-wrapper wide">
         <div>
@@ -21,7 +58,7 @@
             </div>
             <div class="cart-list__item-container">
                 @foreach (var item in Model.CartItems) {
-                    <div class="cart-list__item">
+                    <div id="@item.ProductId" class="cart-list__item">
                         <div class="cart-item__image">
                             <img src="~/uploads/@item.ImageName" alt="">
                         </div>
@@ -35,14 +72,13 @@
                                     <div class="option-label">Size</div>
                                     <div class="select-wrapper">
                                         <i class="fa-solid fa-angle-down"></i>
-                                        <select name="" id="">
+                                        <select name="size">
                                             @foreach (var size in item.SizeList) {
                                                 @if (size.Name == item.Size) {
                                                     <option value="@size.Code" selected>@size.Name</option>
                                                 } else {
                                                     <option value="@size.Code">@size.Name</option>
                                                 }
-                                                
                                             }
                                         </select>
                                     </div>
@@ -51,7 +87,7 @@
                                     <div class="option-label">Quantity</div>
                                     <div class="select-wrapper">
                                         <i class="fa-solid fa-angle-down"></i>
-                                        <select name="" id="">
+                                        <select name="quantity">
                                             @for (int index = 1; index <= item.Stock; index++) {
                                                 @if (index == item.Quantity) {
                                                     <option value="@index" selected>@index</option>

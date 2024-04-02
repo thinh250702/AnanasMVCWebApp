@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
+using System.Drawing;
 using System.Linq;
 
 namespace AnanasMVCWebApp.Controllers {
@@ -80,8 +81,19 @@ namespace AnanasMVCWebApp.Controllers {
         }
         [HttpGet]
         public IActionResult GetStock(string id) {
-            var quantity = _context.ProductSKUs.Where(c => c.Id == id).FirstOrDefault();
-            return Json(new { stock = (quantity != null) ? quantity.StockQuantity : -1 });
+            var product = _context.ProductSKUs.Where(c => c.Id == id).FirstOrDefault();
+            int productStock = (product != null) ? product.StockQuantity : 0;
+            int maxOrderQty = 0;
+            List<CartItemViewModel> cartItems = HttpContext.Session.GetJson<List<CartItemViewModel>>("Cart");
+            if (cartItems != null) {
+                CartItemViewModel? item = cartItems.Where(c => c.ProductId == id).FirstOrDefault();
+                if (item != null) {
+                    maxOrderQty = (productStock - item.Quantity >= 12) ? 12 : productStock - item.Quantity;
+                    return Json(new { stock = maxOrderQty });
+                }
+            }
+            maxOrderQty = (productStock >= 12) ? 12 : productStock;
+            return Json(new { stock = maxOrderQty });
         }
         [NonAction]
         public List<string> GetAllImageById(string id) {
