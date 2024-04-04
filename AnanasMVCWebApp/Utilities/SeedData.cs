@@ -1,7 +1,7 @@
 ﻿using AnanasMVCWebApp.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace AnanasMVCWebApp.Repository {
+namespace AnanasMVCWebApp.Utilities {
     public class SeedData {
         public static void SeedingData(DataContext _context) {
             _context.Database.Migrate();
@@ -28,8 +28,8 @@ namespace AnanasMVCWebApp.Repository {
             Collection toteBag = new Collection("TB", "Tote Bag", "tote-bag") { Category = accessories };
             if (!_context.Collections.Any()) {
                 _context.Collections.AddRange(new List<Collection>() {
-                    basas, vintas, urbas, pattas, 
-                    basicTee, graphicTee, sweatshirt, hoodie, 
+                    basas, vintas, urbas, pattas,
+                    basicTee, graphicTee, sweatshirt, hoodie,
                     truckerHat, shoelaces, highCrewSock, crewSock, toteBag
                 });
                 _context.SaveChanges();
@@ -54,7 +54,7 @@ namespace AnanasMVCWebApp.Repository {
             Size sizeXXL = new Size("05");
             if (!_context.Sizes.Any()) {
                 _context.Sizes.AddRange(new List<Size>() {
-                    size35, size36, size37, size38, size39, size40, 
+                    size35, size36, size37, size38, size39, size40,
                     size41, size42, size43, size44, size45, size46,
                     sizeS, sizeM, sizeL, sizeXL, sizeXXL, freesize,
                 });
@@ -131,28 +131,28 @@ namespace AnanasMVCWebApp.Repository {
                 _context.SaveChanges();
             }
             ProductVariant variant1 = new ProductVariant {
-                Id = $"A{product2.Collection.Code}001",
+                Code = $"A{product2.Collection.Code}001",
                 ColorName = "Black",
                 HexCode = "2c2f32",
                 Color = black,
                 Product = product2
             };
             ProductVariant variant2 = new ProductVariant {
-                Id = $"A{product2.Collection.Code}002",
+                Code = $"A{product2.Collection.Code}002",
                 ColorName = "Real Teal",
                 HexCode = "405e74",
                 Color = teal,
                 Product = product2
             };
             ProductVariant variant3 = new ProductVariant {
-                Id = $"A{product4.Collection.Code}001",
+                Code = $"A{product4.Collection.Code}001",
                 ColorName = "Snow White",
                 HexCode = "f0f0ec",
                 Color = white,
                 Product = product4
             };
             ProductVariant variant4 = new ProductVariant {
-                Id = $"A{product5.Collection.Code}001",
+                Code = $"A{product5.Collection.Code}001",
                 ColorName = "Orion Blue",
                 HexCode = "2a4656",
                 Color = navy,
@@ -165,11 +165,10 @@ namespace AnanasMVCWebApp.Repository {
                 _context.SaveChanges();
             }
             List<ProductSKU> variant1SKUs = new List<ProductSKU>();
-            for (int i = 35; i <= 46; i++)
-            {
+            for (int i = 35; i <= 46; i++) {
                 var size = _context.Sizes.Where(x => x.Code == i.ToString()).FirstOrDefault();
                 variant1SKUs.Add(new ProductSKU {
-                    Id = $"{variant1.Id}-{size.Code}",
+                    Code = $"{variant1.Code}-{size.Code}",
                     StockQuantity = 10,
                     Size = size,
                     ProductVariant = variant1

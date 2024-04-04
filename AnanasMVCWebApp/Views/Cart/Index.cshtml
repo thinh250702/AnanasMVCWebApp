@@ -38,6 +38,26 @@
                 }
             });
         })
+        $("button.remove-btn").click(function () {
+            var skuId = $(this).closest(".cart-list__item").attr("id");
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("Remove", "Cart")',
+                dataType: "json",
+                data: { id: skuId },
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    window.location.href = result.redirectToUrl;
+                },
+                error: function () {
+                    alert("Some errors occured!");
+                }
+            });
+        });
+
+        setTimeout(function () {
+            $(".toast-msg").animate({ left: "-=40%" }, "slow");
+        }, 2000);
     </script>
 }
 
@@ -102,8 +122,8 @@
                         </div>
                         <div class="cart-item__actions">
                             <div class="actions-wrapper">
-                                <button><i class="fa-solid fa-xmark"></i></button>
-                                <button><i class="fa-regular fa-heart"></i></button>
+                                <button class="remove-btn"><i class="fa-solid fa-xmark"></i></button>
+                                <button class="favorite-btn"><i class="fa-regular fa-heart"></i></button>
                             </div>
                             <div class="item-subtotal">@Html.FormatValue(@item.SubTotal, "{0:0,0}") VND</div>
                         </div>

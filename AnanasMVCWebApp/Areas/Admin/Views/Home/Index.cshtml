@@ -1,0 +1,194 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    ViewBag.Menu = "dashboard";
+}
+
+<div class="row-wrapper">
+    <h4>Welcome back, Admin</h4>
+</div>
+<div class="row-wrapper">
+    <div class="panel-wrapper width-50">
+        <div>
+            <div class="panel__info-group">
+                <p class="title">Total Sales</p>
+                <p class="sub-title primary-text-color">500.000 VND</p>
+            </div>
+            <div class="panel__actions-group">
+                <div class="actions__filter">
+                    <span>Filter</span>
+                    <select name="" id="">
+                        <optgroup label="Current">
+                            <option value="">This Week</option>
+                            <option value="">This Month</option>
+                            <option value="">This Year</option>
+                        </optgroup>
+                        <optgroup label="Previous">
+                            <option value="">Last Week</option>
+                            <option value="">Last Month</option>
+                            <option value="">Last Year</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="actions__chart-type">
+                    <span>Chart Type</span>
+                    <label class="bar-label" for="">
+                        Bar
+                        <input type="radio" name="chart-type" id="" hidden>
+                    </label>
+                    <label class="line-label" for="">
+                        Line
+                        <input type="radio" name="chart-type" id="" hidden>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div><canvas id="totalSalesChart"></canvas></div>
+    </div>
+    <div class="panel-wrapper width-50">
+        <div>
+            <div class="panel__info-group">
+                <p class="title">Total Sales</p>
+                <p class="sub-title primary-text-color">500.000 VND</p>
+            </div>
+            <div class="panel__actions-group">
+                <div class="actions__filter">
+                    <span>Filter</span>
+                    <select name="" id="">
+                        <optgroup label="Current">
+                            <option value="">This Week</option>
+                            <option value="">This Month</option>
+                            <option value="">This Year</option>
+                        </optgroup>
+                        <optgroup label="Previous">
+                            <option value="">Last Week</option>
+                            <option value="">Last Month</option>
+                            <option value="">Last Year</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="actions__chart-type">
+                    <span>Chart Type</span>
+                    <label class="bar-label" for="">
+                        Bar
+                        <input type="radio" name="chart-type" id="" hidden>
+                    </label>
+                    <label class="line-label" for="">
+                        Line
+                        <input type="radio" name="chart-type" id="" hidden>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div><canvas id="totalOrdersChart"></canvas></div>
+    </div>
+</div>
+<div class="row-wrapper">
+    <div class="panel-wrapper width-40">
+        <div>
+            <div class="panel__info-group">
+                <p class="title">Sale by Category</p>
+            </div>
+            <div class="panel__actions-group">
+                <div class="actions__filter">
+                    <span>Filter</span>
+                    <select name="" id="">
+                        <optgroup label="Current">
+                            <option value="">This Week</option>
+                            <option value="">This Month</option>
+                            <option value="">This Year</option>
+                        </optgroup>
+                        <optgroup label="Previous">
+                            <option value="">Last Week</option>
+                            <option value="">Last Month</option>
+                            <option value="">Last Year</option>
+                        </optgroup>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div><canvas id="pieChart"></canvas></div>
+    </div>
+    <div class="panel-wrapper width-60">
+        <div>
+            <div class="panel__info-group">
+                <p class="title">Best Selling Products</p>
+            </div>
+            <div class="panel__actions-group">
+                <div class="actions__filter">
+                    <span>Filter</span>
+                    <select name="" id="">
+                        <optgroup label="Current">
+                            <option value="">This Week</option>
+                            <option value="">This Month</option>
+                            <option value="">This Year</option>
+                        </optgroup>
+                        <optgroup label="Previous">
+                            <option value="">Last Week</option>
+                            <option value="">Last Month</option>
+                            <option value="">Last Year</option>
+                        </optgroup>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div>
+            <table id="best-seller-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Doanh thu</th>
+                        <th>Đã bán</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <img src="../public/image/product.jpg" alt="">
+                            <span>Basas Workaday - Low Top</span>
+                        </td>
+                        <td>200.000 VND</td>
+                        <td>200</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <img src="../public/image/product.jpg" alt="">
+                            <span>Basas Workaday - Low Top</span>
+                        </td>
+                        <td>200.000 VND</td>
+                        <td>200</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <img src="../public/image/product.jpg" alt="">
+                            <span>Basas Workaday - Low Top</span>
+                        </td>
+                        <td>200.000 VND</td>
+                        <td>200</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <img src="../public/image/product.jpg" alt="">
+                            <span>Basas Workaday - Low Top</span>
+                        </td>
+                        <td>200.000 VND</td>
+                        <td>200</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <img src="../public/image/product.jpg" alt="">
+                            <span>Basas Workaday - Low Top</span>
+                        </td>
+                        <td>200.000 VND</td>
+                        <td>200</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

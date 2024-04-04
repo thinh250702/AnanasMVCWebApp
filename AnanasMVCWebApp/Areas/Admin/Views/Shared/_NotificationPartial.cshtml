@@ -1,0 +1,19 @@
+﻿@if(TempData["success"] != null){
+    <div class="toast-msg success">
+        <i class="fa-solid fa-circle-check"></i>
+        <span>@TempData["success"]</span>
+        <i class="fa-solid fa-xmark"></i>
+    </div>
+}
+
+@if (TempData["error"] != null) {
+    <div class="toast-msg danger">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span>@TempData["error"]</span>
+        <i class="fa-solid fa-xmark"></i>
+    </div>
+}
+
+
+
+

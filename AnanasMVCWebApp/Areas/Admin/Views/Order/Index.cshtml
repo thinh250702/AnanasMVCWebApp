@@ -1,0 +1,92 @@
+﻿@{
+    ViewData["Title"] = "Order List";
+    ViewBag.Menu = "order";
+}
+
+<div class="row-wrapper">
+    <h4>Trang đơn hàng</h4>
+</div>
+<div class="row-wrapper">
+    <div class="actions-wrapper">
+        <form action="">
+            <div class="actions-group">
+                <div class="actions__search">
+                    <select name="" id="">
+                        <option value="" selected>Mã đơn hàng</option>
+                        <option value="">Mã vận đơn</option>
+                        <option value="">Tên người mua</option>
+                        <option value="">Sản phẩm</option>
+                    </select>
+                    <input type="text" name="" id="searchInput" placeholder="Please enter name">
+                </div>
+                <div class="actions__filter">
+                    <span>Filter</span>
+                    <select name="" id="">
+                        <optgroup label="Current">
+                            <option value="" selected>Tuần này</option>
+                            <option value="">Tháng này</option>
+                            <option value="">Năm nay</option>
+                        </optgroup>
+                        <optgroup label="Previous">
+                            <option value="">Tuần trước</option>
+                            <option value="">Tháng trước</option>
+                            <option value="">Năm trước</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <button type="submit">Search</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row-wrapper">
+    <div class="panel-wrapper--large width-100">
+        <div class="tab-section">
+            <a class="selected" href="">Tất cả</a>
+            <a href="">Chưa xử lý</a>
+            <a href="">Đã xử lý</a>
+            <a href="">Đang giao</a>
+            <a href="">Giao thành công</a>
+        </div>
+        <div class="table-section">
+            <div class="tb-header">
+                <div class="tb-row">
+                    <div style="width: 5%;" class="tb-cell"></div>
+                    <div style="flex: 1;" class="tb-cell">Mã đơn hàng</div>
+                    <div style="flex: 1;" class="tb-cell">Ngày tạo</div>
+                    <div style="flex: 1;" class="tb-cell">Khách hàng</div>
+                    <div style="flex: 1;" class="tb-cell">Tổng đơn hàng</div>
+                    <div style="flex: 1;" class="tb-cell">Trạng thái</div>
+                    <div style="flex: 1;" class="tb-cell">Thao tác</div>
+                </div>
+            </div>
+            <div class="tb-body">
+                <div class="tb-row" style="padding: 18px 0;">
+                    <div style="width: 5%;" class="tb-cell"><input type="radio" name="" id=""></div>
+                    <div style="flex: 1;" class="tb-cell">AV00149</div>
+                    <div style="flex: 1;" class="tb-cell">12/02/2023</div>
+                    <div style="flex: 1;" class="tb-cell">Nguyễn Trường Thịnh</div>
+                    <div style="flex: 1;" class="tb-cell">12.500.000 VND</div>
+                    <div style="flex: 1;" class="tb-cell">Giao hàng thành công</div>
+                    <div style="flex: 1;" class="tb-cell action">
+                        <a href=""><i class="fa-solid fa-pen-to-square"></i> Xem chi tiết</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pagination">
+            <div class="prevBtn">(Prev)</div>
+            <div>
+                <ul>
+                    <li>1</li>
+                    <li>2</li>
+                    <li class="checked">3</li>
+                    <li>4</li>
+                    <li class="empty">...</li>
+                    <li>20</li>
+                </ul>
+            </div>
+            <div class="nextBtn">(Next)</div>
+        </div>
+    </div>
+</div>

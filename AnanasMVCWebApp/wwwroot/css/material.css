@@ -197,7 +197,10 @@ h6, .h6 {
 .input-group input[type="date"] {
     height: 100%;
 }
-
+.input-group input[type="text"]:disabled {
+    border: 1px solid var(--neutral-80);
+    cursor: not-allowed;
+}
 .input-group input:focus, .input-group select:focus {
     transform: translate(0, -3px);
     box-shadow: 0 3px 0 0 var(--neutral-0);
@@ -575,6 +578,7 @@ hr.divider {
     border-radius: 6px;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 3px 8px;
     color: var(--neutral-100);
+    z-index: 2;
 }
 
 .toast-msg span {

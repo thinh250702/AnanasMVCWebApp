@@ -17,7 +17,7 @@
         public CartItemViewModel() { }
         public CartItemViewModel(ProductSKU productSKU, int quantity)
         {
-            ProductId = productSKU.Id;
+            ProductId = productSKU.Code;
             ProductName = GetProductName(productSKU);
             Quantity = quantity;
             Price = productSKU.ProductVariant.Product.Price;

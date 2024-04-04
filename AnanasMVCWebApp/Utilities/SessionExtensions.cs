@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 
-namespace AnanasMVCWebApp.Repository {
+namespace AnanasMVCWebApp.Utilities{
     public static class SessionExtensions {
         public static void SetJson(this ISession session, string key, object value) {
             Debug.WriteLine("From Session: " + JsonConvert.SerializeObject(value));

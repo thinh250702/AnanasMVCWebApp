@@ -1,7 +1,7 @@
 ﻿using AnanasMVCWebApp.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace AnanasMVCWebApp.Repository {
+namespace AnanasMVCWebApp.Utilities {
     public class DataContext : DbContext {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
         public DbSet<Category> Categories { get; set; }

@@ -26,13 +26,16 @@
                     } else {
                         selectQuantity.prop("disabled", true);
                     }
-                    
                 },
                 error: function () {
                     alert("Some errors occured!");
                 }
             });
         });
+
+        setTimeout(function(){
+            $(".toast-msg").animate({ left: "-=40%" }, "slow");
+        }, 2000);
     </script>
 }
 
@@ -91,7 +94,7 @@
                                     @foreach (var sku in Model.SKUList) {
                                         <label class=@(sku.StockQuantity == 0 ? "disabled" : "" ) for="@sku.Size.Code">
                                             @sku.Size.Name
-                                            <input type="radio" name="size" id="@sku.Size.Code" value="@sku.Id" hidden>
+                                            <input type="radio" name="size" id="@sku.Size.Code" value="@sku.Code" hidden>
                                         </label>
                                     }
                                 }

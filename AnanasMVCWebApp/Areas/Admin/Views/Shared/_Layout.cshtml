@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - @ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/material.css" asp-append-version="true" />
+</head>
+<body>
+    @await Html.PartialAsync("_NotificationPartial")
+    <div class="container">
+        <div class="sidebar-wrapper">
+            <div class="sidebar__logo-wrapper">
+                <img class="sidebar__logo" src="~/public/graphic/Logo_Ananas.svg" alt="">
+            </div>
+            <div>
+                <div>
+                    <a class=@(ViewBag.Menu == "dashboard" ? "selected" : "") asp-action="Index" asp-controller="Home"><i class="fa-solid fa-house"></i> Trang chủ</a>
+                    <a class=@(ViewBag.Menu == "product" ? "selected" : "") asp-action="Index" asp-controller="Product"><i class="fa-solid fa-shirt"></i> Sản phẩm</a>
+                    <a class=@(ViewBag.Menu == "order" ? "selected" : "") asp-action="Index" asp-controller="Order"><i class="fa-solid fa-clipboard-list"></i> Đơn hàng</a>
+                    <a href="#"><i class="fa-solid fa-user"></i> Tài khoản</a>
+                </div>
+                <div>
+                    <a href=""><i class="fa-solid fa-arrow-right-from-bracket"></i> Đăng xuất</a>
+                </div>
+            </div>
+        </div>
+        <div class="main-wrapper">
+            @RenderBody()
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://kit.fontawesome.com/a142c3e58b.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

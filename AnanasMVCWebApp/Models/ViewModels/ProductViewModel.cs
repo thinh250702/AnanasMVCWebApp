@@ -11,7 +11,7 @@
         public Collection Collection { get; set; }
         public Style Style { get; set; }
         public List<string> ImageList { get; set; }
-        public List<Dictionary<string, string>>? SiblingProducts { get; set; }
+        public List<Dictionary<string, string>> SiblingProducts { get; set; }
         public List<ProductSKU> SKUList { get; set; }
     }
 }

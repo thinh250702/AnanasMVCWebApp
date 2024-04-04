@@ -1,7 +1,7 @@
 ﻿using AnanasMVCWebApp.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AnanasMVCWebApp.Repository.Components {
+namespace AnanasMVCWebApp.Utilities.Components {
     public class CartViewComponent : ViewComponent {
 
         public IViewComponentResult Invoke() {

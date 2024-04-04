@@ -1,4 +1,4 @@
-using AnanasMVCWebApp.Repository;
+using AnanasMVCWebApp.Utilities;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
