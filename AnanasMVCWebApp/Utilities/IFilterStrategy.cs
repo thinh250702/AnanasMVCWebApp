@@ -29,4 +29,9 @@ namespace AnanasMVCWebApp.Utilities {
             return productQueryable.Where(c => colorOptions.Contains(c.Color.Slug));
         }
     }
+    public class FilterByPrice : IFilterStrategy {
+        public IQueryable<ProductVariant> filter(IQueryable<ProductVariant> productQueryable, string options) {
+            throw new NotImplementedException();
+        }
+    }
 }

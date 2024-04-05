@@ -79,7 +79,7 @@
                                 <li><a style="background-color: #@Model.HexCode;" class="selected"></a></li>
                                 @if (Model.SiblingProducts != null) {
                                     @foreach (var sibling in Model.SiblingProducts) {
-                                        <li><a style="background-color: #@sibling["hexCode"]" asp-controller="Product" asp-action="Detail" asp-route-id="@sibling["productId"]"></a></li>
+                                        <li><a style="background-color: #@sibling.HexCode" asp-controller="Product" asp-action="Detail" asp-route-id="@sibling.Code"></a></li>
                                     }
                                 }
                             </ul>

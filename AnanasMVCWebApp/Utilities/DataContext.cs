@@ -20,9 +20,9 @@ namespace AnanasMVCWebApp.Utilities {
         public DbSet<Customer> Customers { get; set; }
         public DbSet<ShippingInfo> ShippingInfos { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
+            modelBuilder.Entity<ProductSKU>().HasKey(t => new { t.SizeId, t.ProductVariantId });
             modelBuilder.Entity<OrderDetail>().HasKey(t => new { t.ProductSKUId, t.OrderId });
             modelBuilder.Entity<ShippingInfo>().HasNoKey();
         }*/
-
     }
 }

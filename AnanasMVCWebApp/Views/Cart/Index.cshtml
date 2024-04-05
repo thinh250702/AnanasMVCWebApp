@@ -108,11 +108,14 @@
                                     <div class="select-wrapper">
                                         <i class="fa-solid fa-angle-down"></i>
                                         <select name="quantity">
-                                            @for (int index = 1; index <= item.Stock; index++) {
-                                                @if (index == item.Quantity) {
-                                                    <option value="@index" selected>@index</option>
-                                                } else {
-                                                    <option value="@index">@index</option>
+                                            @{
+                                                int count = (item.Stock > 12) ? 12 : item.Stock;
+                                                @for (int index = 1; index <= count; index++) {
+                                                    @if (index == item.Quantity) {
+                                                        <option value="@index" selected>@index</option>
+                                                    } else {
+                                                        <option value="@index">@index</option>
+                                                    }
                                                 }
                                             }
                                         </select>

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace AnanasMVCWebApp.Models {
     public class Customer {
         [Key]
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public DateTime Dob {  get; set; }
         public string Phone { get; set; }
@@ -16,7 +16,6 @@ namespace AnanasMVCWebApp.Models {
         public string? Ward { get; set; }
 
         public Customer(string name, DateTime dob, string phone, string email, bool gender, string address = "", string city = "", string district = "", string ward = "") {
-            Id = Guid.NewGuid().ToString("N").Substring(0, 8);
             Name = name;
             Dob = dob;
             Phone = phone;

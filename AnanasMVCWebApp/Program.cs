@@ -1,3 +1,5 @@
+using AnanasMVCWebApp.Repositories;
+using AnanasMVCWebApp.Services;
 using AnanasMVCWebApp.Utilities;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +10,8 @@ builder.Services.AddDbContext<DataContext>(options => {
            .UseSqlServer(builder.Configuration["ConnectionStrings:ConectedDb"]);
 });
 
+
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -17,6 +21,14 @@ builder.Services.AddSession(options => {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.IsEssential = true;
 });
+
+builder.Services.AddTransient(typeof(IRepository<>), typeof(GenericRepository<>));
+builder.Services.AddTransient<IProductRepository, ProductRepository>();
+builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
+builder.Services.AddTransient<ICollectionRepository, CollectionRepository>();
+builder.Services.AddTransient<IStyleRepository, StyleRepository>();
+builder.Services.AddTransient<IColorRepository, ColorRepository>();
+builder.Services.AddTransient<IProductService, ProductService>();
 
 var app = builder.Build();
 

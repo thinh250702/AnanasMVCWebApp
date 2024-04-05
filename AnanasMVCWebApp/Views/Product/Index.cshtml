@@ -1,5 +1,5 @@
 ﻿@using AnanasMVCWebApp.Models.ViewModels
-@model IEnumerable<ProductViewModel>
+@model ProductListViewModel
 @{
     ViewData["Title"] = "Product List";
 }
@@ -87,18 +87,18 @@
 }
 
 <div class="category-banner wide">
-    Category(-> <em>@(ViewBag.Category != null ? ViewBag.Category.Name : "Sản phẩm")</em>)
+    Category(-> <em>@(Model.Category != null ? Model.Category.Name : "Sản phẩm")</em>)
 </div>
 <div class="product-wrapper wide">
     <div class="product-wrapper__filter">
-        @if (ViewBag.Style != null) {
+        @if (Model.StyleFilter != null) {
             <div class="filter-item">
                 <div>
                     <h6>Kiểu dáng</h6>
                     <i class="fa-solid fa-angle-up dropdown-arrow--filter"></i>
                 </div>
                 <div id="style-filter">
-                    @foreach (var style in ViewBag.Style) {
+                    @foreach (var style in Model.StyleFilter) {
                         <label class="filter-label" for="@style.Slug">
                             @style.Name
                             <input type="checkbox" name="styles" id="@style.Slug" value="@style.Slug" hidden>
@@ -113,7 +113,7 @@
                 <i class="fa-solid fa-angle-up dropdown-arrow--filter"></i>
             </div>
             <div id="collection-filter">
-                @foreach (var collection in ViewBag.Collection) {
+                @foreach (var collection in Model.CollectionFilter) {
                     <label class="filter-label" for="@collection.Slug">
                         @collection.Name
                         <input type="checkbox" name="collections" id="@collection.Slug" value="@collection.Slug" hidden>
@@ -127,7 +127,7 @@
                 <i class="fa-solid fa-angle-up dropdown-arrow--filter"></i>
             </div>
             <div id="color-filter">
-                @foreach (var color in ViewBag.ColorList) {
+                @foreach (var color in Model.ColorFilter) {
                     <label for="@color.Slug">
                         <span style="background-color: #@color.HexCode"></span>
                         <p>@color.Name</p>
@@ -159,7 +159,7 @@
     </div>
     <div class="product-wrapper__product-list">
         <div class="product-list__container">
-            @foreach (var item in Model) {
+            @foreach (var item in Model.ProductList) {
                 <div class="product-card">
                     <div>
                         <div>
