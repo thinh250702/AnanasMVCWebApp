@@ -20,19 +20,19 @@ namespace AnanasMVCWebApp.Repositories {
     public class CategoryRepository : GenericRepository<Category>, ICategoryRepository {
         public CategoryRepository(DataContext context) : base(context) {}
         public Category? GetCategoryBySlug(string slug) {
-            return (slug != null) ? _context.Categories.Where(x => x.Slug == slug).FirstOrDefault() : null;
+            return _context.Categories.Where(x => x.Slug == slug).FirstOrDefault();
         }
     }
     public class CollectionRepository : GenericRepository<Collection>, ICollectionRepository {
         public CollectionRepository(DataContext context) : base(context) {}
         public List<Collection> GetCollectionsByCategory(Category category) {
-            return (category != null) ? _context.Collections.Where(c => c.CategoryId == category.Id).ToList() : GetAll().ToList();
+            return _context.Collections.Where(c => c.CategoryId == category.Id).ToList();
         }
     }
     public class StyleRepository : GenericRepository<Style>, IStyleRepository {
         public StyleRepository(DataContext context) : base(context) {}
-        public List<Style>? GetStylesByCategory(Category category) {
-            return (category.Slug == "shoes" || category == null) ? GetAll().ToList() : null;
+        public List<Style> GetAllStyles() {
+            return GetAll().ToList();
         }
     }
     public class ColorRepository : GenericRepository<Color>, IColorRepository {
@@ -40,7 +40,6 @@ namespace AnanasMVCWebApp.Repositories {
     }
     public class SizeRepository : GenericRepository<Size>, ISizeRepository {
         public SizeRepository(DataContext context) : base(context) {}
-
         public Size GetSizeByCode(string code) {
             return _context.Sizes.Where(s => s.Code == code).FirstOrDefault()!;
         }

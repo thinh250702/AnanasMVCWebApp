@@ -7,9 +7,9 @@
         public string City { get; set; }
         public string District { get; set; }
         public string Ward { get; set; }
-        public string OrderId { get; set; }
+        public int OrderId { get; set; }
         public virtual Order Order { get; set; }
-        public ShippingInfo(string name, string phone, string email, string address, string city, string district, string ward, string orderId, Order order) {
+        public ShippingInfo(string name, string phone, string email, string address, string city, string district, string ward, int orderId) {
             Name = name;
             Phone = phone;
             Email = email;
@@ -18,7 +18,6 @@
             District = district;
             Ward = ward;
             OrderId = orderId;
-            Order = order;
         }
     }
 }

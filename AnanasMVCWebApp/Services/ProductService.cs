@@ -45,8 +45,8 @@ namespace AnanasMVCWebApp.Services {
                 queryable.performFilter(color);
             }
             products.Category = queryCategory;
-            products.CollectionFilter = _collectionRepo.GetCollectionsByCategory(queryCategory);
-            products.StyleFilter = _styleRepo.GetStylesByCategory(queryCategory);
+            products.CollectionFilter = (category != null) ? _collectionRepo.GetCollectionsByCategory(queryCategory!) : _collectionRepo.GetAll().ToList();
+            products.StyleFilter = (category == "shoes" || category == null) ? _styleRepo.GetAll().ToList() : null;
             products.ColorFilter = _colorRepo.GetAll().ToList();
             queryable.GetItems().ToList().ForEach(item => {
                 products.ProductList.Add(ToProductViewModel(item));

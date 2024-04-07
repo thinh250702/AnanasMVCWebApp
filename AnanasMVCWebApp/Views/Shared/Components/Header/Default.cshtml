@@ -1,0 +1,55 @@
+﻿<div class="header-wrapper">
+    <div class="navbar wide">
+        <div class="navbar__logo-wrapper">
+            <a asp-controller="Home" asp-action="Index"><img class="navbar__logo" src="~/public/graphic/Logo_Ananas.svg" alt=""></a>
+        </div>
+        <div class="navbar__category">
+            <ul>
+                <li>@Html.ActionLink("Shoes", "Index", "Product", new { category = "shoes" })</li>
+                <li>@Html.ActionLink("Clothing", "Index", "Product", new { category = "clothing" })</li>
+                <li>@Html.ActionLink("Accessories", "Index", "Product", new { category = "accessories" })</li>
+                <li>Sale Off</li>
+            </ul>
+        </div>
+        <div class="navbar__action">
+            <ul>
+                @if (User.Identity.IsAuthenticated) {
+                    <li id="user-nav" class="navbar__action__item user">
+                        <a href="">Hi, @ViewBag.FullName <i class="fa-solid fa-user"></i></a>
+                        <div id="user-dropdown">
+                            <div>
+                                <p>@ViewBag.FullName</p>
+                                <p>@ViewBag.Email</p>
+                            </div>
+                            <hr>
+                            <div class="actions">
+                                <a asp-action="Index" asp-controller="Account"><i class="fa-solid fa-address-card"></i> My Account</a>
+                                <a asp-action="Index" asp-controller="Order"><i class="fa-solid fa-box-open"></i> My Orders</a>
+                                <a href=""><i class="fa-solid fa-heart"></i> My Wish list</a>
+                            </div>
+                            <hr>
+                            <div class="actions">
+                                <a asp-action="Logout" asp-controller="Account"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log out</a>
+                            </div>
+                        </div>
+                    </li>
+                } else {
+                    <li class="navbar__action__item user">
+                        <a id="signin" asp-controller="Account" asp-action="Login">Đăng nhập <i class="fa-solid fa-user"></i></a>
+                    </li>
+                }
+                <li id="cart-nav" class="navbar__action__item cart">
+                    <a asp-action="Index" asp-controller="Cart"><i class="fa-solid fa-cart-shopping"></i></a>
+                    <div id="cart-dropdown">
+                        <h6>Giỏ hàng</h6>
+                        @await Component.InvokeAsync("Cart")
+                    </div>
+                </li>
+                <li class="navbar__action__item"><a href=""><i class="fa-solid fa-heart"></i></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="carousel">
+        <p>Free Shipping với hoá đơn từ 900k!</p>
+    </div>
+</div>

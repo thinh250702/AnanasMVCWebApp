@@ -21,6 +21,10 @@ namespace AnanasMVCWebApp.Repositories {
             _context.Set<T>().Add(entity);
         }
 
+        public void Save() {
+            _context.SaveChanges();
+        }
+
         public void Update(T entity) {
             _context.Set<T>().Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;

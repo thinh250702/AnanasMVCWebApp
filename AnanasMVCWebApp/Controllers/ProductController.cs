@@ -20,11 +20,12 @@ namespace AnanasMVCWebApp.Controllers {
         }
         public async Task<IActionResult> Detail(string id = "") {
             if (id == "") return RedirectToAction("Index");
-            var product = _productService.GetProductByCode(id);
+            ProductViewModel? product = _productService.GetProductByCode(id);
             if (product == null) {
-                return RedirectToAction("Index");
+                return NotFound();
+                //return RedirectToAction("Index");
             } else {
-                return Content(product.ToJson());
+                return View(product);
             }
         }
         [HttpGet]

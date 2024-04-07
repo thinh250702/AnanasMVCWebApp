@@ -1,9 +1,10 @@
 ﻿using AnanasMVCWebApp.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace AnanasMVCWebApp.Utilities {
     public class SeedData {
-        public static void SeedingData(DataContext _context) {
+        public static async Task SeedingDataAsync(DataContext _context, RoleManager<IdentityRole> _roleManager, UserManager<Customer> _userManager) {
             _context.Database.Migrate();
 
             Category shoes = new Category("Giày", "shoes");
@@ -164,19 +165,53 @@ namespace AnanasMVCWebApp.Utilities {
                 });
                 _context.SaveChanges();
             }
+            Random random = new Random();
             List<ProductSKU> variant1SKUs = new List<ProductSKU>();
             for (int i = 35; i <= 46; i++) {
                 var size = _context.Sizes.Where(x => x.Code == i.ToString()).FirstOrDefault();
                 variant1SKUs.Add(new ProductSKU {
                     Code = $"{variant1.Code}-{size.Code}",
-                    StockQuantity = 10,
+                    StockQuantity = random.Next(8,25),
                     Size = size,
                     ProductVariant = variant1
                 });
             }
+            List<ProductSKU> variant2SKUs = new List<ProductSKU>();
+            for (int i = 35; i <= 46; i++) {
+                var size = _context.Sizes.Where(x => x.Code == i.ToString()).FirstOrDefault();
+                variant2SKUs.Add(new ProductSKU {
+                    Code = $"{variant2.Code}-{size.Code}",
+                    StockQuantity = random.Next(8, 25),
+                    Size = size,
+                    ProductVariant = variant2
+                });
+            }
             if (!_context.ProductSKUs.Any()) {
                 _context.ProductSKUs.AddRange(variant1SKUs);
+                _context.ProductSKUs.AddRange(variant2SKUs);
                 _context.SaveChanges();
+            }
+
+            if (!await _roleManager.RoleExistsAsync(ApplicationRole.Admin)) {
+                await _roleManager.CreateAsync(new IdentityRole(ApplicationRole.Admin));
+            }
+            if (!await _roleManager.RoleExistsAsync(ApplicationRole.Customer)) {
+                await _roleManager.CreateAsync(new IdentityRole(ApplicationRole.Customer));
+            }
+
+            var result = await _userManager.FindByEmailAsync("admin@ananas.vn");
+            if (result == null) {
+                var admin = new Customer {
+                    UserName = "admin@ananas.vn",
+                    Email = "admin@ananas.vn",
+                    FullName = "Nguyễn Trường Thịnh",
+                    Dob = new DateTime(2002, 7, 25),
+                };
+                string adminPassword = "Ananas123456";
+                var createAdmin = await _userManager.CreateAsync(admin, adminPassword);
+                if (createAdmin.Succeeded) {
+                    await _userManager.AddToRoleAsync(admin, ApplicationRole.Admin);
+                }
             }
         }
     }

@@ -1,32 +1,42 @@
-﻿@{
+﻿@using AnanasMVCWebApp.Models.ViewModels
+@model LoginViewModel
+@{
     ViewData["Title"] = "Login";
 }
 
 <div class="action-container wide">
-    <div class="form-wrapper login">
-        <div>
-            <img src="~/public/image/cover-2.jpg" alt="">
-        </div>
-        <div>
-            <h4>Login</h4>
-            <hr class="divider top">
-            <div class="form-row">
-                <div class="input-group">
-                    <label for="">Email</label>
-                    <input type="text" name="" id="" placeholder="Email">
-                    <span class="input-error">Error message</span>
-                </div>
+    @using (Html.BeginForm("Login", "Account", FormMethod.Post)) {
+        <div class="form-wrapper login">
+            <div>
+                <img src="~/public/image/cover-2.jpg" alt="">
             </div>
-            <div class="form-row">
-                <div class="input-group">
-                    <label for="">Password</label>
-                    <input type="password" name="" id="" placeholder="Số điện thoại">
-                    <a href="">Forgot password</a>
-                    <span class="input-error">Error message</span>
+            <div>
+                <h4>Login</h4>
+                <hr class="divider top">
+                <div asp-validation-summary="ModelOnly">
+                    <span>Please correct the following errors</span>
                 </div>
+                <div class="form-row">
+                    <div class="input-group">
+                        @Html.LabelFor(i => i.Email)
+                        @Html.TextBoxFor(i => i.Email, new {placeholder = "Email"})
+                        @Html.ValidationMessageFor(i => i.Email, "", new { @class = "input-error" })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="input-group">
+                        @Html.LabelFor(i => i.Password)
+                        <div class="password-wrapper">
+                            @Html.PasswordFor(i => i.Password, new { placeholder = "Password" })
+                            <span><i class="fa-solid fa-eye"></i></span>
+                        </div>
+                        <a href="">Forgot password</a>
+                        @Html.ValidationMessageFor(i => i.Password, "", new { @class = "input-error" })
+                    </div>
+                </div>
+                <button class="primary-btn" type="submit">Login</button>
+                <span>Bạn chưa có tài khoản? <a asp-controller="Account" asp-action="Register">Đăng ký</a></span>
             </div>
-            <button class="primary-btn" type="submit">Login</button>
-            <span>Bạn chưa có tài khoản? <a href="">Đăng ký</a></span>
         </div>
-    </div>
+    }
 </div>

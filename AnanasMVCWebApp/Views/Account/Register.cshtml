@@ -1,73 +1,78 @@
-﻿@{
+﻿@using AnanasMVCWebApp.Models.ViewModels
+@model RegisterViewModel
+@{
     ViewData["Title"] = "Register";
 }
 
 <div class="action-container wide">
-    <div class="form-wrapper register">
-        <div>
-            <img src="~/public/image/cover-5.jpg" alt="">
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post)) {
+        <div class="form-wrapper register">
+            <div>
+                <img src="~/public/image/cover-5.jpg" alt="">
+            </div>
+            <div>
+                <h4>Create Account</h4>
+                <hr class="divider top">
+                <div class="form-row">
+                    <div class="input-group">
+                        @Html.LabelFor(i => i.FullName)
+                        @Html.TextBoxFor(i => i.FullName, new { placeholder = "Họ tên" })
+                        @Html.ValidationMessageFor(i => i.FullName, "", new { @class = "input-error" })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="input-group">
+                        @Html.LabelFor(i => i.Phone)
+                        @Html.TextBoxFor(i => i.Phone, new { placeholder = "Số điện thoại" })
+                        @Html.ValidationMessageFor(i => i.Phone, "", new { @class = "input-error" })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="input-group">
+                        @Html.LabelFor(i => i.Email)
+                        @Html.TextBoxFor(i => i.Email, new { placeholder = "Email" })
+                        @Html.ValidationMessageFor(i => i.Email, "", new { @class = "input-error" })
+                    </div>
+                </div>
+                <div class="form-row multiple">
+                    <div class="input-group">
+                        @Html.LabelFor(i => i.Dob)
+                        <input asp-for="Dob" placeholder="Ngày sinh">
+                        @Html.ValidationMessageFor(i => i.Dob, "", new { @class = "input-error" })
+                    </div>
+                    <div class="input-group">
+                        @Html.LabelFor(i => i.Gender)
+                        <select asp-for="Gender">
+                            <option selected disabled>Giới tính</option>
+                            <option value="true">Nam</option>
+                            <option value="false">Nữ</option>
+                        </select>
+                        @Html.ValidationMessageFor(i => i.Gender, "", new { @class = "input-error" })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="input-group">
+                        @Html.LabelFor(i => i.Password)
+                        <div class="password-wrapper">
+                            @Html.PasswordFor(i => i.Password, new { placeholder = "Mật khẩu" })
+                            <span><i class="fa-solid fa-eye"></i></span>
+                        </div>
+                        @Html.ValidationMessageFor(i => i.Password, "", new { @class = "input-error" })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="input-group">
+                        @Html.LabelFor(i => i.ConfirmPassword)
+                        <div class="password-wrapper">
+                            @Html.PasswordFor(i => i.ConfirmPassword, new { placeholder = "Xác nhận mật khẩu" })
+                            <span><i class="fa-solid fa-eye"></i></span>
+                        </div>
+                        @Html.ValidationMessageFor(i => i.ConfirmPassword, "", new { @class = "input-error" })
+                    </div>
+                </div>
+                <button class="primary-btn" type="submit">Create account</button>
+                <span>Bạn đã có tài khoản? <a asp-controller="Account" asp-action="Login">Đăng nhập</a></span>
+            </div>
         </div>
-        <div>
-            <h4>Create Account</h4>
-            <hr class="divider top">
-            <div class="form-row multiple">
-                <div class="input-group">
-                    <label for="">First Name</label>
-                    <input type="text" name="" id="" placeholder="First Name">
-                    <span class="input-error">Error message</span>
-                </div>
-                <div class="input-group">
-                    <label for="">Last Name</label>
-                    <input type="text" name="" id="" placeholder="Last Name">
-                    <span class="input-error">Error message</span>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="input-group">
-                    <label for="">Số điện thoại</label>
-                    <input type="text" name="" id="" placeholder="Số điện thoại">
-                    <span class="input-error">Error message</span>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="input-group">
-                    <label for="">Email</label>
-                    <input type="text" name="" id="" placeholder="Email">
-                    <span class="input-error">Error message</span>
-                </div>
-            </div>
-            <div class="form-row multiple">
-                <div class="input-group">
-                    <label for="">Date of Birth</label>
-                    <input type="date" name="" id="" placeholder="First Name">
-                    <span class="input-error">Error message</span>
-                </div>
-                <div class="input-group">
-                    <label for="">Gender</label>
-                    <select name="" id="">
-                        <option value="" selected disabled>Gender</option>
-                        <option value="">Male</option>
-                        <option value="">Female</option>
-                    </select>
-                    <span class="input-error">Error message</span>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="input-group">
-                    <label for="">New Password</label>
-                    <input type="password" name="" id="" placeholder="Số điện thoại">
-                    <span class="input-error">Error message</span>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="input-group">
-                    <label for="">Confirm New Password</label>
-                    <input type="password" name="" id="" placeholder="Số điện thoại">
-                    <span class="input-error">Error message</span>
-                </div>
-            </div>
-            <button class="primary-btn" type="submit">Create account</button>
-            <span>Bạn đã có tài khoản? <a href="">Đăng nhập</a></span>
-        </div>
-    </div>
+    }
 </div>

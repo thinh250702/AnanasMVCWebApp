@@ -24,12 +24,14 @@ $(document).ready(function(){
     });
     // ---Product Card Hover
     $(".product-card").hover(function () {
-        $(this).find("img.normal").hide();
-        $(this).find("img.hover").show();
+        /*$(this).find("img.normal").hide();
+        $(this).find("img.hover").show();*/
+        $(this).find("img.hover").animate({ opacity: '1' });
         $(this).find("div:first-child > div:first-child a").fadeIn({queue: false, duration: 'fast'}).animate({marginBottom: "14px", }, "fast")
     }, function() {
-        $(this).find("img.normal").show();
-        $(this).find("img.hover").hide();
+        /*$(this).find("img.normal").show();
+        $(this).find("img.hover").hide();*/
+        $(this).find("img.hover").animate({ opacity: '0' });
         $(this).find("div:first-child > div:first-child a").fadeOut({queue: false, duration: 'fast'}).animate({marginBottom: "0px"}, "fast")
     })
     // ---Dropdown Filter
@@ -180,4 +182,40 @@ $(document).ready(function(){
             switchButton(true, false)
         }
     });
+
+    $(".order-row .toggle-button").click(function () {
+        $(this).parent().parent().find(".order-row__body").toggle();
+        $(this).find("i").toggleClass("rotate");
+    })
+
+    $("input[type='password']").focus(function () {
+        $(this).css({
+            "transform": "translate(0, -3px)",
+            "box-shadow": "0 3px 0 0 var(--neutral-0)",
+            "transition": "0.3s"
+        })
+        $(this).parent().find("span").css({
+            "transform": "translateY(calc(-3px - 50%))",
+            "transition": "0.3s"
+        })
+        console.log("on focus");
+    });
+    $("input[type='password']").blur(function () {
+        $(this).css({
+            "transform": "translate(0, 0)",
+            "box-shadow": "none",
+        });
+        $(this).parent().find("span").css("transform", "translateY(-50%)")
+    });
+    $(".password-wrapper span i").click(function () {
+        if ($(this).hasClass("fa-eye")) {
+            $(this).parent().parent().find("input[type='password']").attr("type", "text")
+        } else {
+            $(this).parent().parent().find("input[type='text']").attr("type", "password")
+        }
+        $(this).toggleClass("fa-eye").toggleClass("fa-eye-slash")
+    })
+    setTimeout(function () {
+        $(".toast-msg").animate({ left: "-=40%" }, "slow");
+    }, 2000);
 });

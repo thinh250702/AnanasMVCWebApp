@@ -16,7 +16,7 @@ namespace AnanasMVCWebApp.Repositories {
         public List<Collection> GetCollectionsByCategory(Category category);
     }
     public interface IStyleRepository : IRepository<Style> { 
-        public List<Style>? GetStylesByCategory(Category category);
+        public List<Style> GetAllStyles();
     }
     public interface IColorRepository : IRepository<Color> { }
     public interface ISizeRepository : IRepository<Size> {

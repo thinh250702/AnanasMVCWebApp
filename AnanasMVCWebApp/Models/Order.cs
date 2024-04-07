@@ -15,7 +15,7 @@ namespace AnanasMVCWebApp.Models {
         public virtual OrderStatus OrderStatus { get; set; }
         public virtual PaymentMethod PaymentMethod { get; set; }
         public virtual ShippingMethod ShippingMethod { get; set; }
-        public int CustomerId { get; set; }
+        public string CustomerId { get; set; }
         public virtual Customer Customer { get; set; }
         public Order() {
             Code = Guid.NewGuid().ToString("N").Substring(0, 8);

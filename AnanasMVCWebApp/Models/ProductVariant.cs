@@ -7,7 +7,8 @@ namespace AnanasMVCWebApp.Models {
         public string Code { get; set; } // Format: A1BS001
         public string ColorName { get; set; }
         public string HexCode { get; set; }
-        //public bool IsDeleted { get; set; } = false;
+        public bool IsDeleted { get; set; } = false;
+        public int Sold { get; set; } = 0;
         public int ColorId { get; set; }
         public virtual Color Color { get; set; }
         public int ProductId { get; set; }

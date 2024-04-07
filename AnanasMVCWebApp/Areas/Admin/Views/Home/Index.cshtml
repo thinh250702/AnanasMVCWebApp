@@ -3,6 +3,18 @@
     ViewBag.Menu = "dashboard";
 }
 
+@section Scripts {
+    <script>
+        var radio = $("input[type='radio']");
+        radio.click(function () {
+            $(`input:radio[name='${$(this).attr("name")}']`).each(function (index, item) {
+                $(item).parent().removeClass("checked");
+            })
+            $(this).parent().addClass("checked");
+        })
+    </script>
+}
+
 <div class="row-wrapper">
     <h4>Welcome back, Admin</h4>
 </div>
@@ -31,13 +43,13 @@
                 </div>
                 <div class="actions__chart-type">
                     <span>Chart Type</span>
-                    <label class="bar-label" for="">
+                    <label class="bar-label" for="bar-sales">
                         Bar
-                        <input type="radio" name="chart-type" id="" hidden>
+                        <input type="radio" name="chart-type" id="bar-sales" hidden>
                     </label>
-                    <label class="line-label" for="">
+                    <label class="line-label" for="line-sales">
                         Line
-                        <input type="radio" name="chart-type" id="" hidden>
+                        <input type="radio" name="chart-type" id="line-sales" hidden>
                     </label>
                 </div>
             </div>
@@ -68,13 +80,13 @@
                 </div>
                 <div class="actions__chart-type">
                     <span>Chart Type</span>
-                    <label class="bar-label" for="">
+                    <label class="bar-label" for="bar-orders">
                         Bar
-                        <input type="radio" name="chart-type" id="" hidden>
+                        <input type="radio" name="sales-chart-type" id="bar-orders" hidden>
                     </label>
-                    <label class="line-label" for="">
+                    <label class="line-label" for="line-orders">
                         Line
-                        <input type="radio" name="chart-type" id="" hidden>
+                        <input type="radio" name="sales-chart-type" id="line-orders" hidden>
                     </label>
                 </div>
             </div>

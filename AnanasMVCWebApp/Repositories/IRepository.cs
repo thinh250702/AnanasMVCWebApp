@@ -6,5 +6,6 @@ namespace AnanasMVCWebApp.Repositories {
         IEnumerable<T> GetAll();
         void Insert(T entity);
         void Update(T entity);
+        void Save();
     }
 }
