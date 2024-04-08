@@ -88,7 +88,7 @@
                             <div id="size-wrapper">
                                 @if (Model.SKUList != null) {
                                     @foreach (var sku in Model.SKUList) {
-                                        <label class=@(sku.StockQuantity == 0 ? "disabled" : "" ) for="@sku.Size.Code">
+                                        <label class=@(sku.InStock == 0 ? "disabled" : "" ) for="@sku.Size.Code">
                                             @sku.Size.Name
                                             <input type="radio" name="size" id="@sku.Size.Code" value="@sku.Code" hidden>
                                         </label>

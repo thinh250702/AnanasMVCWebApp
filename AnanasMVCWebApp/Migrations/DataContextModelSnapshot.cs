@@ -353,7 +353,10 @@ namespace AnanasMVCWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StockQuantity")
+                    b.Property<int>("InStock")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Sold")
                         .HasColumnType("int");
 
                     b.HasKey("SizeId", "ProductVariantId");
@@ -390,9 +393,6 @@ namespace AnanasMVCWebApp.Migrations
                         .HasColumnType("bit");
 
                     b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Sold")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

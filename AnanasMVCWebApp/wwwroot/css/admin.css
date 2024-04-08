@@ -261,7 +261,7 @@
     color: var(--neutral-100);
 }
 
-.actions-wrapper button[type="submit"] {
+.actions-wrapper button[type="button"] {
     background-color: var(--primary);
     padding: 0 14px;
     font-size: 16px;
@@ -338,17 +338,20 @@ table, th, td {
     gap: 8px;
 }
 
-.tab-section a {
+.tab-section button {
     text-decoration: none;
     padding: 8px 14px;
     border-radius: 6px;
+    font-size: 16px;
+    background-color: var(--neutral-100);
+    cursor: pointer;
 }
 
-.tab-section a:hover {
+.tab-section button:hover {
     background-color: var(--neutral-90);
 }
 
-.tab-section a.selected {
+.tab-section button.selected {
     background-color: var(--primary);
     color: var(--neutral-100);
     font-weight: 700;

@@ -16,6 +16,12 @@ namespace AnanasMVCWebApp.Repositories {
         public ProductVariant? GetProductVariantByCode(string code) {
             return _context.ProductVariants.Where(p => p.Code == code).FirstOrDefault();
         }
+        public int GetSoldOfVariant(string code) {
+            return _context.ProductSKUs.Where(c => c.ProductVariant.Code == code).Sum(c => c.Sold);
+        }
+        public int GetInStockOfVariant(string code) {
+            return _context.ProductSKUs.Where(c => c.ProductVariant.Code == code).Sum(c => c.InStock);
+        }
     }
     public class CategoryRepository : GenericRepository<Category>, ICategoryRepository {
         public CategoryRepository(DataContext context) : base(context) {}

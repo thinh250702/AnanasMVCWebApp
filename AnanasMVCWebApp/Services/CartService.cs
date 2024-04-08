@@ -29,7 +29,7 @@ namespace AnanasMVCWebApp.Services {
             string newCode = skuCode.Split("-")[0] + "-" + sizeCode;
             if (item != null) {
                 int currentItemQuantity = item.Quantity;
-                int changeItemStock = _productRepo.GetProductSKUByCode(newCode)!.StockQuantity;
+                int changeItemStock = _productRepo.GetProductSKUByCode(newCode)!.InStock;
                 // Find if the change size already exist in the cart
                 CartItemViewModel? itemNewSize = cart.Where(c => c.ProductId == newCode).FirstOrDefault();
                 if (itemNewSize != null) {
@@ -77,7 +77,7 @@ namespace AnanasMVCWebApp.Services {
             var variant = _productRepo.GetProductVariantByCode(code);
             var skuList = (variant != null) ? _productRepo.GetAllProductSKUs(variant) : new List<ProductSKU>();
             skuList.ForEach(x => {
-                if (x.StockQuantity != 0) {
+                if (x.InStock != 0) {
                     sizeList.Add(x.Size);
                 }
             });

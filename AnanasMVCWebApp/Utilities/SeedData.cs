@@ -171,7 +171,7 @@ namespace AnanasMVCWebApp.Utilities {
                 var size = _context.Sizes.Where(x => x.Code == i.ToString()).FirstOrDefault();
                 variant1SKUs.Add(new ProductSKU {
                     Code = $"{variant1.Code}-{size.Code}",
-                    StockQuantity = random.Next(8,25),
+                    InStock = random.Next(8,25),
                     Size = size,
                     ProductVariant = variant1
                 });
@@ -181,7 +181,7 @@ namespace AnanasMVCWebApp.Utilities {
                 var size = _context.Sizes.Where(x => x.Code == i.ToString()).FirstOrDefault();
                 variant2SKUs.Add(new ProductSKU {
                     Code = $"{variant2.Code}-{size.Code}",
-                    StockQuantity = random.Next(8, 25),
+                    InStock = random.Next(8, 25),
                     Size = size,
                     ProductVariant = variant2
                 });

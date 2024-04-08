@@ -2,7 +2,7 @@
 using System.ComponentModel;
 
 namespace AnanasMVCWebApp.Areas.Admin.Models {
-    public class ProductBaseVM {
+    public class ProductBaseEM {
         [DisplayName("Tên sản phẩm")]
         public string Name { get; set; }
         [DisplayName("Danh mục")]
@@ -18,6 +18,6 @@ namespace AnanasMVCWebApp.Areas.Admin.Models {
         public int Price { get; set; }
         [DisplayName("Mô tả")]
         public string Description { get; set; }
-        public List<ProductVariantVM> Variants { get; set; }
+        public List<ProductVariantEM> Variants { get; set; }
     }
 }

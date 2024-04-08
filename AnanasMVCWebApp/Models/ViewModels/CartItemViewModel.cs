@@ -22,7 +22,7 @@
             Quantity = quantity;
             Price = productSKU.ProductVariant.Product.Price;
             Size = productSKU.Size.Name;
-            Stock = productSKU.StockQuantity;
+            Stock = productSKU.InStock;
         }
         private string GetProductName(ProductSKU sku) {
             string name = "";

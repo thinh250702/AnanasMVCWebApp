@@ -1,7 +1,7 @@
 ﻿using AnanasMVCWebApp.Models;
 
 namespace AnanasMVCWebApp.Areas.Admin.Models {
-    public class ProductVariantVM {
+    public class ProductVariantEM {
         public string ProductCode { get; set; }
         public string HexCode { get; set; }
         public string ColorName { get; set; }

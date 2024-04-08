@@ -2,11 +2,9 @@
 using AnanasMVCWebApp.Models.ViewModels;
 using AnanasMVCWebApp.Repositories;
 using AnanasMVCWebApp.Utilities;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
-namespace AnanasMVCWebApp.Services {
+namespace AnanasMVCWebApp.Services
+{
     public class ProductService : IProductService {
         private readonly IProductRepository _productRepo;
         private readonly ICategoryRepository _categoryRepo;
@@ -59,9 +57,17 @@ namespace AnanasMVCWebApp.Services {
             return (result != null) ? ToProductViewModel(result) : null;
         }
 
+        public List<ProductViewModel> GetProductList() {
+            var result = new List<ProductViewModel>();
+            _productRepo.GetAll().ToList().ForEach(item => {
+                result.Add(ToProductViewModel(item));
+            });
+            return result;
+        }
+
         public int GetProductMaxOrderQuantity(string code, int cartQuantity) {
             var product = _productRepo.GetProductSKUByCode(code);
-            int productStock = (product != null) ? product.StockQuantity : 0;
+            int productStock = (product != null) ? product.InStock : 0;
             return (productStock - cartQuantity >= 12) ? 12 : productStock - cartQuantity;
         }
 
@@ -71,6 +77,8 @@ namespace AnanasMVCWebApp.Services {
                 ProductName = productVariant.Product.Name,
                 Description = productVariant.Product.Description,
                 Price = productVariant.Product.Price,
+                InStock = _productRepo.GetInStockOfVariant(productVariant.Code),
+                Sold = _productRepo.GetSoldOfVariant(productVariant.Code),
                 ColorName = productVariant.ColorName,
                 HexCode = productVariant.HexCode,
                 Category = productVariant.Product.Collection.Category,

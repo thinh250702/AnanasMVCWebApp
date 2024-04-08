@@ -1,4 +1,6 @@
-﻿@{
+﻿@using AnanasMVCWebApp.Models.ViewModels
+@model IEnumerable<ProductViewModel>
+@{
     ViewData["Title"] = "Product List";
     ViewBag.Menu = "product";
 }
@@ -6,186 +8,114 @@
 <div class="row-wrapper">
     <h4>Trang sản phẩm</h4>
 </div>
-<div class="row-wrapper">
-    <div class="actions-wrapper">
-        <form action="">
+<form action="/" method="post">
+    <div class="row-wrapper">
+        <div class="actions-wrapper">
             <div class="actions-group">
                 <div class="actions__search">
-                    <select name="" id="">
-                        <option value="" selected>Mã sản phẩm</option>
-                        <option value="">Tên sản phẩm</option>
-                        <option value="">SKU phân loại</option>
+                    <select name="searchStrategy" id="searchStrategy">
+                        <option value="product-code" selected>Mã sản phẩm</option>
+                        <option value="product-name">Tên sản phẩm</option>
+                        <option value="sku-code">SKU phân loại</option>
                     </select>
-                    <input type="text" name="" id="searchInput" placeholder="Please enter name">
+                    <input type="text" name="searchInput" id="searchInput" placeholder="Nhập mã sản phẩm">
                 </div>
                 <div class="actions__filter">
                     <span>Filter</span>
-                    <select name="" id="">
+                    <select name="timeFilter" id="timeFilter">
                         <optgroup label="Current">
-                            <option value="" selected>Tuần này</option>
-                            <option value="">Tháng này</option>
-                            <option value="">Năm nay</option>
+                            <option value="this-week" selected>Tuần này</option>
+                            <option value="this-month">Tháng này</option>
+                            <option value="this-year">Năm nay</option>
                         </optgroup>
                         <optgroup label="Previous">
-                            <option value="">Tuần trước</option>
-                            <option value="">Tháng trước</option>
-                            <option value="">Năm trước</option>
+                            <option value="last-week">Tuần trước</option>
+                            <option value="last-month">Tháng trước</option>
+                            <option value="last-year">Năm trước</option>
                         </optgroup>
                     </select>
                 </div>
-                <button type="submit">Search</button>
+                <button type="button">Search</button>
             </div>
-        </form>
-        <div class="actions-group">
-            <a asp-controller="Product" asp-action="Create" asp-area="Admin"><p>Thêm sản phẩm</p> <i class="fa-solid fa-plus"></i></a>
+            <div class="actions-group">
+                <a asp-controller="Product" asp-action="Create" asp-area="Admin"><p>Thêm sản phẩm</p> <i class="fa-solid fa-plus"></i></a>
+            </div>
         </div>
     </div>
-</div>
-<div class="row-wrapper">
-    <div class="panel-wrapper--large width-100">
-        <div class="panel-header">
-            <div class="tab-section">
-                <a class="selected" href="">Tất cả</a>
-                <a href="">Giày</a>
-                <a href="">Quần áo</a>
-                <a href="">Phụ kiện</a>
-            </div>
-            <div class="sort-section">
-                <span>Sort by</span>
-                <select name="" id="">
-                    <option value="" selected>Default</option>
-                    <option value="">Kho hàng: Low-High</option>
-                    <option value="">Kho hàng: High-Low</option>
-                    <option value="">Đã bán: Low-High</option>
-                    <option value="">Đã bán: High-Low</option>
-                </select>
-            </div>
-        </div>
-        <div class="table-section">
-            <div class="tb-header">
-                <div class="tb-row">
-                    <div style="width: 5%;" class="tb-cell"><input type="checkbox" name="" id=""></div>
-                    <div style="flex: 1" class="tb-cell justify-flex-start">Tên sản phẩm</div>
-                    <div style="width: 12%;" class="tb-cell">Mã sản phẩm</div>
-                    <div style="width: 10%;" class="tb-cell">Danh mục</div>
-                    <div style="width: 15%;" class="tb-cell">Giá bán</div>
-                    <div style="width: 10%;" class="tb-cell">Kho hàng</div>
-                    <div style="width: 10%;" class="tb-cell">Đã bán</div>
-                    <div style="width: 12%;" class="tb-cell">Thao tác</div>
+    <div class="row-wrapper">
+        <div class="panel-wrapper--large width-100">
+            <div class="panel-header">
+                <div class="tab-section">
+                    <select name="categorySelect" id="categorySelect" hidden>
+                        <option value="all"></option>
+                        <option value="shoes"></option>
+                        <option value="clothing"></option>
+                        <option value="accessories"></option>
+                    </select>
+                    <button name="all" class="selected" type="button">Tất cả</button>
+                    <button name="shoes" type="button">Giày</button>
+                    <button name="clothing" type="button">Quần áo</button>
+                    <button name="accessories" type="button">Phụ kiện</button>
+                </div>
+                <div class="sort-section">
+                    <span>Sort by</span>
+                    <select name="sortStrategy" id="sortStrategy">
+                        <option value="stock-asc" selected>Kho hàng: Low-High</option>
+                        <option value="stock-desc">Kho hàng: High-Low</option>
+                        <option value="sold-asc">Đã bán: Low-High</option>
+                        <option value="sold-desc">Đã bán: High-Low</option>
+                    </select>
                 </div>
             </div>
-            <div class="tb-body">
-                <div class="tb-row">
-                    <div style="width: 5%;" class="tb-cell"><input type="checkbox" name="" id=""></div>
-                    <div style="flex: 1" class="tb-cell product-name">
-                        <img src="~/publicc/image/product.jpg" alt="">
-                        <span>Basas Workaday - Low Top - Black</span>
-                    </div>
-                    <div style="width: 12%;" class="tb-cell">AV00149</div>
-                    <div style="width: 10%;" class="tb-cell">Giày</div>
-                    <div style="width: 15%;" class="tb-cell">500.000 VND</div>
-                    <div style="width: 10%;" class="tb-cell">100</div>
-                    <div style="width: 10%;" class="tb-cell">100</div>
-                    <div style="width: 12%;" class="tb-cell action">
-                        <a href=""><i class="fa-solid fa-pen-to-square"></i> Cập nhật</a>
-                        <a href=""><i class="fa-solid fa-trash"></i> Xoá</a>
+            <div class="table-section">
+                <div class="tb-header">
+                    <div class="tb-row">
+                        <div style="width: 5%;" class="tb-cell"><input type="checkbox"></div>
+                        <div style="flex: 1" class="tb-cell justify-flex-start">Tên sản phẩm</div>
+                        <div style="width: 12%;" class="tb-cell">Mã sản phẩm</div>
+                        <div style="width: 10%;" class="tb-cell">Danh mục</div>
+                        <div style="width: 15%;" class="tb-cell">Giá bán</div>
+                        <div style="width: 10%;" class="tb-cell">Kho hàng</div>
+                        <div style="width: 10%;" class="tb-cell">Đã bán</div>
+                        <div style="width: 12%;" class="tb-cell">Thao tác</div>
                     </div>
                 </div>
-                <div class="tb-row">
-                    <div style="width: 5%;" class="tb-cell"><input type="checkbox" name="" id=""></div>
-                    <div style="flex: 1" class="tb-cell product-name">
-                        <img src="~/publicc/image/product.jpg" alt="">
-                        <span>Basas Workaday - Low Top - Black</span>
-                    </div>
-                    <div style="width: 12%;" class="tb-cell">AV00149</div>
-                    <div style="width: 10%;" class="tb-cell">Giày</div>
-                    <div style="width: 15%;" class="tb-cell">500.000 VND</div>
-                    <div style="width: 10%;" class="tb-cell">100</div>
-                    <div style="width: 10%;" class="tb-cell">100</div>
-                    <div style="width: 12%;" class="tb-cell action">
-                        <a href=""><i class="fa-solid fa-pen-to-square"></i> Cập nhật</a>
-                        <a href=""><i class="fa-solid fa-trash"></i> Xoá</a>
-                    </div>
-                </div>
-                <div class="tb-row">
-                    <div style="width: 5%;" class="tb-cell"><input type="checkbox" name="" id=""></div>
-                    <div style="flex: 1" class="tb-cell product-name">
-                        <img src="~/publicc/image/product.jpg" alt="">
-                        <span>Basas Workaday - Low Top - Black</span>
-                    </div>
-                    <div style="width: 12%;" class="tb-cell">AV00149</div>
-                    <div style="width: 10%;" class="tb-cell">Giày</div>
-                    <div style="width: 15%;" class="tb-cell">500.000 VND</div>
-                    <div style="width: 10%;" class="tb-cell">100</div>
-                    <div style="width: 10%;" class="tb-cell">100</div>
-                    <div style="width: 12%;" class="tb-cell action">
-                        <a href=""><i class="fa-solid fa-pen-to-square"></i> Cập nhật</a>
-                        <a href=""><i class="fa-solid fa-trash"></i> Xoá</a>
-                    </div>
-                </div>
-                <div class="tb-row">
-                    <div style="width: 5%;" class="tb-cell"><input type="checkbox" name="" id=""></div>
-                    <div style="flex: 1" class="tb-cell product-name">
-                        <img src="~/publicc/image/product.jpg" alt="">
-                        <span>Basas Workaday - Low Top - Black</span>
-                    </div>
-                    <div style="width: 12%;" class="tb-cell">AV00149</div>
-                    <div style="width: 10%;" class="tb-cell">Giày</div>
-                    <div style="width: 15%;" class="tb-cell">500.000 VND</div>
-                    <div style="width: 10%;" class="tb-cell">100</div>
-                    <div style="width: 10%;" class="tb-cell">100</div>
-                    <div style="width: 12%;" class="tb-cell action">
-                        <a href=""><i class="fa-solid fa-pen-to-square"></i> Cập nhật</a>
-                        <a href=""><i class="fa-solid fa-trash"></i> Xoá</a>
-                    </div>
-                </div>
-                <div class="tb-row">
-                    <div style="width: 5%;" class="tb-cell"><input type="checkbox" name="" id=""></div>
-                    <div style="flex: 1" class="tb-cell product-name">
-                        <img src="~/publicc/image/product.jpg" alt="">
-                        <span>Basas Workaday - Low Top - Black</span>
-                    </div>
-                    <div style="width: 12%;" class="tb-cell">AV00149</div>
-                    <div style="width: 10%;" class="tb-cell">Giày</div>
-                    <div style="width: 15%;" class="tb-cell">500.000 VND</div>
-                    <div style="width: 10%;" class="tb-cell">100</div>
-                    <div style="width: 10%;" class="tb-cell">100</div>
-                    <div style="width: 12%;" class="tb-cell action">
-                        <a href=""><i class="fa-solid fa-pen-to-square"></i> Cập nhật</a>
-                        <a href=""><i class="fa-solid fa-trash"></i> Xoá</a>
-                    </div>
-                </div>
-                <div class="tb-row">
-                    <div style="width: 5%;" class="tb-cell"><input type="checkbox" name="" id=""></div>
-                    <div style="flex: 1" class="tb-cell product-name">
-                        <img src="~/publicc/image/product.jpg" alt="">
-                        <span>Basas Workaday - Low Top - Black</span>
-                    </div>
-                    <div style="width: 12%;" class="tb-cell">AV00149</div>
-                    <div style="width: 10%;" class="tb-cell">Giày</div>
-                    <div style="width: 15%;" class="tb-cell">500.000 VND</div>
-                    <div style="width: 10%;" class="tb-cell">100</div>
-                    <div style="width: 10%;" class="tb-cell">100</div>
-                    <div style="width: 12%;" class="tb-cell action">
-                        <a href=""><i class="fa-solid fa-pen-to-square"></i> Cập nhật</a>
-                        <a href=""><i class="fa-solid fa-trash"></i> Xoá</a>
-                    </div>
+                <div class="tb-body">
+                    @foreach (var item in Model) {
+                        <div class="tb-row">
+                            <div style="width: 5%;" class="tb-cell"><input type="checkbox" name="" id=""></div>
+                            <div style="flex: 1" class="tb-cell product-name">
+                                <img src="~/uploads/@item.ImageList[0]" alt="">
+                                <span>@item.ProductName - @item.Style.Name - @item.ColorName</span>
+                            </div>
+                            <div style="width: 12%;" class="tb-cell">@item.ProductId</div>
+                            <div style="width: 10%;" class="tb-cell">@item.Category.Name</div>
+                            <div style="width: 15%;" class="tb-cell">@Html.FormatValue(item.Price, "{0:0,0}") VND</div>
+                            <div style="width: 10%;" class="tb-cell">@item.InStock</div>
+                            <div style="width: 10%;" class="tb-cell">@item.Sold</div>
+                            <div style="width: 12%;" class="tb-cell action">
+                                <a asp-controller="Product" asp-action="Edit" asp-area="Admin" asp-route-id=@item.ProductId><i class="fa-solid fa-pen-to-square"></i> Cập nhật</a>
+                                <a href=""><i class="fa-solid fa-trash"></i> Xoá</a>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
-        </div>
-        <div class="pagination">
-            <div class="prevBtn">(Prev)</div>
-            <div>
-                <ul>
-                    <li>1</li>
-                    <li>2</li>
-                    <li class="checked">3</li>
-                    <li>4</li>
-                    <li class="empty">...</li>
-                    <li>20</li>
-                </ul>
+            <div class="pagination">
+                <div class="prevBtn">(Prev)</div>
+                <div>
+                    <ul>
+                        <li>1</li>
+                        <li>2</li>
+                        <li class="checked">3</li>
+                        <li>4</li>
+                        <li class="empty">...</li>
+                        <li>20</li>
+                    </ul>
+                </div>
+                <div class="nextBtn">(Next)</div>
             </div>
-            <div class="nextBtn">(Next)</div>
         </div>
     </div>
-</div>
+</form>
+

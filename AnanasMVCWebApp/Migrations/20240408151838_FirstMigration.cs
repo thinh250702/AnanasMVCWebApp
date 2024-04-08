@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AnanasMVCWebApp.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class FirstMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -389,7 +389,6 @@ namespace AnanasMVCWebApp.Migrations
                     ColorName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     HexCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Sold = table.Column<int>(type: "int", nullable: false),
                     ColorId = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -417,7 +416,8 @@ namespace AnanasMVCWebApp.Migrations
                     SizeId = table.Column<int>(type: "int", nullable: false),
                     ProductVariantId = table.Column<int>(type: "int", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StockQuantity = table.Column<int>(type: "int", nullable: false)
+                    InStock = table.Column<int>(type: "int", nullable: false),
+                    Sold = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
