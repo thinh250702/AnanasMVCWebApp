@@ -32,6 +32,7 @@ namespace AnanasMVCWebApp.Areas.Admin.Controllers {
                 _productService.UpdateProduct(model);
             }*/
             _productService.UpdateProduct(model);
+            TempData["success"] = "Cập nhật sản phẩm thành công";
             return View(_productService.GetProductForEdit(id));
         }
     }

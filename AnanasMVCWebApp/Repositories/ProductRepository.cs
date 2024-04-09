@@ -54,11 +54,12 @@ namespace AnanasMVCWebApp.Repositories {
     public class ColorRepository : GenericRepository<Color>, IColorRepository {
         public ColorRepository(DataContext context) : base(context) {}
         private Dictionary<string, int> ConvertHextoRGB(string hexCode) {
+            hexCode = hexCode.Replace("#", "");
             var result = new Dictionary<string, int>();
             result["R"] = Convert.ToInt32(hexCode.Substring(0, 2), 16);
             result["G"] = Convert.ToInt32(hexCode.Substring(2, 2), 16);
             result["B"] = Convert.ToInt32(hexCode.Substring(4, 2), 16);
-            return new Dictionary<string, int>();
+            return result;
         }
         public Color GetNearestColor(string hexCode) {
             double closestDistance = -1;
@@ -69,7 +70,7 @@ namespace AnanasMVCWebApp.Repositories {
             var targetColor = ConvertHextoRGB(hexCode);
             colorList.ForEach(color => {
                 var sourceColor = ConvertHextoRGB(color.HexCode);
-                var distance = Math.Sqrt((targetColor["R"] - sourceColor["R"])^2 + (targetColor["G"] - sourceColor["G"])^2 + (targetColor["B"] - sourceColor["B"])^2);
+                double distance = Math.Sqrt(Math.Pow(targetColor["R"] - sourceColor["R"], 2) + Math.Pow(targetColor["G"] - sourceColor["G"], 2) + Math.Pow(targetColor["B"] - sourceColor["B"], 2));
                 if (closestDistance == -1) {
                     closestDistance = distance;
                 } else if(distance < closestDistance) {

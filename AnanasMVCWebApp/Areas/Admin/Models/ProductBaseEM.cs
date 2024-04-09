@@ -11,7 +11,7 @@ namespace AnanasMVCWebApp.Areas.Admin.Models {
         public int CategoryId { get; set; }
         public List<Category> Categories { get; set; }
         [DisplayName("Kiểu dáng")]
-        public int? StyleId { get; set; }
+        public int StyleId { get; set; }
         public List<Style> Styles { get; set; }
         [DisplayName("Dòng sản phẩm")]
         public int CollectionId { get; set; }

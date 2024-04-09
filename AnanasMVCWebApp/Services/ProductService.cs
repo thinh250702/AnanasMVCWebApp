@@ -126,10 +126,34 @@ namespace AnanasMVCWebApp.Services
         public void UpdateProduct(ProductBaseEM model) {
             Product product = _productRepo.GetById(model.ProductId);
             if (product != null) {
+                // Update Base Product
                 product.Name = model.Name;
                 product.Description = model.Description;
                 product.Price = model.Price;
-
+                product.Collection = _collectionRepo.GetById(model.CollectionId);
+                if (model.StyleId != -1) {
+                    product.Style = _styleRepo.GetById(model.StyleId);
+                }
+                model.Variants.ForEach(item => {
+                    ProductVariant? variant = _productVariantRepo.GetProductVariantByCode(item.ProductCode);
+                    if (variant != null) {
+                        variant.ColorName = item.ColorName;
+                        variant.HexCode = item.HexCode.Replace("#", "");
+                        variant.Color = _colorRepo.GetNearestColor(item.HexCode.Replace("#", ""));
+                        if (item.SKUs != null) {
+                            item.SKUs.ForEach(skuItem => {
+                                ProductSKU? sku = _productSKURepository.GetProductSKUByCode(skuItem.Code);
+                                if (sku != null) {
+                                    sku.InStock = skuItem.InStock;
+                                    _productSKURepository.Update(sku);
+                                }
+                            });
+                            _productSKURepository.Save();
+                        }
+                        _productVariantRepo.Update(variant);
+                    }
+                });
+                _productVariantRepo.Save();
                 _productRepo.Update(product);
                 _productRepo.Save();
             }
