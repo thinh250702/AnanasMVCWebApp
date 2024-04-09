@@ -5,12 +5,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AnanasMVCWebApp.Services {
     public class CartService : ICartService {
-        private readonly IProductRepository _productRepo;
+        private readonly IProductVariantRepository _productVariantRepo;
+        private readonly IProductSKURepository _productSKURepository;
         private readonly ISizeRepository _sizeRepo;
         private readonly IWebHostEnvironment _environment;
-
-        public CartService(IProductRepository productRepo, ISizeRepository sizeRepo, IWebHostEnvironment environment) {
-            _productRepo = productRepo;
+        public CartService(IProductVariantRepository productVariantRepo, IProductSKURepository productSKURepository, ISizeRepository sizeRepo, IWebHostEnvironment environment) {
+            _productVariantRepo = productVariantRepo;
+            _productSKURepository = productSKURepository;
             _sizeRepo = sizeRepo;
             _environment = environment;
         }
@@ -29,7 +30,7 @@ namespace AnanasMVCWebApp.Services {
             string newCode = skuCode.Split("-")[0] + "-" + sizeCode;
             if (item != null) {
                 int currentItemQuantity = item.Quantity;
-                int changeItemStock = _productRepo.GetProductSKUByCode(newCode)!.InStock;
+                int changeItemStock = _productSKURepository.GetProductSKUByCode(newCode)!.InStock;
                 // Find if the change size already exist in the cart
                 CartItemViewModel? itemNewSize = cart.Where(c => c.ProductId == newCode).FirstOrDefault();
                 if (itemNewSize != null) {
@@ -55,7 +56,7 @@ namespace AnanasMVCWebApp.Services {
             return cart;
         }
         private CartItemViewModel CreateCartItem(string code, int quantity) {
-            var sku = _productRepo.GetProductSKUByCode(code)!;
+            var sku = _productSKURepository.GetProductSKUByCode(code)!;
             CartItemViewModel item = new CartItemViewModel(sku, quantity) {
                 ImageName = GetProductImage(sku.ProductVariant.Code),
                 SizeList = GetAvailableSize(sku.ProductVariant.Code),
@@ -74,8 +75,8 @@ namespace AnanasMVCWebApp.Services {
         }
         private List<Size> GetAvailableSize(string code) {
             var sizeList = new List<Size>();
-            var variant = _productRepo.GetProductVariantByCode(code);
-            var skuList = (variant != null) ? _productRepo.GetAllProductSKUs(variant) : new List<ProductSKU>();
+            var variant = _productVariantRepo.GetProductVariantByCode(code);
+            var skuList = (variant != null) ? _productSKURepository.GetAllProductSKUs(variant) : new List<ProductSKU>();
             skuList.ForEach(x => {
                 if (x.InStock != 0) {
                     sizeList.Add(x.Size);

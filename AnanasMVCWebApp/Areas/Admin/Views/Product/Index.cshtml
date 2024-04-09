@@ -85,8 +85,8 @@
                         <div class="tb-row">
                             <div style="width: 5%;" class="tb-cell"><input type="checkbox" name="" id=""></div>
                             <div style="flex: 1" class="tb-cell product-name">
-                                <img src="~/uploads/@item.ImageList[0]" alt="">
-                                <span>@item.ProductName - @item.Style.Name - @item.ColorName</span>
+                                <img src="~/uploads/@(item.ImageList.Count > 0 ? item.ImageList[0] : "")" alt="">
+                                <span>@(item.Style != null ? $"{item.ProductName} - {item.Style.Name} - {item.ColorName}" : $"{item.Collection.Name} - {item.ProductName} - {item.ColorName}")</span>
                             </div>
                             <div style="width: 12%;" class="tb-cell">@item.ProductId</div>
                             <div style="width: 10%;" class="tb-cell">@item.Category.Name</div>

@@ -1,5 +1,6 @@
 USE AnanasMVC
 GO
-DELETE FROM AspNetUsers
-GO
-
+Select * from ProductSKUs
+Go
+Select * from ProductVariants
+Go

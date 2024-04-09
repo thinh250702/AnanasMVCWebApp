@@ -4,22 +4,34 @@
     ViewData["Title"] = "Edit";
     ViewBag.Menu = "product";
 }
+@section Scripts {
+    <script>
+        $("input[type='color']").change(function () {
+            $(this).parent().css("background-color", $(this).val());
+        });
+    </script>
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+    <script type="text/javascript">
+        CKEDITOR.replace('Description')
+    </script>
+}
 
 <div class="row-wrapper">
     <h4>Chỉnh sửa sản phẩm</h4>
 </div>
 <div class="row-wrapper">
-    <form action="" style="width: 100%;">
+    <form asp-controller="Product" asp-action="Edit" asp-area="Admin" method="POST" style="width: 100%;">
         <div class="form-wrapper">
             <div class="form-column">
                 <div>
                     <h5>Thông tin cơ bản</h5>
                     <hr class="divider top">
+                    @Html.HiddenFor(i => i.ProductId)
                     <div class="form-row">
                         <div class="input-group">
                             @Html.LabelFor(i => i.Name)
                             @Html.TextBoxFor(i => i.Name, new { placeholder = "Tên sản phẩm" })
-                            @Html.ValidationMessageFor(i => i.Name, "Erro Message", new { @class = "input-error" })
+                            @Html.ValidationMessageFor(i => i.Name, "", new { @class = "input-error" })
                         </div>
                     </div>
                     <div class="form-row">
@@ -27,27 +39,25 @@
                             @Html.LabelFor(i => i.CategoryId)
                             <select asp-for="CategoryId">
                                 <option value="" selected disabled>Danh mục</option>
-                                @if (Model.Categories != null) {
-                                    @foreach (var item in Model.Categories) {
-                                        <option value=@item.Id>@item.Name</option>
-                                    }
+                                @foreach (var item in Model.Categories) {
+                                    <option value=@item.Id>@item.Name</option>
                                 }
                             </select>
-                            @Html.ValidationMessageFor(i => i.CategoryId, "Erro Message", new { @class = "input-error" })
+                            @Html.ValidationMessageFor(i => i.CategoryId, "", new { @class = "input-error" })
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="input-group">
-                            @Html.LabelFor(i => i.StyleId)
-                            <select asp-for="StyleId">
-                                <option value="" selected disabled>Kiểu dáng</option>
-                                @if (Model.Styles != null) {
+                            @if (Model.StyleId != -1) {
+                                @Html.LabelFor(i => i.StyleId)
+                                <select asp-for="StyleId">
+                                    <option value="" selected disabled>Kiểu dáng</option>
                                     @foreach (var item in Model.Styles) {
                                         <option value=@item.Id>@item.Name</option>
                                     }
-                                }
-                            </select>
-                            @Html.ValidationMessageFor(i => i.StyleId, "Erro Message", new { @class = "input-error" })
+                                </select>
+                                @Html.ValidationMessageFor(i => i.StyleId, "", new { @class = "input-error" })
+                            }
                         </div>
                     </div>
                     <div class="form-row">
@@ -55,128 +65,108 @@
                             @Html.LabelFor(i => i.CollectionId)
                             <select asp-for="CollectionId">
                                 <option value="" selected disabled>Dòng sản phẩm</option>
-                                @if (Model.Collections != null) {
-                                    @foreach (var item in Model.Collections) {
-                                        <option value=@item.Id>@item.Name</option>
-                                    }
+                                @foreach (var item in Model.Collections) {
+                                    <option value=@item.Id>@item.Name</option>
                                 }
                             </select>
-                            @Html.ValidationMessageFor(i => i.CollectionId, "Erro Message", new { @class = "input-error" })
+                            @Html.ValidationMessageFor(i => i.CollectionId, "", new { @class = "input-error" })
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="input-group">
                             @Html.LabelFor(i => i.Price)
                             @Html.TextBoxFor(i => i.Price, new { placeholder = "Giá bán" })
-                            @Html.ValidationMessageFor(i => i.Price, "Erro Message", new { @class = "input-error" })
+                            @Html.ValidationMessageFor(i => i.Price, "", new { @class = "input-error" })
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="input-group">
                             @Html.LabelFor(i => i.Description)
+                            <div id="editor"></div>
                             @Html.TextAreaFor(i => i.Description, new { cols = "30", rows = "10", style = "resize: none;" })
                             @* <textarea style="resize: none;" name="" id="description" cols="30" rows="10">Hello</textarea> *@
-                            @Html.ValidationMessageFor(i => i.Description, "Erro Message", new { @class = "input-error" })
+                            @Html.ValidationMessageFor(i => i.Description, "", new { @class = "input-error" })
                         </div>
                     </div>
                 </div>
             </div>
             <div class="form-column">
                 <div>
-                    <h5>Thông tin cơ bản</h5>
+                    <h5>Thông tin phân loại</h5>
                     <hr class="divider top">
                     <div class="variant-list">
-                        <div class="variant-item">
-                            <button class="delete-variant-btn" type="button"><i class="fa-solid fa-xmark"></i></button>
-                            <div class="form-row">
-                                <div class="input-group">
-                                    <label for="">Mã sản phẩm</label>
-                                    <input disabled type="text" name="" id="productId" placeholder="First Name">
-                                    <span class="input-error">Error message</span>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="input-group--color">
-                                    <label for="">Màu sắc</label>
-                                    <div>
-                                        <div class="color-picker-wrapper"><input class="color-picker" type="color" name="" id="hexCode" value="#f15e2c"></div>
-                                        <input type="text" name="" id="colorName" placeholder="Name this color">
+                        @for (int i= 0; i < Model.Variants.Count; i++) {
+                            <div class="variant-item">
+                                <button class="delete-variant-btn" type="button"><i class="fa-solid fa-xmark"></i></button>
+                                <div class="form-row">
+                                    <div class="input-group">
+                                        <label>Mã sản phẩm</label>
+                                        <input readonly type="text" asp-for="@Model.Variants[i].ProductCode">
+                                        <span class="input-error"></span>
                                     </div>
-                                    <span class="input-error"></span>
                                 </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="input-group">
-                                    <label for="">Hình ảnh</label>
-                                    <div class="image-grid">
-                                        <div class="image-item">
-                                            <div class="overlay"><i class="fa-solid fa-trash-can"></i></div>
-                                            <img src="~/public/image/product-1.jpg" alt="">
+                                <div class="form-row">
+                                    <div class="input-group--color">
+                                        <label>Màu sắc</label>
+                                        <div>
+                                            <div class="color-picker-wrapper" style="background-color: #@Model.Variants[i].HexCode"><input class="color-picker" type="color" asp-for="@Model.Variants[i].HexCode" value="#@Model.Variants[i].HexCode"></div>
+                                            <input type="text" asp-for="@Model.Variants[i].ColorName" placeholder="Name this color">
                                         </div>
-                                        <div class="upload-image-wrapper">
-                                            <input type="file" name="" id="imageUpload" accept="image/*">
-                                            <label for="imageUpload">
-                                                <i class="fa-regular fa-image"></i>
-                                                <span>Thêm hình ảnh (tối đa 8 ảnh)</span>
-                                            </label>
-                                        </div>
+                                        <span class="input-error"></span>
                                     </div>
-                                    <span class="input-error"></span>
+                                </div>
+                                <div class="form-row">
+                                    <div class="input-group">
+                                        <label for="">Hình ảnh</label>
+                                        <div class="image-grid">
+                                            @foreach (var image in Model.Variants[i].Images) {
+                                                <div class="image-item">
+                                                    <div class="overlay"><i class="fa-solid fa-trash-can"></i></div>
+                                                    <img src="~/uploads/@image" alt="">
+                                                </div>
+                                            }
+                                            @* <div class="upload-image-wrapper">
+                                                <input type="file" name="imageUpload" id="imageUpload" accept="image/*">
+                                                <label for="imageUpload">
+                                                    <i class="fa-regular fa-image"></i>
+                                                    <span>Thêm hình ảnh (tối đa 8 ảnh)</span>
+                                                </label>
+                                            </div> *@
+                                        </div>
+                                        <span class="input-error"></span>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="input-group--stock">
+                                        <label for="">Kho hàng</label>
+                                        <table class="stock-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Kích cỡ</th>
+                                                    <th>Số lượng</th>
+                                                    <th>Mã SKU</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (int j = 0; j < Model.Variants[i].SKUs.Count; j++) {
+                                                    <tr>
+                                                        <td>@Model.Variants[i].SKUs[j].Size.Name</td>
+                                                        <td><input type="text" asp-for="@Model.Variants[i].SKUs[j].InStock" placeholder="Số lượng"></td>
+                                                        <td><input type="text" asp-for="@Model.Variants[i].SKUs[j].Code" readonly></td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                        <span class="input-error"></span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-row">
-                                <div class="input-group--stock">
-                                    <label for="">Kho hàng</label>
-                                    <table class="stock-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Kích cỡ</th>
-                                                <th>Số lượng</th>
-                                                <th>Mã SKU</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>36</td>
-                                                <td><input type="text" name="" id="" placeholder="Số lượng"></td>
-                                                <td><input type="text" name="" id="" value="123456" disabled></td>
-                                            </tr>
-                                            <tr>
-                                                <td>37</td>
-                                                <td><input type="text" name="" id="" placeholder="Số lượng"></td>
-                                                <td><input type="text" name="" id="" value="123456" disabled></td>
-                                            </tr>
-                                            <tr>
-                                                <td>38</td>
-                                                <td><input type="text" name="" id="" placeholder="Số lượng"></td>
-                                                <td><input type="text" name="" id="" value="123456" disabled></td>
-                                            </tr>
-                                            <tr>
-                                                <td>36</td>
-                                                <td><input type="text" name="" id="" placeholder="Số lượng"></td>
-                                                <td><input type="text" name="" id="" value="123456" disabled></td>
-                                            </tr>
-                                            <tr>
-                                                <td>37</td>
-                                                <td><input type="text" name="" id="" placeholder="Số lượng"></td>
-                                                <td><input type="text" name="" id="" value="123456" disabled></td>
-                                            </tr>
-                                            <tr>
-                                                <td>38</td>
-                                                <td><input type="text" name="" id="" placeholder="Số lượng"></td>
-                                                <td><input type="text" name="" id="" value="123456" disabled></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <span class="input-error"></span>
-                                </div>
-                            </div>
-                        </div>
+                        }
                     </div>
                     <button id="add-variant-btn" type="button"><i class="fa-solid fa-plus"></i> Add Product Variant</button>
                 </div>
                 <div class="form-button-group">
-                    <button id="discardBtn" type="button">Huỷ</button>
+                    <a asp-controller="Product" asp-action="Index" asp-area="Admin" id="discardBtn">Huỷ</a>
                     <button id="submitBtn" type="submit">Cập nhật</button>
                 </div>
             </div>

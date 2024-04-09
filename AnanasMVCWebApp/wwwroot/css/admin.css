@@ -549,22 +549,35 @@ table, th, td {
     margin-top: 20px;
 }
 
-.form-button-group button {
+.form-button-group button, .form-button-group a {
     padding: 10px 0;
     width: 50%;
     font-size: 16px;
     font-weight: 700;
     border-radius: 8px;
+    text-align: center;
 }
 
 #discardBtn {
     background-color: var(--neutral-100);
     border: 1px solid var(--neutral-0);
+    cursor: pointer;
+}
+
+#discardBtn:hover {
+    background-color: var(--neutral-90);
+    transition: 0.2s;
 }
 
 #submitBtn {
     background-color: var(--primary);
     color: var(--neutral-100);
+    cursor: pointer;
+}
+
+#submitBtn:hover {
+    background-color: var(--dark-primary);
+    transition: 0.2s;
 }
 
 .input-group--color, .input-group--stock {
@@ -602,7 +615,6 @@ input[type="color"] {
 
 .color-picker-wrapper {
     width: 30%;
-    background-color: yellow;
     border-radius: 8px 0 0 8px;
     outline: 1px solid var(--neutral-0);
 }
@@ -724,7 +736,7 @@ table.stock-table td {
 
 .input-group--stock input[type="text"] {
     padding: 6px 12px;
-    outline: 1px solid var(--neutral-80);
+    border: 1px solid var(--neutral-80);
     border-radius: 4px;
 }
 

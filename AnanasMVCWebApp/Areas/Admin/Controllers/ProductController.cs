@@ -24,11 +24,15 @@ namespace AnanasMVCWebApp.Areas.Admin.Controllers {
             return View();
         }
         public IActionResult Edit(string id) {
-            return View();
+            return View(_productService.GetProductForEdit(id));
         }
         [HttpPost]
-        public IActionResult Edit(ProductBaseEM model) {
-            return View();
+        public IActionResult Edit([FromRoute]string id, ProductBaseEM model) {
+            /*if (ModelState.IsValid) {
+                _productService.UpdateProduct(model);
+            }*/
+            _productService.UpdateProduct(model);
+            return View(_productService.GetProductForEdit(id));
         }
     }
 }

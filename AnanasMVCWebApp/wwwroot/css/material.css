@@ -198,9 +198,11 @@ h6, .h6 {
 /*.input-group input[type="date"] {
     height: 100%;
 }*/
-.input-group input[type="text"]:disabled {
-    border: 1px solid var(--neutral-80);
-    cursor: not-allowed;
+input[type="text"]:read-only {
+    border: 1px solid var(--neutral-80) !important;
+    background-color: rgba(239, 239, 239, 0.3);
+    color: var(--neutral-50) !important;
+    pointer-events: none;
 }
 .input-group input:focus, .input-group select:focus {
     transform: translate(0, -3px);

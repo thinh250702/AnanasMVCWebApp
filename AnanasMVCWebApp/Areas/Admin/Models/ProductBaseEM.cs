@@ -1,9 +1,11 @@
 ﻿using AnanasMVCWebApp.Models;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace AnanasMVCWebApp.Areas.Admin.Models {
     public class ProductBaseEM {
-        [DisplayName("Tên sản phẩm")]
+        public int ProductId { get; set; }
+        [Required(ErrorMessage = "Vui lòng nhập tên sản phẩm"), DisplayName("Tên sản phẩm")]
         public string Name { get; set; }
         [DisplayName("Danh mục")]
         public int CategoryId { get; set; }

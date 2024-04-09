@@ -43,6 +43,8 @@ builder.Services.AddSession(options => {
 
 builder.Services.AddTransient(typeof(IRepository<>), typeof(GenericRepository<>));
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
+builder.Services.AddTransient<IProductVariantRepository, ProductVariantRepository>();
+builder.Services.AddTransient<IProductSKURepository, ProductSKURepository>();
 builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
 builder.Services.AddTransient<ICollectionRepository, CollectionRepository>();
 builder.Services.AddTransient<IStyleRepository, StyleRepository>();

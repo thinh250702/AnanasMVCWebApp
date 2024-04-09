@@ -1,20 +1,26 @@
-﻿using AnanasMVCWebApp.Models;
+﻿using AnanasMVCWebApp.Areas.Admin.Models;
+using AnanasMVCWebApp.Models;
 using AnanasMVCWebApp.Models.ViewModels;
 using AnanasMVCWebApp.Repositories;
 using AnanasMVCWebApp.Utilities;
+using System.Xml.Linq;
 
 namespace AnanasMVCWebApp.Services
 {
     public class ProductService : IProductService {
         private readonly IProductRepository _productRepo;
+        private readonly IProductVariantRepository _productVariantRepo;
+        private readonly IProductSKURepository _productSKURepository;
         private readonly ICategoryRepository _categoryRepo;
         private readonly ICollectionRepository _collectionRepo;
         private readonly IStyleRepository _styleRepo;
         private readonly IColorRepository _colorRepo;
         private readonly IWebHostEnvironment _environment;
 
-        public ProductService(IProductRepository productRepo, ICategoryRepository categoryRepo, ICollectionRepository collectionRepo, IStyleRepository styleRepo, IColorRepository colorRepo, IWebHostEnvironment environment) {
+        public ProductService(IProductRepository productRepo, IProductVariantRepository productVariantRepo, IProductSKURepository productSKURepository, ICategoryRepository categoryRepo, ICollectionRepository collectionRepo, IStyleRepository styleRepo, IColorRepository colorRepo, IWebHostEnvironment environment) {
             _productRepo = productRepo;
+            _productVariantRepo = productVariantRepo;
+            _productSKURepository = productSKURepository;
             _categoryRepo = categoryRepo;
             _collectionRepo = collectionRepo;
             _styleRepo = styleRepo;
@@ -23,7 +29,7 @@ namespace AnanasMVCWebApp.Services
         }
 
         public ProductListViewModel GetAllProductByFilters(string category, string collection, string style, string color, string price) {
-            ProductQueryable queryable = new(_productRepo.GetAll().AsQueryable());
+            ProductQueryable queryable = new(_productVariantRepo.GetAll().AsQueryable());
             ProductListViewModel products = new ProductListViewModel();
             Category? queryCategory = _categoryRepo.GetCategoryBySlug(category);
             if (queryCategory != null) {
@@ -53,20 +59,47 @@ namespace AnanasMVCWebApp.Services
         }
 
         public ProductViewModel? GetProductByCode(string code) {
-            var result = _productRepo.GetProductVariantByCode(code);
+            var result = _productVariantRepo.GetProductVariantByCode(code);
             return (result != null) ? ToProductViewModel(result) : null;
+        }
+
+        public ProductBaseEM GetProductForEdit(string code) {
+            Product product = _productVariantRepo.GetProductVariantByCode(code)!.Product;
+            var result = new ProductBaseEM() {
+                ProductId = product.Id,
+                Name = product.Name,
+                CategoryId = product.Collection.CategoryId,
+                Categories = _categoryRepo.GetAll().ToList(),
+                StyleId = (product.Style != null) ? product.Style.Id : -1,
+                Styles = (product.Style != null) ? _styleRepo.GetAll().ToList() : new List<Style>(),
+                CollectionId = product.CollectionId,
+                Collections = _collectionRepo.GetCollectionsByCategory(product.Collection.Category),
+                Price = product.Price,
+                Description = product.Description,
+                Variants = new List<ProductVariantEM>()
+            };
+            _productVariantRepo.GetAllVariantsOfProduct(product).ForEach(item => {
+                result.Variants.Add(new ProductVariantEM() {
+                    ProductCode = item.Code,
+                    HexCode = item.HexCode,
+                    ColorName = item.ColorName,
+                    Images = GetAllProductImages(item.Code),
+                    SKUs = _productSKURepository.GetAllProductSKUs(item),
+                });
+            });
+            return result;
         }
 
         public List<ProductViewModel> GetProductList() {
             var result = new List<ProductViewModel>();
-            _productRepo.GetAll().ToList().ForEach(item => {
+            _productVariantRepo.GetAll().ToList().ForEach(item => {
                 result.Add(ToProductViewModel(item));
             });
             return result;
         }
 
         public int GetProductMaxOrderQuantity(string code, int cartQuantity) {
-            var product = _productRepo.GetProductSKUByCode(code);
+            var product = _productSKURepository.GetProductSKUByCode(code);
             int productStock = (product != null) ? product.InStock : 0;
             return (productStock - cartQuantity >= 12) ? 12 : productStock - cartQuantity;
         }
@@ -77,18 +110,31 @@ namespace AnanasMVCWebApp.Services
                 ProductName = productVariant.Product.Name,
                 Description = productVariant.Product.Description,
                 Price = productVariant.Product.Price,
-                InStock = _productRepo.GetInStockOfVariant(productVariant.Code),
-                Sold = _productRepo.GetSoldOfVariant(productVariant.Code),
+                InStock = _productVariantRepo.GetInStockOfVariant(productVariant.Code),
+                Sold = _productVariantRepo.GetSoldOfVariant(productVariant.Code),
                 ColorName = productVariant.ColorName,
                 HexCode = productVariant.HexCode,
                 Category = productVariant.Product.Collection.Category,
                 Collection = productVariant.Product.Collection,
                 Style = productVariant.Product.Style,
                 ImageList = GetAllProductImages(productVariant.Code),
-                SiblingProducts = _productRepo.GetAllSiblingProducts(productVariant),
-                SKUList = _productRepo.GetAllProductSKUs(productVariant),
+                SiblingProducts = _productVariantRepo.GetAllSiblingProducts(productVariant),
+                SKUList = _productSKURepository.GetAllProductSKUs(productVariant),
             };
         }
+
+        public void UpdateProduct(ProductBaseEM model) {
+            Product product = _productRepo.GetById(model.ProductId);
+            if (product != null) {
+                product.Name = model.Name;
+                product.Description = model.Description;
+                product.Price = model.Price;
+
+                _productRepo.Update(product);
+                _productRepo.Save();
+            }
+        }
+
         private List<string> GetAllProductImages(string code) {
             var imageList = new List<string>();
             string[] filePaths = Directory.GetFiles(Path.Combine(this._environment.WebRootPath, "uploads/"));
