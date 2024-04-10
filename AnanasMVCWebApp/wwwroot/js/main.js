@@ -218,4 +218,7 @@ $(document).ready(function(){
     setTimeout(function () {
         $(".toast-msg").animate({ left: "-=40%" }, "slow");
     }, 2000);
+    $(".toast-msg i:last-child").click(function () {
+        $(this).parent().animate({ left: "-=40%" }, "slow");
+    })
 });

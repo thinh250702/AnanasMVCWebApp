@@ -50,6 +50,7 @@ builder.Services.AddTransient<ICollectionRepository, CollectionRepository>();
 builder.Services.AddTransient<IStyleRepository, StyleRepository>();
 builder.Services.AddTransient<IColorRepository, ColorRepository>();
 builder.Services.AddTransient<ISizeRepository, SizeRepository>();
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<ICartService, CartService>();
 

@@ -9,6 +9,7 @@ namespace AnanasMVCWebApp.Repositories {
         public List<ProductVariant> GetAllVariantsOfProduct(Product product);
         public int GetInStockOfVariant(string code);
         public int GetSoldOfVariant(string code);
+        public ProductVariant? GetLastProductVariantByCode(string code);
     }
     public interface IProductSKURepository : IRepository<ProductSKU> {
         public ProductSKU? GetProductSKUByCode(string code);

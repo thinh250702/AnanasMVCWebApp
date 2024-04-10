@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Admin\Data\" />
     <Folder Include="wwwroot\uploads\" />
     <Folder Include="wwwroot\public\" />
   </ItemGroup>

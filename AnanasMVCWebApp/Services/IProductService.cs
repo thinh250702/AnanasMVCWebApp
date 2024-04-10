@@ -9,8 +9,14 @@ namespace AnanasMVCWebApp.Services {
         public ProductListViewModel GetAllProductByFilters(string category, string collection, string style, string color, string price);
         public int GetProductMaxOrderQuantity(string code, int cartQuantity);
         public List<ProductViewModel> GetProductList();
+
+        // Product Management
         public ProductBaseEM GetProductForEdit(string code);
+        public ProductBaseEM GetProductForCreate();
         public void UpdateProduct(ProductBaseEM model);
-        
+        public List<Collection> GetCollectionsByCategory(int id);
+        public string GenerateProductCode(int collectionId);
+        public List<ProductSkuEM> GenerateSKUList(int categoryId, string code);
+
     }
 }

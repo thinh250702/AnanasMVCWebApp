@@ -1,71 +1,157 @@
-﻿@{
+﻿@using AnanasMVCWebApp.Areas.Admin.Models
+@model ProductBaseEM
+@{
     ViewData["Title"] = "Create";
     ViewBag.Menu = "product";
 }
+@section Scripts {
+    <script>
+        $("input[type='color']").change(function () {
+            console.log("Hello")
+            $(this).parent().css("background-color", $(this).val());
+        });
 
+        var variantContainer = $("#variantContainer");
+
+        var categorySelect = $("#CategoryId");
+        var styleSelect = $("#StyleId");
+        var collectionSelect = $("#CollectionId");
+        var styleFormRow = $("#styleFormRow");
+
+        collectionSelect.change(function () {
+            variantContainer.empty();
+        });
+        categorySelect.change(function () {
+            variantContainer.empty();
+
+            switch ($(this).val()) {
+                case categorySelect[0][1].value:
+                    styleFormRow.show();
+                    styleSelect.prop("hidden", false).prop("disabled", false)
+                    break;
+                case categorySelect[0][2].value:
+                case categorySelect[0][3].value:
+                    styleFormRow.hide();
+                    styleSelect.prop("hidden", true).prop("disabled", true)
+                    break;
+                default:
+                    break;
+            }
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetCollections", "Product", new { Area = "Admin" })',
+                dataType: "json",
+                data: { id: parseInt($(this).val()) },
+                contentType: "application/json; charset=utf-8",
+                success: function (result){
+                    collectionSelect.empty().append('<option value="" selected disabled>Dòng sản phẩm</option>');
+                    if (this.value != ""){
+                        result.forEach(item => {
+                            collectionSelect.append(new Option(item.name, item.id));
+                        });
+                    }
+                },
+                error: function (error) {
+                    //console.log(error)
+                    alert("Some errors occured!");
+                }
+            });
+        });
+
+        var addVariantBtn = $("#add-variant-btn");
+        addVariantBtn.click(function(){
+            if (categorySelect.val() == null || collectionSelect.val() == null) {
+                alert("Vui lòng chọn danh mục và dòng sản phẩm!");
+            } else {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetVariantTemplate", "Product", new { Area = "Admin" })',
+                    data: { categoryId: categorySelect.val(),
+                        collectionId: collectionSelect.val(), 
+                        count: variantContainer.children().length },
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        variantContainer.append(result);
+                    },
+                    error: function (req, err) {
+                        console.log(err);
+                        alert("Falied to create product variant template!");
+                    }
+                });
+            }
+            
+        });
+    </script>
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+    <script type="text/javascript">
+        CKEDITOR.replace('Description')
+    </script>
+}
 <div class="row-wrapper">
-    <h4>Trang sản phẩm</h4>
+    <h4>Thêm sản phẩm</h4>
 </div>
 <div class="row-wrapper">
-    <form action="" style="width: 100%;">
+    <form asp-controller="Product" asp-action="Create" asp-area="Admin" method="POST" style="width: 100%;">
         <div class="form-wrapper">
             <div class="form-column">
                 <div>
                     <h5>Thông tin cơ bản</h5>
                     <hr class="divider top">
+                    @Html.HiddenFor(i => i.ProductId)
                     <div class="form-row">
                         <div class="input-group">
-                            <label for="">Tên sản phẩm</label>
-                            <input type="text" name="" id="productName" placeholder="Last Name">
-                            <span class="input-error">Error message</span>
+                            @Html.LabelFor(i => i.Name)
+                            @Html.TextBoxFor(i => i.Name, new { placeholder = "Tên sản phẩm" })
+                            @Html.ValidationMessageFor(i => i.Name, "", new { @class = "input-error" })
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="input-group">
-                            <label for="">Danh mục</label>
-                            <select name="" id="categorySelect">
-                                <option value="" selected disabled>Gender</option>
-                                <option value="shoe">Giày</option>
-                                <option value="clothing">Quần áo</option>
-                                <option value="accessory">Phụ kiện</option>
+                            @Html.LabelFor(i => i.CategoryId)
+                            <select asp-for="CategoryId">
+                                <option value="" selected disabled>Danh mục</option>
+                                @foreach (var item in Model.Categories) {
+                                    <option value=@item.Id>@item.Name</option>
+                                }
                             </select>
-                            <span class="input-error">Error message</span>
+                            @Html.ValidationMessageFor(i => i.CategoryId, "", new { @class = "input-error" })
                         </div>
                     </div>
-                    <div class="form-row">
+                    <div class="form-row" id="styleFormRow" style="display: none;">
                         <div class="input-group">
-                            <label for="">Kiểu dáng</label>
-                            <select name="" id="styleSelect">
-                                <option value="" selected disabled>Gender</option>
-                                <option value="">Male</option>
-                                <option value="">Female</option>
+                            @Html.LabelFor(i => i.StyleId)
+                            <select asp-for="StyleId" hidden disabled>
+                                <option value="" selected disabled>Kiểu dáng</option>
+                                @foreach (var item in Model.Styles) {
+                                    <option value=@item.Id>@item.Name</option>
+                                }
                             </select>
-                            <span class="input-error">Error message</span>
+                            @Html.ValidationMessageFor(i => i.StyleId, "", new { @class = "input-error" })
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="input-group">
-                            <label for="">Dòng sản phẩm</label>
-                            <select name="" id="collectionSelect">
-                                <option value="" selected disabled>Gender</option>
-                                <option value="">Male</option>
-                                <option value="">Female</option>
+                            @Html.LabelFor(i => i.CollectionId)
+                            <select asp-for="CollectionId">
+                                <option value="" selected disabled>Dòng sản phẩm</option>
                             </select>
-                            <span class="input-error">Error message</span>
+                            @Html.ValidationMessageFor(i => i.CollectionId, "", new { @class = "input-error" })
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="input-group">
-                            <label for="">Giá bán</label>
-                            <input type="text" name="" id="price" placeholder="Số điện thoại">
-                            <span class="input-error">Error message</span>
+                            @Html.LabelFor(i => i.Price)
+                            @Html.TextBoxFor(i => i.Price, new { placeholder = "Giá bán" })
+                            @Html.ValidationMessageFor(i => i.Price, "", new { @class = "input-error" })
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="input-group">
-                            <label for="">Mô tả</label>
-                            <textarea style="resize: none;" name="" id="description" cols="30" rows="10">Hello</textarea>
-                            <span class="input-error">Error message</span>
+                            @Html.LabelFor(i => i.Description)
+                            <div id="editor"></div>
+                            @Html.TextAreaFor(i => i.Description, new { cols = "30", rows = "10", style = "resize: none;" })
+                            @Html.ValidationMessageFor(i => i.Description, "", new { @class = "input-error" })
                         </div>
                     </div>
                 </div>
@@ -74,99 +160,14 @@
                 <div>
                     <h5>Thông tin cơ bản</h5>
                     <hr class="divider top">
-                    <div class="variant-list">
-                        <div class="variant-item">
-                            <button class="delete-variant-btn" type="button"><i class="fa-solid fa-xmark"></i></button>
-                            <div class="form-row">
-                                <div class="input-group">
-                                    <label for="">Mã sản phẩm</label>
-                                    <input disabled type="text" name="" id="productId" placeholder="First Name">
-                                    <span class="input-error">Error message</span>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="input-group--color">
-                                    <label for="">Màu sắc</label>
-                                    <div>
-                                        <div class="color-picker-wrapper"><input class="color-picker" type="color" name="" id="hexCode" value="#f15e2c"></div>
-                                        <input type="text" name="" id="colorName" placeholder="Name this color">
-                                    </div>
-                                    <span class="input-error"></span>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="input-group">
-                                    <label for="">Hình ảnh</label>
-                                    <div class="image-grid">
-                                        <div class="image-item">
-                                            <div class="overlay"><i class="fa-solid fa-trash-can"></i></div>
-                                            <img src="~/public/image/product-1.jpg" alt="">
-                                        </div>
-                                        <div class="upload-image-wrapper">
-                                            <input type="file" name="" id="imageUpload" accept="image/*">
-                                            <label for="imageUpload">
-                                                <i class="fa-regular fa-image"></i>
-                                                <span>Thêm hình ảnh (tối đa 8 ảnh)</span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <span class="input-error"></span>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="input-group--stock">
-                                    <label for="">Kho hàng</label>
-                                    <table class="stock-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Kích cỡ</th>
-                                                <th>Số lượng</th>
-                                                <th>Mã SKU</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>36</td>
-                                                <td><input type="text" name="" id="" placeholder="Số lượng"></td>
-                                                <td><input type="text" name="" id="" value="123456" disabled></td>
-                                            </tr>
-                                            <tr>
-                                                <td>37</td>
-                                                <td><input type="text" name="" id="" placeholder="Số lượng"></td>
-                                                <td><input type="text" name="" id="" value="123456" disabled></td>
-                                            </tr>
-                                            <tr>
-                                                <td>38</td>
-                                                <td><input type="text" name="" id="" placeholder="Số lượng"></td>
-                                                <td><input type="text" name="" id="" value="123456" disabled></td>
-                                            </tr>
-                                            <tr>
-                                                <td>36</td>
-                                                <td><input type="text" name="" id="" placeholder="Số lượng"></td>
-                                                <td><input type="text" name="" id="" value="123456" disabled></td>
-                                            </tr>
-                                            <tr>
-                                                <td>37</td>
-                                                <td><input type="text" name="" id="" placeholder="Số lượng"></td>
-                                                <td><input type="text" name="" id="" value="123456" disabled></td>
-                                            </tr>
-                                            <tr>
-                                                <td>38</td>
-                                                <td><input type="text" name="" id="" placeholder="Số lượng"></td>
-                                                <td><input type="text" name="" id="" value="123456" disabled></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <span class="input-error"></span>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="variant-list" id="variantContainer">
+
                     </div>
                     <button id="add-variant-btn" type="button"><i class="fa-solid fa-plus"></i> Add Product Variant</button>
                 </div>
                 <div class="form-button-group">
-                    <button id="discardBtn" type="button">Huỷ</button>
-                    <button id="submitBtn" type="submit">Cập nhật</button>
+                    <a asp-controller="Product" asp-action="Index" asp-area="Admin" id="discardBtn">Huỷ</a>
+                    <button id="submitBtn" type="submit">Lưu</button>
                 </div>
             </div>
         </div>

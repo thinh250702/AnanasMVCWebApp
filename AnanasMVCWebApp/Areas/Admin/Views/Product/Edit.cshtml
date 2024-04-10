@@ -17,7 +17,7 @@
 }
 
 <div class="row-wrapper">
-    <h4>Chỉnh sửa sản phẩm</h4>
+    <h4>Chi tiết sản phẩm</h4>
 </div>
 <div class="row-wrapper">
     <form asp-controller="Product" asp-action="Edit" asp-area="Admin" method="POST" style="width: 100%;">
@@ -84,7 +84,6 @@
                             @Html.LabelFor(i => i.Description)
                             <div id="editor"></div>
                             @Html.TextAreaFor(i => i.Description, new { cols = "30", rows = "10", style = "resize: none;" })
-                            @* <textarea style="resize: none;" name="" id="description" cols="30" rows="10">Hello</textarea> *@
                             @Html.ValidationMessageFor(i => i.Description, "", new { @class = "input-error" })
                         </div>
                     </div>
@@ -117,7 +116,7 @@
                                 </div>
                                 <div class="form-row">
                                     <div class="input-group">
-                                        <label for="">Hình ảnh</label>
+                                        <label>Hình ảnh</label>
                                         <div class="image-grid">
                                             @foreach (var image in Model.Variants[i].Images) {
                                                 <div class="image-item">
@@ -150,7 +149,7 @@
                                             <tbody>
                                                 @for (int j = 0; j < Model.Variants[i].SKUs.Count; j++) {
                                                     <tr>
-                                                        <td>@Model.Variants[i].SKUs[j].Size.Name</td>
+                                                        <td>@Model.Variants[i].SKUs[j].SizeName</td>
                                                         <td><input type="text" asp-for="@Model.Variants[i].SKUs[j].InStock" placeholder="Số lượng"></td>
                                                         <td><input type="text" asp-for="@Model.Variants[i].SKUs[j].Code" readonly></td>
                                                     </tr>

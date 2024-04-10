@@ -25,6 +25,10 @@ namespace AnanasMVCWebApp.Repositories {
         public List<ProductVariant> GetAllVariantsOfProduct(Product product) {
             return _context.ProductVariants.Where(p => p.ProductId == product.Id).ToList();
         }
+
+        public ProductVariant? GetLastProductVariantByCode(string code) {
+            return _context.ProductVariants.Where(p => p.Code.Contains(code)).OrderByDescending(p => p.Code).FirstOrDefault();
+        }
     }
     public class ProductSKURepository : GenericRepository<ProductSKU>, IProductSKURepository {
         public ProductSKURepository(DataContext context) : base(context) {}
