@@ -17,7 +17,7 @@
         <div class="input-group--color">
             <label>Màu sắc</label>
             <div>
-                <div class="color-picker-wrapper"><input class="color-picker" id="Variants_@(index)__HexCode" name="Variants[@(index)].HexCode" type="color"></div>
+                <div class="color-picker-wrapper"><input class="color-picker" id="Variants_@(index)__HexCode" name="Variants[@(index)].HexCode" type="color" value="@Model.HexCode"></div>
                 <input type="text" id="Variants_@(index)__ColorName" name="Variants[@(index)].ColorName" placeholder="Name this color">
             </div>
             <span class="input-error"></span>
@@ -27,19 +27,15 @@
         <div class="input-group">
             <label>Hình ảnh</label>
             <div class="image-grid">
-                @* <div class="image-item">
-                    <div class="overlay"><i class="fa-solid fa-trash-can"></i></div>
-                    <img src="~/uploads/ABS001_1.jpg" alt="">
-                </div> *@
                 <div class="upload-image-wrapper">
-                    <input asp-for="@Model.FilesUpload" accept="image/*">
-                    <label asp-for="@Model.FilesUpload">
+                    <input type="file" id="Variants_@(index)__FilesUpload" name="Variants[@(index)].FilesUpload" multiple accept="image/*">
+                    <label for="Variants_@(index)__FilesUpload">
                         <i class="fa-regular fa-image"></i>
                         <span>Thêm hình ảnh (tối đa 8 ảnh)</span>
                     </label>
                 </div>
             </div>
-            <span asp-validation-for="@Model.FilesUpload" class="input-error"></span>
+            <span class="input-error"></span>
         </div>
     </div>
     <div class="form-row">
@@ -54,13 +50,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @* @foreach (var sku in Model.SKUs) {
-                        <tr>
-                            <td>@sku.SizeName</td>
-                            <td><input type="text" asp-for="@sku.InStock" placeholder="Số lượng"></td>
-                            <td><input type="text" asp-for="@sku.Code" readonly></td>
-                        </tr>
-                    } *@
                     @for (int j = 0; j < Model.SKUs.Count; j++) {
                         <tr>
                             <td>@Model.SKUs[j].SizeName</td>

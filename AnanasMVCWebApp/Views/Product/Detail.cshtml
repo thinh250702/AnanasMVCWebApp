@@ -48,13 +48,17 @@
             @if (Model.ImageList.Count > 1) {
                 <img id="image-display" src="~/uploads/@Model.ImageList[0]" alt="">
                 <div class="image-list-wrapper">
-                    <button class="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+                    @if (Model.ImageList.Count > 4) {
+                        <button class="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+                    }
                     <div class="image-list">
                         @foreach (var image in Model.ImageList) {
                             <img class="image-item" src="~/uploads/@image" alt="">
                         }
                     </div>
-                    <button class="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
+                    @if (Model.ImageList.Count > 4) {
+                        <button class="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
+                    }
                 </div>
             }
         </div>
@@ -142,10 +146,10 @@
                     <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
                 </div>
                 <div>
-                    Mỗi đôi giày Ananas trước khi xuất xưởng đều trải qua nhiều khâu kiểm tra. Tuy vậy, trong quá trình sử dụng, nếu nhận thấy các lỗi: gãy đế, hở đế, đứt chỉ may,...trong thời gian 6 tháng từ ngày mua hàng, mong bạn sớm gửi sản phẩm về Ananas nhằm giúp chúng tôi có cơ hội phục vụ bạn tốt hơn. Vui lòng gửi sản phẩm về bất kỳ cửa hàng Ananas nào, hoặc gửi đến trung tâm bảo hành Ananas ngay trong trung tâm TP.HCM trong giờ hành chính:
+                    Mỗi đôi giày Ananas trước khi xuất xưởng đều trải qua nhiều khâu kiểm tra.Tuy vậy, trong quá trình sử dụng, nếu nhận thấy các lỗi: gãy đế, hở đế, đứt chỉ may,...trong thời gian 6 tháng từ ngày mua hàng, mong bạn sớm gửi sản phẩm về Ananas nhằm giúp chúng tôi có cơ hội phục vụ bạn tốt hơn. Vui lòng gửi sản phẩm về bất kỳ cửa hàng Ananas nào, hoặc gửi đến trung tâm bảo hành Ananas ngay trong trung tâm TP.HCM trong giờ hành chính:
                     <br>
-                    <b>Địa chỉ:</b> 5C Tân Cảng, P.25, Q.Bình Thạnh , TP. Hồ Chí Minh.
-                    <b>Hotline:</b> 028 2211 0067
+                    <b> Địa chỉ:</b> 5C Tân Cảng, P.25, Q.Bình Thạnh, TP. Hồ Chí Minh.
+                    <b> Hotline:</b> 028 2211 0067
                 </div>
             </div>
         </div>

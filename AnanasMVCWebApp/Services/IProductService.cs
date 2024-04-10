@@ -13,9 +13,10 @@ namespace AnanasMVCWebApp.Services {
         // Product Management
         public ProductBaseEM GetProductForEdit(string code);
         public ProductBaseEM GetProductForCreate();
-        public void UpdateProduct(ProductBaseEM model);
+        public bool UpdateProduct(ProductBaseEM model);
+        public bool CreateProduct(ProductBaseEM model);
         public List<Collection> GetCollectionsByCategory(int id);
-        public string GenerateProductCode(int collectionId);
+        public string GenerateProductCode(int collectionId, int count);
         public List<ProductSkuEM> GenerateSKUList(int categoryId, string code);
 
     }

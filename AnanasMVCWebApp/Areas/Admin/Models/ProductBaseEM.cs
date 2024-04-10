@@ -14,7 +14,7 @@ namespace AnanasMVCWebApp.Areas.Admin.Models {
         public int CategoryId { get; set; }
         public List<Category> Categories { get; set; } = new List<Category>();
         [DisplayName("Kiểu dáng")]
-        public int StyleId { get; set; }
+        public int StyleId { get; set; } = -1;
         public List<Style> Styles { get; set; } = new List<Style>();
         [Required(ErrorMessage = "Vui lòng chọn dòng sản phẩm"), 
         DisplayName("Dòng sản phẩm")]

@@ -246,8 +246,8 @@
 }
 
 .actions-group a {
-    background-color: var(--primary);
-    /*outline: 1px solid var(--neutral-0);*/
+    color: var(--primary) !important;
+    outline: 2px solid var(--primary);
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -257,8 +257,11 @@
     border-radius: 6px;
 }
 
-.actions-group a p, .actions-group a i {
-    color: var(--neutral-100);
+.actions-group a:hover {
+    color: var(--neutral-100) !important;
+    outline: 2px solid var(--primary);
+    background-color: var(--primary);
+    transition: 0.2s;
 }
 
 .actions-wrapper button[type="button"] {
@@ -660,7 +663,6 @@ input[type="color"] {
     display: block;
     height: 100%;
     width: 100%;
-    padding: auto;
 }
 
 .upload-image-wrapper input[type="file"] {
@@ -740,6 +742,17 @@ table.stock-table td {
     border-radius: 4px;
 }
 
+.input-group--stock input[type="text"]:hover {
+    outline: none;
+    border: 1px solid var(--neutral-50);
+    transition: 0.2s;
+}
+
+.input-group--stock input[type="text"]:focus {
+    outline: none;
+    border: 1px solid var(--neutral-50);
+}
+
 .input-group--stock input[type="text"]:disabled {
     color: var(--neutral-80);
     cursor: not-allowed;
@@ -764,16 +777,17 @@ table.stock-table td {
     width: 100%;
     padding: 16px;
     font-size: 16px;
-    outline: 1px solid var(--neutral-80);
+    border: 1.6px solid var(--primary);
     border-radius: 8px;
     color: var(--primary);
     font-weight: 700;
+    cursor: pointer;
 }
 
 #add-variant-btn:hover {
     background-color: var(--primary);
     color: var(--neutral-100);
-    outline: 0 solid var(--neutral-80);
+    border: 1.6px solid var(--primary);
     transition: 0.3s
 }
 

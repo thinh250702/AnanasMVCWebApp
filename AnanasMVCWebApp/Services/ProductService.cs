@@ -3,7 +3,9 @@ using AnanasMVCWebApp.Models;
 using AnanasMVCWebApp.Models.ViewModels;
 using AnanasMVCWebApp.Repositories;
 using AnanasMVCWebApp.Utilities;
-using System.Xml.Linq;
+using System.Drawing;
+using System;
+using System.Xml.Linq;  
 
 namespace AnanasMVCWebApp.Services
 {
@@ -51,7 +53,7 @@ namespace AnanasMVCWebApp.Services
             return _unitOfWork.CollectionRepository.GetCollectionsByCategory(cat);
         }
 
-        public string GenerateProductCode(int collectionId) {
+        public string GenerateProductCode(int collectionId, int count) {
             string collectionCode = _unitOfWork.CollectionRepository.GetById(collectionId).Code;
             ProductVariant? result = _unitOfWork.ProductVariantRepository.GetLastProductVariantByCode($"A{collectionCode}");
             string code = "";
@@ -61,7 +63,7 @@ namespace AnanasMVCWebApp.Services
             } else {
                 // Code + 1
                 int number = int.Parse(result.Code.Substring(3));
-                number++;
+                number += (count + 1);
                 if (number < 10) {
                     code = $"A{collectionCode}00{number}";
                 } else if (number < 100) {
@@ -152,8 +154,55 @@ namespace AnanasMVCWebApp.Services
                 SKUList = _unitOfWork.ProductSKURepository.GetAllProductSKUs(productVariant),
             };
         }
+        public bool CreateProduct(ProductBaseEM model) {
+            List<ProductVariant> variantList = new List<ProductVariant>();
+            List<ProductSKU> skuList = new List<ProductSKU>();
+            Product product = new Product() {
+                Name = model.Name,
+                Description = model.Description,
+                Price = model.Price,
+                Collection = _unitOfWork.CollectionRepository.GetById(model.CollectionId),
+                Style = (model.StyleId != -1) ? _unitOfWork.StyleRepository.GetById(model.StyleId) : null
+            };
 
-        public void UpdateProduct(ProductBaseEM model) {
+            string uploadDir = Path.Combine(_environment.WebRootPath, "uploads/");
+            //Create folder if not exist
+            if (!Directory.Exists(uploadDir))
+                Directory.CreateDirectory(uploadDir);
+
+            model.Variants.ForEach(item => {
+                ProductVariant variant = new ProductVariant() {
+                    Code = item.ProductCode,
+                    ColorName = item.ColorName,
+                    HexCode = item.HexCode.Replace("#", ""),
+                    Color = _unitOfWork.ColorRepository.GetNearestColor(item.HexCode.Replace("#", "")),
+                    Product = product
+                };
+                variantList.Add(variant);
+
+                // File Upload
+                UploadFileToFolder(uploadDir, item.ProductCode, item.FilesUpload);
+
+                item.SKUs.ForEach(skuItem => {
+                    ProductSKU sku = new ProductSKU() {
+                        Code = skuItem.Code,
+                        InStock = skuItem.InStock,
+                        Size = _unitOfWork.SizeRepository.GetSizeByCode(skuItem.Code.Split("-")[1]),
+                        ProductVariant = variant
+                    };
+                    skuList.Add(sku);
+                });
+            });
+            // Add to database
+            _unitOfWork.ProductRepository.Insert(product);
+            _unitOfWork.ProductVariantRepository.InsertRange(variantList);
+            _unitOfWork.ProductSKURepository.InsertRange(skuList);
+            _unitOfWork.Complete();
+            return true;
+        }
+        
+        public bool UpdateProduct(ProductBaseEM model) {
+            string uploadDir = Path.Combine(_environment.WebRootPath, "uploads/");
             Product product = _unitOfWork.ProductRepository.GetById(model.ProductId);
             if (product != null) {
                 // Update Base Product
@@ -170,6 +219,10 @@ namespace AnanasMVCWebApp.Services
                         variant.ColorName = item.ColorName;
                         variant.HexCode = item.HexCode.Replace("#", "");
                         variant.Color = _unitOfWork.ColorRepository.GetNearestColor(item.HexCode.Replace("#", ""));
+
+                        // Update Image
+                        UploadFileToFolder(uploadDir, item.ProductCode, item.FilesUpload);
+
                         if (item.SKUs != null) {
                             item.SKUs.ForEach(skuItem => {
                                 ProductSKU? sku = _unitOfWork.ProductSKURepository.GetProductSKUByCode(skuItem.Code);
@@ -184,7 +237,9 @@ namespace AnanasMVCWebApp.Services
                 });
                 _unitOfWork.ProductRepository.Update(product);
                 _unitOfWork.Complete();
+                return true;
             }
+            return false;
         }
         public List<ProductSkuEM> GenerateSKUList(int categoryId, string code) {
             string categorySlug = _unitOfWork.CategoryRepository.GetById(categoryId).Slug;
@@ -194,7 +249,7 @@ namespace AnanasMVCWebApp.Services
                     for (int i = 35; i <= 46; i++) {
                         var shoeSize = _unitOfWork.SizeRepository.GetSizeByCode(i.ToString());
                         result.Add(new ProductSkuEM() {
-                            Code = $"{code}-{shoeSize.Name}",
+                            Code = $"{code}-{shoeSize.Code}",
                             SizeName = shoeSize.Name
                         });
                     }
@@ -203,7 +258,7 @@ namespace AnanasMVCWebApp.Services
                     for(int i = 1; i <= 5; i++) {
                         var clothingSize = _unitOfWork.SizeRepository.GetSizeByCode($"0{i}");
                         result.Add(new ProductSkuEM() {
-                            Code = $"{code}-{clothingSize.Name}",
+                            Code = $"{code}-{clothingSize.Code}",
                             SizeName = clothingSize.Name
                         });
                     }
@@ -211,14 +266,13 @@ namespace AnanasMVCWebApp.Services
                 case "accessories":
                     var accessorySize = _unitOfWork.SizeRepository.GetSizeByCode("00");
                     result.Add(new ProductSkuEM() {
-                        Code = $"{code}-{accessorySize.Name}",
+                        Code = $"{code}-{accessorySize.Code}",
                         SizeName = accessorySize.Name
                     });
                     break;
             }
             return result;
         }
-
         private List<string> GetAllProductImages(string code) {
             var imageList = new List<string>();
             string[] filePaths = Directory.GetFiles(Path.Combine(this._environment.WebRootPath, "uploads/"));
@@ -230,7 +284,26 @@ namespace AnanasMVCWebApp.Services
             }
             return imageList;
         }
-
-        
+        private void UploadFileToFolder(string dir, string code, List<IFormFile> list) {
+            GetAllProductImages(code).ForEach(imageName => {
+                string path = Path.Combine(dir, imageName);
+                if (File.Exists(path)) {
+                    File.Delete(path);
+                }
+            });
+            for (int i = 0; i < list.Count; i++) {
+                string fileExtension = list[i].FileName.Split('.')[1];
+                string newFileName = $"{code}_{i}.{fileExtension}";
+                string filePath = Path.Combine(dir, newFileName);
+                // Check if file exists with its full path
+                if (File.Exists(filePath)) {
+                    File.Delete(filePath);
+                }
+                // Add file to folder
+                FileStream stream = new FileStream(filePath, FileMode.Create);
+                list[i].CopyTo(stream);
+                stream.Close();
+            }
+        }
     }
 }

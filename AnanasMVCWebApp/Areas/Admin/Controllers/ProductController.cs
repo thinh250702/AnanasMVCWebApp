@@ -21,17 +21,22 @@ namespace AnanasMVCWebApp.Areas.Admin.Controllers {
         }
         [HttpPost]
         public IActionResult Create(ProductBaseEM model) {
-        
-            return View();
+            bool result = _productService.CreateProduct(model);
+            if (result) {
+                TempData["success"] = "Thêm sản phẩm thành công";
+                return RedirectToAction("Index");
+            } else {
+                TempData["error"] = "Thêm sản phẩm thất bại";
+                return View(model);
+            }
         }
         public IActionResult Edit(string id) {
             return View(_productService.GetProductForEdit(id));
         }
         [HttpPost]
         public IActionResult Edit([FromRoute] string id, [FromForm] ProductBaseEM model) {
-            var result = model;
-            if (ModelState.IsValid) {
-                _productService.UpdateProduct(model);
+            bool result = _productService.UpdateProduct(model);
+            if (result) {
                 TempData["success"] = "Cập nhật sản phẩm thành công";
             } else {
                 TempData["error"] = "Cập nhật sản phẩm thất bại";
@@ -46,7 +51,7 @@ namespace AnanasMVCWebApp.Areas.Admin.Controllers {
         }
         [HttpGet]
         public IActionResult GetVariantTemplate(int categoryId, int collectionId, int count) {
-            string code = _productService.GenerateProductCode(collectionId);
+            string code = _productService.GenerateProductCode(collectionId, count);
             var model = new ProductVariantEM() {
                 ProductCode = code,
                 SKUs = _productService.GenerateSKUList(categoryId, code)

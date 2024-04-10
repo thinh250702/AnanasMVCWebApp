@@ -9,6 +9,26 @@
         $("input[type='color']").change(function () {
             $(this).parent().css("background-color", $(this).val());
         });
+        $(".image-item").hover(function () {
+            $(this).find(".overlay").fadeIn("fast");
+        }, function () {
+            $(this).find(".overlay").fadeOut("fast");
+        });
+        $("input[type='file']").bind({
+            change: function () {
+                console.log("Hello");
+                var fileList = $(this)[0].files;
+                $(this).closest(".image-grid").find(".image-item").remove();
+                for (let index = 0; index < fileList.length; index++) {
+                    $(`
+                        <div class="image-item">
+                            <div class="overlay"><i class="fa-solid fa-trash-can"></i></div>
+                            <img data-img-index="${index}" src="${URL.createObjectURL(fileList[index])}" alt="">
+                        </div>
+                    `).insertBefore($(this).parent());
+                }
+            }
+        })
     </script>
     <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
     <script type="text/javascript">
@@ -20,7 +40,7 @@
     <h4>Chi tiết sản phẩm</h4>
 </div>
 <div class="row-wrapper">
-    <form asp-controller="Product" asp-action="Edit" asp-area="Admin" method="POST" style="width: 100%;">
+    <form asp-controller="Product" asp-action="Edit" asp-area="Admin" method="POST" enctype="multipart/form-data" style="width: 100%;">
         <div class="form-wrapper">
             <div class="form-column">
                 <div>
@@ -124,13 +144,13 @@
                                                     <img src="~/uploads/@image" alt="">
                                                 </div>
                                             }
-                                            @* <div class="upload-image-wrapper">
-                                                <input type="file" name="imageUpload" id="imageUpload" accept="image/*">
-                                                <label for="imageUpload">
+                                            <div class="upload-image-wrapper">
+                                                <input asp-for="@Model.Variants[i].FilesUpload" multiple accept="image/*">
+                                                <label asp-for="@Model.Variants[i].FilesUpload">
                                                     <i class="fa-regular fa-image"></i>
                                                     <span>Thêm hình ảnh (tối đa 8 ảnh)</span>
                                                 </label>
-                                            </div> *@
+                                            </div>
                                         </div>
                                         <span class="input-error"></span>
                                     </div>
