@@ -23,7 +23,6 @@ namespace AnanasMVCWebApp.Controllers {
             ProductViewModel? product = _productService.GetProductByCode(id);
             if (product == null) {
                 return NotFound();
-                //return RedirectToAction("Index");
             } else {
                 return View(product);
             }

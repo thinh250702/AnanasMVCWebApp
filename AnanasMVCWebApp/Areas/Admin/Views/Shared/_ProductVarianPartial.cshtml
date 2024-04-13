@@ -10,7 +10,7 @@
         <div class="input-group">
             <label>Mã sản phẩm</label>
             <input readonly type="text" id="Variants_@(index)__ProductCode" name="Variants[@(index)].ProductCode" value="@Model.ProductCode">
-            <span class="input-error"></span>
+            <span asp-validation-for="@Model.ProductCode" class="input-error"></span>
         </div>
     </div>
     <div class="form-row">
@@ -20,7 +20,7 @@
                 <div class="color-picker-wrapper"><input class="color-picker" id="Variants_@(index)__HexCode" name="Variants[@(index)].HexCode" type="color" value="@Model.HexCode"></div>
                 <input type="text" id="Variants_@(index)__ColorName" name="Variants[@(index)].ColorName" placeholder="Name this color">
             </div>
-            <span class="input-error"></span>
+            <span asp-validation-for="@Model.ColorName" class="input-error"></span>
         </div>
     </div>
     <div class="form-row">
@@ -35,7 +35,7 @@
                     </label>
                 </div>
             </div>
-            <span class="input-error"></span>
+            <span asp-validation-for="@Model.FilesUpload" class="input-error"></span>
         </div>
     </div>
     <div class="form-row">

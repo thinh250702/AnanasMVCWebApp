@@ -213,6 +213,29 @@ namespace AnanasMVCWebApp.Utilities {
                     await _userManager.AddToRoleAsync(admin, ApplicationRole.Admin);
                 }
             }
+
+            ShippingMethod ghnMethod = new ShippingMethod("Giao hàng nhanh", "Thời gian giao hàng dự kiến từ 3 - 5 ngày", "ghn");
+            ShippingMethod ghtkMethod = new ShippingMethod("Giao hàng tiết kiệm", "Thời gian giao hàng dự kiến từ 5 - 7 ngày", "ghtk");
+            if (!_context.ShippingMethods.Any()) {
+                _context.ShippingMethods.AddRange(new List<ShippingMethod>() { ghnMethod, ghtkMethod });
+                _context.SaveChanges();
+            }
+
+            PaymentMethod cod = new PaymentMethod("Thanh toán trực tiếp khi giao hàng", "Là phương thức thanh toán bằng tiền mặt trực tiếp khi nhận hàng", "cod");
+            PaymentMethod card = new PaymentMethod("Thanh toán bằng Thẻ quốc tế / Thẻ nội địa / QR Code", "Phương thức thanh toán sử dụng các loại thẻ quốc tế như Visa, Master, JCB,… hoặc các loại thẻ thanh toán nội địa (ATM) hoặc thanh toán bằng QR ngân hàng hoặc ví điện tử.", "card");
+            if (!_context.PaymentMethods.Any()) {
+                _context.PaymentMethods.AddRange(new List<PaymentMethod>() { cod, card });
+                _context.SaveChanges();
+            }
+
+            OrderStatus placed = new OrderStatus("Đặt hàng thành công", "placed");
+            OrderStatus logistic = new OrderStatus("Chuyển qua giao nhận", "logistic");
+            OrderStatus delivering = new OrderStatus("Đang giao hàng", "delivering");
+            OrderStatus success = new OrderStatus("Giao hàng thành công", "success");
+            if (!_context.OrderStatus.Any()) {
+                _context.OrderStatus.AddRange(new List<OrderStatus>() { placed, logistic, delivering, success });
+                _context.SaveChanges();
+            }
         }
     }
 }

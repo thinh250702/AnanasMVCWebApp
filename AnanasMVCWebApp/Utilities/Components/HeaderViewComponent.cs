@@ -12,7 +12,8 @@ namespace AnanasMVCWebApp.Utilities.Components {
         public async Task<IViewComponentResult> InvokeAsync() {
             if (User.Identity!.IsAuthenticated) {
                 Customer user = await _userManager.FindByEmailAsync(User.Identity.Name);
-                ViewBag.FullName = user != null ? user.FullName.Split(" ").Last() : "";
+                ViewBag.Name = user != null ? user.FullName.Split(" ").Last() : "";
+                ViewBag.FullName = user != null ? user.FullName : "";
                 ViewBag.Email = user != null ? user.Email : "";
             }
             return View();

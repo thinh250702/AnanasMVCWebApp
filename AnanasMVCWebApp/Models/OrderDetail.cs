@@ -2,7 +2,8 @@
 
 namespace AnanasMVCWebApp.Models {
     public class OrderDetail {
-        public int ProductSKUId { get; set; }
+        public int ProductSKUSizeId { get; set; }
+        public int ProductSKUProductVariantId { get; set; }
         public int OrderId { get; set; }
         public virtual ProductSKU ProductSKU { get; set; }
         public virtual Order Order { get; set; }

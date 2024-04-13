@@ -76,50 +76,74 @@ $(document).ready(function(){
     
     // CHECKOUT
     //  ---Vietnam Location Select
-    var cities = $("#city-select");
-    var districts = $("#district-select");
-    var wards = $("#ward-select");
+    var cities = $("select[name='Province']");
+    var districts = $("select[name='District']");
+    var wards = $("select[name='Ward']");
+    var apiToken = "760d5095-f700-11ee-893f-b6ed573185af";
     $.ajax({
-        url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
-        data: { format: 'json' },
-        error: () => {
-            console.log("There's something wrong!");
-        },
+        //url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
+        url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/province",
+        headers: { "Token": apiToken },
         dataType: "json",
-        success: (data) => {
-            // console.log(data)
-            renderData(data)
+        success: (response) => {
+            response.data.forEach(
+                city => { cities.append(new Option(city.ProvinceName, city.ProvinceID)) }
+            );
+        },
+        error: () => {
+            alert("Failed to load province data!");
         }
     })
-    function renderData(data) {
-        data.forEach(city => {
-            cities.append(new Option(city.Name, city.Id))
-        });
-        cities.on('change', function() {
-            districts.empty().append('<option value="" selected disabled>Quận/Huyện</option>');
-            wards.empty().append('<option value="" selected disabled>Phường/Xã</option>');
-            if(this.value != ""){
-                const dataDistricts = data.filter(n => n.Id === this.value)[0].Districts;
-                dataDistricts.forEach(district => {
-                    districts.append(new Option(district.Name, district.Id))
-                });
-            }
-        });
-        districts.on('change', function() {
-            wards.empty().append('<option value="" selected disabled>Phường/Xã</option>');
-            const dataCity = data.filter(n => n.Id === cities.val());
-            if (this.value != ""){
-                const dataWards = dataCity[0].Districts.filter(n => n.Id === this.value)[0].Wards;
-                dataWards.forEach(ward => {
-                    wards.append(new Option(ward.Name, ward.Id))
-                });
-            }
-        })
-    }
+    cities.change(function () {
+        districts.empty().append('<option value="" selected disabled>Quận/Huyện</option>');
+        wards.empty().append('<option value="" selected disabled>Phường/Xã</option>');
+        if (this.value != "") {
+            $("input[name='ProvinceName']").val($("select[name='Province'] option:selected").text())
+            $.ajax({
+                url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/district",
+                headers: { "Token": apiToken },
+                data: { province_id: this.value },
+                dataType: "json",
+                success: (response) => {
+                    response.data.forEach(
+                        district => { districts.append(new Option(district.DistrictName, district.DistrictID)) }
+                    );
+                },
+                error: () => {
+                    alert("Failed to load district data!");
+                }
+            });
+        }
+    })
+    districts.change(function () {
+        wards.empty().append('<option value="" selected disabled>Phường/Xã</option>');
+        if (this.value != "") {
+            $("input[name='DistrictName']").val($("select[name='District'] option:selected").text())
+            $.ajax({
+                url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward",
+                headers: { "Token": apiToken },
+                data: { district_id: this.value },
+                dataType: "json",
+                success: (response) => {
+                    response.data.forEach(
+                        ward => { wards.append(new Option(ward.WardName, ward.WardCode)) }
+                    );
+                },
+                error: () => {
+                    alert("Failed to load ward data!");
+                }
+            });
+        }
+    })
+    wards.change(function () {
+        if (this.value != "") {
+            $("input[name='WardName']").val($("select[name='Ward'] option:selected").text())
+        }
+    });
 
     // ---Checkout Radio Option
-    var shippingRadios = $("input:radio[name='shippingMethod']");
-    var paymentRadios = $("input:radio[name='paymentMethod']");
+    var shippingRadios = $("input:radio[name='ShippingMethod']");
+    var paymentRadios = $("input:radio[name='PaymentMethod']");
     shippingRadios.on("change", function(){
         shippingRadios.each(function(index, element){
             $(element).parent().removeClass("checked");
@@ -215,6 +239,9 @@ $(document).ready(function(){
         }
         $(this).toggleClass("fa-eye").toggleClass("fa-eye-slash")
     })
+
+    var nextHeight = $(".toast-msg").width() + 20;
+    $(".toast-msg").animate({ left: nextHeight }, "slow");
     setTimeout(function () {
         $(".toast-msg").animate({ left: "-=40%" }, "slow");
     }, 2000);

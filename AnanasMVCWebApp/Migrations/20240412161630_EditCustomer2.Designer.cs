@@ -4,6 +4,7 @@ using AnanasMVCWebApp.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AnanasMVCWebApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240412161630_EditCustomer2")]
+    partial class EditCustomer2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -201,12 +203,6 @@ namespace AnanasMVCWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Discount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GrandTotal")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
@@ -240,13 +236,16 @@ namespace AnanasMVCWebApp.Migrations
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.OrderDetail", b =>
                 {
-                    b.Property<int>("ProductSKUSizeId")
+                    b.Property<int>("ProductSKUId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<int>("ProductSKUProductVariantId")
                         .HasColumnType("int");
 
-                    b.Property<int>("OrderId")
+                    b.Property<int>("ProductSKUSizeId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -255,9 +254,11 @@ namespace AnanasMVCWebApp.Migrations
                     b.Property<int>("SubTotal")
                         .HasColumnType("int");
 
-                    b.HasKey("ProductSKUSizeId", "ProductSKUProductVariantId", "OrderId");
+                    b.HasKey("ProductSKUId", "OrderId");
 
                     b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductSKUSizeId", "ProductSKUProductVariantId");
 
                     b.ToTable("OrderDetails");
                 });
@@ -407,12 +408,6 @@ namespace AnanasMVCWebApp.Migrations
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.ShippingInfo", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -443,8 +438,6 @@ namespace AnanasMVCWebApp.Migrations
                     b.Property<string>("Ward")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
 
                     b.HasIndex("OrderId");
 

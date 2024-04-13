@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace AnanasMVCWebApp.Controllers {
-    /*[CustomAuthorization(role: ApplicationRole.Customer)]*/
     public class HomeController : Controller {
         private readonly ILogger<HomeController> _logger;
 

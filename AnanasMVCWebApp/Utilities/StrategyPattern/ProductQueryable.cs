@@ -1,6 +1,6 @@
 ﻿using AnanasMVCWebApp.Models;
 
-namespace AnanasMVCWebApp.Utilities
+namespace AnanasMVCWebApp.Utilities.StrategyPattern
 {
     public class ProductQueryable
     {
@@ -16,7 +16,7 @@ namespace AnanasMVCWebApp.Utilities
         }
         public void setFilterStrategy(IProductFilterStrategy strategy)
         {
-            this.filterStrategy = strategy;
+            filterStrategy = strategy;
         }
         public void performFilter(string options)
         {

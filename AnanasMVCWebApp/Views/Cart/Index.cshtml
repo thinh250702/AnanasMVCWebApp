@@ -76,11 +76,11 @@
                 @foreach (var item in Model.CartItems) {
                     <div id="@item.ProductId" class="cart-list__item">
                         <div class="cart-item__image">
-                            <img src="~/uploads/@item.ImageName" alt="">
+                            <a asp-action="Detail" asp-controller="Product" asp-route-id="@item.ProductId.Substring(0,6)"><img src="~/uploads/@item.ImageName" alt=""></a>
                         </div>
                         <div class="cart-item__info">
                             <div class="item-infos">
-                                <div class="item-name">@item.ProductName</div>
+                                <a asp-action="Detail" asp-controller="Product" asp-route-id="@item.ProductId.Substring(0,6)"><div class="item-name">@item.ProductName</div></a>
                                 <div class="item-unit-price">@Html.FormatValue(@item.Price, "{0:0,0}") VND</div>
                             </div>
                             <div class="item-options">
@@ -151,7 +151,7 @@
                         <span>@Html.FormatValue(Model.GrandTotal, "{0:0,0}") VND</span>
                     </li>
                 </ul>
-                <button>Thanh toán</button>
+                <a asp-action="Index" asp-controller="Checkout"><button>Thanh toán</button></a>
             </div>
         </div>
     </div>

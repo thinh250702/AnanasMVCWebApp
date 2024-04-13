@@ -50,9 +50,17 @@ builder.Services.AddTransient<ICollectionRepository, CollectionRepository>();
 builder.Services.AddTransient<IStyleRepository, StyleRepository>();
 builder.Services.AddTransient<IColorRepository, ColorRepository>();
 builder.Services.AddTransient<ISizeRepository, SizeRepository>();
+builder.Services.AddTransient<IOrderRepository, OrderRepository>();
+builder.Services.AddTransient<IOrderDetailRepository, OrderDetailRepository>();
+builder.Services.AddTransient<IOrderStatusRepository, OrderStatusRepository>();
+builder.Services.AddTransient<IShippingRepository, ShippingRepository>();
+builder.Services.AddTransient<IPaymentRepository, PaymentRepository>();
+builder.Services.AddTransient<IShippingInfoRepository, ShippingInfoRepository>();
+
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<ICartService, CartService>();
+builder.Services.AddTransient<IOrderService, OrderService>();
 
 var app = builder.Build();
 

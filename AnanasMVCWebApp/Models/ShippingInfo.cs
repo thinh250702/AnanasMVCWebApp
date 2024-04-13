@@ -1,5 +1,9 @@
-﻿namespace AnanasMVCWebApp.Models {
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AnanasMVCWebApp.Models {
     public class ShippingInfo {
+        [Key]
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
@@ -9,15 +13,5 @@
         public string Ward { get; set; }
         public int OrderId { get; set; }
         public virtual Order Order { get; set; }
-        public ShippingInfo(string name, string phone, string email, string address, string city, string district, string ward, int orderId) {
-            Name = name;
-            Phone = phone;
-            Email = email;
-            Address = address;
-            City = city;
-            District = district;
-            Ward = ward;
-            OrderId = orderId;
-        }
     }
 }

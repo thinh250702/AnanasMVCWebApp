@@ -1163,7 +1163,7 @@ ul#colors-wrapper a.selected {
 }
 
 .cart-list-wrapper {
-    width: 70%;
+    width: 65%;
     /* background-color: red; */
 }
 
@@ -1285,7 +1285,7 @@ ul#colors-wrapper a.selected {
 }
 
 .cart-summary-wrapper {
-    width: 30%;
+    width: 35%;
     margin-top: 104px;
     margin-left: 40px;
 }
@@ -1337,7 +1337,7 @@ ul#colors-wrapper a.selected {
 .checkout-info-body {
     padding: 0 24px;
     margin-top: 22px;
-    margin-bottom: 32px;
+    margin-bottom: 20px;
 }
 
 label.radio-container input {
@@ -1412,7 +1412,7 @@ label.radio-container.checked > div {
 }
 
 label.radio-container.checked > div .checkmark {
-    color: var(--neutral-0);
+    color: var(--neutral-100);
 }
 /* label.radio-container .label-wrapper .checkmark.checked {
     color: var(--neutral-0);
@@ -1807,3 +1807,138 @@ ul.progress-label li.finished i {
     transform: translateY(4px);
     box-shadow: none;
 }
+
+.coupon-panel {
+    padding: 0 24px;
+    margin-bottom: 24px;
+}
+
+    .coupon-panel h5 {
+        text-transform: uppercase;
+        font-size: 18px;
+        font-weight: 800;
+    }
+
+    .coupon-panel > div > div:first-child {
+        margin: 12px 0 18px;
+        display: flex;
+    }
+
+        .coupon-panel > div > div:first-child input {
+            flex: 1;
+            border: 1px solid var(--neutral-0);
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .coupon-panel > div > div:first-child button {
+            color: var(--primary);
+            font-weight: 600;
+            background-color: var(--neutral-100);
+            border: 2px solid var(--primary);
+            padding: 0 20px;
+            font-size: 16px;
+            margin-left: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+            .coupon-panel > div > div:first-child button:hover {
+                background-color: var(--primary);
+                color: var(--neutral-100);
+                transition: 0.2s;
+            }
+
+.coupon-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.coupon-item {
+    display: flex;
+    position: relative;
+    background-color: var(--neutral-90);
+    /* border: 1px solid var(--neutral-0); */
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+    .coupon-item::before {
+        content: "";
+        width: 25px;
+        height: 25px;
+        background-color: var(--neutral-100);
+        position: absolute;
+        border-radius: 100px;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .coupon-item::after {
+        content: "";
+        width: 25px;
+        height: 25px;
+        background-color: var(--neutral-100);
+        position: absolute;
+        border-radius: 100px;
+        right: 0;
+        top: 50%;
+        transform: translate(50%, -50%);
+    }
+
+    .coupon-item > div {
+        display: flex;
+        flex-direction: column;
+    }
+
+        .coupon-item > div:first-child {
+            background-color: var(--primary);
+            width: 100px;
+            height: 100px;
+            justify-content: center;
+            align-items: center;
+        }
+
+            .coupon-item > div:first-child span {
+                color: var(--neutral-100);
+                font-size: 24px;
+                line-height: 32px;
+                text-transform: uppercase;
+                font-weight: 800;
+            }
+
+        .coupon-item > div:nth-child(2) {
+            flex: 1;
+            justify-content: center;
+            padding-left: 18px;
+            color: var(--neutral-0);
+        }
+
+            .coupon-item > div:nth-child(2) > span:first-child {
+                font-size: 24px;
+                font-weight: 700;
+            }
+
+            .coupon-item > div:nth-child(2) > span:last-child {
+                line-height: 20px;
+            }
+
+        .coupon-item > div:last-child {
+            padding: 14px;
+        }
+
+            .coupon-item > div:last-child button {
+                color: var(--primary);
+                background-color: transparent;
+                font-weight: 700;
+                font-size: 14px;
+                cursor: pointer;
+                line-height: 16px;
+            }
+
+                .coupon-item > div:last-child button:hover {
+                    border-bottom: 2px solid var(--primary);
+                }

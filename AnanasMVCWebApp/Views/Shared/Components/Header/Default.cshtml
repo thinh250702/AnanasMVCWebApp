@@ -15,7 +15,7 @@
             <ul>
                 @if (User.Identity.IsAuthenticated) {
                     <li id="user-nav" class="navbar__action__item user">
-                        <a href="">Hi, @ViewBag.FullName <i class="fa-solid fa-user"></i></a>
+                        <a href="">Hi, @ViewBag.Name <i class="fa-solid fa-user"></i></a>
                         <div id="user-dropdown">
                             <div>
                                 <p>@ViewBag.FullName</p>

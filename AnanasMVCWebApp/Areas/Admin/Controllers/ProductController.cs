@@ -21,14 +21,19 @@ namespace AnanasMVCWebApp.Areas.Admin.Controllers {
         }
         [HttpPost]
         public IActionResult Create(ProductBaseEM model) {
-            bool result = _productService.CreateProduct(model);
-            if (result) {
+            if (ModelState.IsValid) {
+                TempData["success"] = "Thêm sản phẩm thành công";
+                /*bool result = _productService.CreateProduct(model);*/
+            }
+            TempData["error"] = "Thêm sản phẩm thất bại";
+            return View(_productService.GetProductForCreate());
+            /*if (result) {
                 TempData["success"] = "Thêm sản phẩm thành công";
                 return RedirectToAction("Index");
             } else {
                 TempData["error"] = "Thêm sản phẩm thất bại";
                 return View(model);
-            }
+            }*/
         }
         public IActionResult Edit(string id) {
             return View(_productService.GetProductForEdit(id));
@@ -47,7 +52,6 @@ namespace AnanasMVCWebApp.Areas.Admin.Controllers {
         public IActionResult GetCollections(int id) {
             var data = _productService.GetCollectionsByCategory(id);
             return Json(data);
-            //return Json(new { stock = _productService.GetProductMaxOrderQuantity(id, 0) });
         }
         [HttpGet]
         public IActionResult GetVariantTemplate(int categoryId, int collectionId, int count) {

@@ -189,6 +189,7 @@
                         @* Append by AJAX call *@
                     </div>
                     <button id="add-variant-btn" type="button"><i class="fa-solid fa-plus"></i> Add Product Variant</button>
+                    @Html.ValidationMessageFor(i => i.Variants, "", new { @class = "input-error" })
                 </div>
                 <div class="form-button-group">
                     <a asp-controller="Product" asp-action="Index" asp-area="Admin" id="discardBtn">Huỷ</a>

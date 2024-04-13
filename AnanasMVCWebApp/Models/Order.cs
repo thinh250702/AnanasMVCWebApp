@@ -7,6 +7,8 @@ namespace AnanasMVCWebApp.Models {
         public int Id { get; set; }
         public string Code { get; set; }
         public DateTime OrderDate { get; set; }
+        public int GrandTotal { get; set; }
+        public int Discount { get; set; }
         public int OrderTotal { get; set; }
         public int OrderStatusId { get; set; }
         public int ShippingMethodId { get; set; }
@@ -18,7 +20,7 @@ namespace AnanasMVCWebApp.Models {
         public string CustomerId { get; set; }
         public virtual Customer Customer { get; set; }
         public Order() {
-            Code = Guid.NewGuid().ToString("N").Substring(0, 8);
+            Code = Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper();
         }
     }
     public class OrderStatus {

@@ -2,10 +2,7 @@
 using AnanasMVCWebApp.Models;
 using AnanasMVCWebApp.Models.ViewModels;
 using AnanasMVCWebApp.Repositories;
-using AnanasMVCWebApp.Utilities;
-using System.Drawing;
-using System;
-using System.Xml.Linq;  
+using AnanasMVCWebApp.Utilities.StrategyPattern;
 
 namespace AnanasMVCWebApp.Services
 {
@@ -19,9 +16,13 @@ namespace AnanasMVCWebApp.Services
         }
 
         public ProductListViewModel GetAllProductByFilters(string category, string collection, string style, string color, string price) {
+            // Get all product variant as type IQueryable
             ProductQueryable queryable = new(_unitOfWork.ProductVariantRepository.GetAll().AsQueryable());
+            // Initilize result view model
             ProductListViewModel products = new ProductListViewModel();
+            // Get category object by slug
             Category? queryCategory = _unitOfWork.CategoryRepository.GetCategoryBySlug(category);
+            // Filter products by using Startegy Pattern
             if (queryCategory != null) {
                 queryable.setFilterStrategy(new FilterByCategory());
                 queryable.performFilter(queryCategory.Slug);
@@ -38,6 +39,7 @@ namespace AnanasMVCWebApp.Services
                 queryable.setFilterStrategy(new FilterByColor());
                 queryable.performFilter(color);
             }
+            // Set property of result
             products.Category = queryCategory;
             products.CollectionFilter = (category != null) ? _unitOfWork.CollectionRepository.GetCollectionsByCategory(queryCategory!) : _unitOfWork.CollectionRepository.GetAll().ToList();
             products.StyleFilter = (category == "shoes" || category == null) ? _unitOfWork.StyleRepository.GetAll().ToList() : null;
@@ -55,22 +57,18 @@ namespace AnanasMVCWebApp.Services
 
         public string GenerateProductCode(int collectionId, int count) {
             string collectionCode = _unitOfWork.CollectionRepository.GetById(collectionId).Code;
+            // Get the last product by provided code
             ProductVariant? result = _unitOfWork.ProductVariantRepository.GetLastProductVariantByCode($"A{collectionCode}");
             string code = "";
-            if (result == null) {
-                // Code = 0
-                code = $"A{collectionCode}001";
+
+            int number = (result != null) ? int.Parse(result.Code.Substring(3)) : 0;
+            number += (count + 1);
+            if (number < 10) {
+                code = $"A{collectionCode}00{number}";
+            } else if (number < 100) {
+                code = $"A{collectionCode}0{number}";
             } else {
-                // Code + 1
-                int number = int.Parse(result.Code.Substring(3));
-                number += (count + 1);
-                if (number < 10) {
-                    code = $"A{collectionCode}00{number}";
-                } else if (number < 100) {
-                    code = $"A{collectionCode}0{number}";
-                } else {
-                    code = $"A{collectionCode}{number}";
-                }
+                code = $"A{collectionCode}{number}";
             }
             return code;
         }
@@ -197,8 +195,7 @@ namespace AnanasMVCWebApp.Services
             _unitOfWork.ProductRepository.Insert(product);
             _unitOfWork.ProductVariantRepository.InsertRange(variantList);
             _unitOfWork.ProductSKURepository.InsertRange(skuList);
-            _unitOfWork.Complete();
-            return true;
+            return _unitOfWork.Complete() > 0 ? true : false;
         }
         
         public bool UpdateProduct(ProductBaseEM model) {
@@ -221,7 +218,9 @@ namespace AnanasMVCWebApp.Services
                         variant.Color = _unitOfWork.ColorRepository.GetNearestColor(item.HexCode.Replace("#", ""));
 
                         // Update Image
-                        UploadFileToFolder(uploadDir, item.ProductCode, item.FilesUpload);
+                        if (item.FilesUpload.Count > 0) {
+                            UploadFileToFolder(uploadDir, item.ProductCode, item.FilesUpload);
+                        }
 
                         if (item.SKUs != null) {
                             item.SKUs.ForEach(skuItem => {
@@ -236,8 +235,7 @@ namespace AnanasMVCWebApp.Services
                     }
                 });
                 _unitOfWork.ProductRepository.Update(product);
-                _unitOfWork.Complete();
-                return true;
+                return _unitOfWork.Complete() > 0 ? true : false;
             }
             return false;
         }
@@ -275,7 +273,9 @@ namespace AnanasMVCWebApp.Services
         }
         private List<string> GetAllProductImages(string code) {
             var imageList = new List<string>();
+            // Get all files in 'uploads' folder
             string[] filePaths = Directory.GetFiles(Path.Combine(this._environment.WebRootPath, "uploads/"));
+            // Loop through each file
             foreach (string filePath in filePaths) {
                 string name = Path.GetFileName(filePath);
                 if (name.Contains(code)) {
@@ -285,15 +285,20 @@ namespace AnanasMVCWebApp.Services
             return imageList;
         }
         private void UploadFileToFolder(string dir, string code, List<IFormFile> list) {
+            // First, delete all the image contain 'code'
             GetAllProductImages(code).ForEach(imageName => {
                 string path = Path.Combine(dir, imageName);
                 if (File.Exists(path)) {
                     File.Delete(path);
                 }
             });
+            // Loop through the file input result
             for (int i = 0; i < list.Count; i++) {
+                // Get file extension
                 string fileExtension = list[i].FileName.Split('.')[1];
+                // Generate file name by code
                 string newFileName = $"{code}_{i}.{fileExtension}";
+                // Combine file name with path
                 string filePath = Path.Combine(dir, newFileName);
                 // Check if file exists with its full path
                 if (File.Exists(filePath)) {

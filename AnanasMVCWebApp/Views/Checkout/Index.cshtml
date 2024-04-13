@@ -1,8 +1,10 @@
-﻿@{
+﻿@using AnanasMVCWebApp.Models.ViewModels
+@model CheckoutViewModel
+@{
     ViewData["Title"] = "Checkout";
 }
 
-<form action="">
+@using (Html.BeginForm("Index", "Checkout", FormMethod.Post)) {
     <div class="checkout-wrapper wide">
         <div class="checkout-info-wrapper">
             <div class="checkout-info__item-container">
@@ -13,53 +15,56 @@
                 <div class="checkout-info-body">
                     <div class="form-row">
                         <div class="input-group">
-                            <label for="">Họ tên</label>
-                            <input type="text" name="" id="" placeholder="Họ tên">
-                            <span class="input-error">Error message</span>
+                            @Html.LabelFor(i => i.FullName)
+                            @Html.TextBoxFor(i => i.FullName, new { placeholder = "Họ tên" })
+                            @Html.ValidationMessageFor(i => i.FullName, "", new { @class = "input-error" })
                         </div>
                     </div>
                     <div class="form-row multiple">
                         <div class="input-group">
-                            <label for="">Số điện thoại</label>
-                            <input type="text" name="" id="" placeholder="Số điện thoại">
-                            <span class="input-error">Error message</span>
+                            @Html.LabelFor(i => i.Phone)
+                            @Html.TextBoxFor(i => i.Phone, new { placeholder = "Số điện thoại" })
+                            @Html.ValidationMessageFor(i => i.Phone, "", new { @class = "input-error" })
                         </div>
                         <div class="input-group">
-                            <label for="">Email</label>
-                            <input type="text" name="" id="" placeholder="Email">
-                            <span class="input-error">Error message</span>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="input-group">
-                            <label for="">Địa chỉ</label>
-                            <input type="text" name="" id="" placeholder="Địa chỉ">
-                            <span class="input-error">Error message</span>
+                            @Html.LabelFor(i => i.Email)
+                            @Html.TextBoxFor(i => i.Email, new { placeholder = "Email" })
+                            @Html.ValidationMessageFor(i => i.Email, "", new { @class = "input-error" })
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="input-group">
-                            <label for="">Tỉnh/Thành phố</label>
-                            <select name="" id="city-select">
+                            @Html.LabelFor(i => i.Adress)
+                            @Html.TextBoxFor(i => i.Adress, new { placeholder = "Địa chỉ" })
+                            @Html.ValidationMessageFor(i => i.Adress, "", new { @class = "input-error" })
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            @Html.LabelFor(i => i.Province)
+                            <select asp-for="@Model.Province">
                                 <option value="" selected disabled>Tỉnh/Thành phố</option>
                             </select>
-                            <span class="input-error">Error message</span>
+                            @Html.ValidationMessageFor(i => i.Province, "", new { @class = "input-error" })
+                            @Html.HiddenFor(i => i.ProvinceName)
                         </div>
                     </div>
                     <div class="form-row multiple">
                         <div class="input-group">
-                            <label for="">Quận/Huyện</label>
-                            <select name="" id="district-select">
+                            @Html.LabelFor(i => i.District)
+                            <select asp-for="@Model.District">
                                 <option value="" selected disabled>Quận/Huyện</option>
                             </select>
-                            <span class="input-error">Error message</span>
+                            @Html.ValidationMessageFor(i => i.District, "", new { @class = "input-error" })
+                            @Html.HiddenFor(i => i.DistrictName)
                         </div>
                         <div class="input-group">
-                            <label for="">Phường/Xã</label>
-                            <select name="" id="ward-select">
+                            @Html.LabelFor(i => i.Ward)
+                            <select asp-for="@Model.Ward">
                                 <option value="" selected disabled>Phường/Xã</option>
                             </select>
-                            <span class="input-error">Error message</span>
+                            @Html.ValidationMessageFor(i => i.Ward, "", new { @class = "input-error" })
+                            @Html.HiddenFor(i => i.WardName)
                         </div>
                     </div>
                 </div>
@@ -70,20 +75,24 @@
                     <h6>Phương thức giao hàng</h6>
                 </div>
                 <div class="checkout-info-body">
-                    <label for="default-shipping" class="radio-container">
-                        <div>
+                    @foreach (var item in Model.ShippingMethods) {
+                        <label for="@item.Slug" class="radio-container @(item.Id == Model.ShippingMethod ? "checked" : "")">
                             <div>
-                                <p class="label-title">Tốc độ tiêu chuẩn (từ 2 - 5 ngày làm việc)</p>
-                                <p class="label-subtitle">Tuỳ vào địa chỉ giao hàng mà tốc độ giao hàng tiêu chuẩn sẽ khác nhau. Chúng tôi luôn cố gắng để đơn hàng đến tay bạn sớm nhất.</p>
+                                <div>
+                                    <p class="label-title">@item.Name</p>
+                                    <p class="label-subtitle">@item.Description</p>
+                                </div>
+                                <div>
+                                    <span class="label-price">20.000 VND</span>
+                                    <span class="checkmark"><i class="fa-solid fa-circle-check"></i></span>
+                                </div>
                             </div>
-                            <div>
-                                <span class="label-price">20.000 VND</span>
-                                <span class="checkmark"><i class="fa-solid fa-circle-check"></i></span>
-                            </div>
-                        </div>
-                        <input type="radio" name="shippingMethod" id="default-shipping" value="">
-                    </label>
+                            <input type="radio" asp-for="@Model.ShippingMethod" id="@item.Slug" value="@item.Id">
+                        </label>
+                    }
+                    <span asp-validation-for="@Model.ShippingMethod" style="color: var(--primary); margin-top: 10px; line-height: 20px; display: inline-block;"></span>
                 </div>
+
             </div>
             <div class="checkout-info__item-container">
                 <div class="checkout-info-header">
@@ -91,30 +100,21 @@
                     <h6>Phương thức thanh toán</h6>
                 </div>
                 <div class="checkout-info-body">
-                    <label for="cod-pay" class="radio-container">
-                        <div>
+                    @foreach (var item in Model.PaymentMethods) {
+                        <label for="@item.Slug" class="radio-container @(item.Id == Model.PaymentMethod ? "checked" : "")">
                             <div>
-                                <p class="label-title">Thanh toán trực tiếp khi giao hàng</p>
-                                <p class="label-subtitle">Là phương thức thanh toán bằng tiền mặt trực tiếp khi nhận hàng</p>
+                                <div>
+                                    <p class="label-title">@item.Name</p>
+                                    <p class="label-subtitle">@item.Description</p>
+                                </div>
+                                <div>
+                                    <span class="checkmark"><i class="fa-solid fa-circle-check"></i></span>
+                                </div>
                             </div>
-                            <div>
-                                <span class="checkmark"><i class="fa-solid fa-circle-check"></i></span>
-                            </div>
-                        </div>
-                        <input type="radio" name="paymentMethod" id="cod-pay" value="cod-pay">
-                    </label>
-                    <label for="card-pay" class="radio-container">
-                        <div>
-                            <div>
-                                <p class="label-title">Thanh toán bằng Thẻ quốc tế / Thẻ nội địa / QR Code</p>
-                                <p class="label-subtitle">Phương thức thanh toán sử dụng các loại thẻ quốc tế như Visa, Master, JCB,… hoặc các loại thẻ thanh toán nội địa (ATM) hoặc thanh toán bằng QR ngân hàng hoặc ví điện tử. Vui lòng đọc kĩ các cam kết thanh toán khi chọn phương thức này.</p>
-                            </div>
-                            <div>
-                                <span class="checkmark"><i class="fa-solid fa-circle-check"></i></span>
-                            </div>
-                        </div>
-                        <input type="radio" name="paymentMethod" id="card-pay" value="card-pay">
-                    </label>
+                            <input type="radio" asp-for="@Model.PaymentMethod" id="@item.Slug" value="@item.Id">
+                        </label>
+                    }
+                    <span asp-validation-for="@Model.PaymentMethod" style="color: var(--primary); margin-top: 10px; line-height: 20px; display: inline-block;"></span>
                 </div>
             </div>
         </div>
@@ -124,37 +124,50 @@
                 <h6>Order Summary</h6>
             </div>
             <div class="order-summary__list">
-                <div class="product-row">
-                    <img src="./public/image/product.jpg" alt="">
-                    <div>
+                @foreach (var item in Model.CartItems) {
+                    <div class="product-row">
+                        <img src="~/uploads/@item.ImageName" alt="">
                         <div>
-                            <p>Long Sleeve Graphic Tee - Love, Peace & Music</p>
-                            <p>Size: 36 | Số lượng: 2</p>
-                            <p>580.000 VND</p>
+                            <div>
+                                <p>@item.ProductName</p>
+                                <p>Size: @item.Size | Số lượng: @item.Quantity</p>
+                                <p>580.000 VND</p>
+                            </div>
+                            <div>@Html.FormatValue(@item.Price, "{0:0,0}") VND</div>
                         </div>
-                        <div>12.980.000 VND</div>
                     </div>
-                </div>
-                <div class="product-row">
-                    <img src="./public/image/product.jpg" alt="">
+                }
+            </div>
+            <div class="coupon-panel">
+                <h5>Nhập mã giảm giá</h5>
+                <div>
                     <div>
-                        <div>
-                            <p>Long Sleeve Graphic Tee - Love, Peace & Music</p>
-                            <p>Size: 36 | Số lượng: 2</p>
-                            <p>580.000 VND</p>
-                        </div>
-                        <div>12.980.000 VND</div>
+                        <input type="text" name="" id="" placeholder="Nhập mã khuyến mãi">
+                        <button type="button">Áp dụng</button>
                     </div>
-                </div>
-                <div class="product-row">
-                    <img src="./public/image/product.jpg" alt="">
-                    <div>
-                        <div>
-                            <p>Long Sleeve Graphic Tee - Love, Peace & Music</p>
-                            <p>Size: 36 | Số lượng: 2</p>
-                            <p>580.000 VND</p>
+                    <div class="coupon-list" id="couponList">
+                        <div class="coupon-item">
+                            <div>
+                                <span>20%</span>
+                                <span>Off</span>
+                            </div>
+                            <div>
+                                <span>CGHKBM</span>
+                                <span>Giảm 20% Giảm tối đa 100k trên tổng giá trị đơn hàng</span>
+                            </div>
+                            <div><button type="button">Remove</button></div>
                         </div>
-                        <div>12.980.000 VND</div>
+                        <div class="coupon-item">
+                            <div>
+                                <span>20%</span>
+                                <span>Off</span>
+                            </div>
+                            <div>
+                                <span>CGHKBM</span>
+                                <span>Giảm 20% Giảm tối đa 100k</span>
+                            </div>
+                            <div><button type="button">Remove</button></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -184,4 +197,4 @@
             </div>
         </div>
     </div>
-</form>
+}

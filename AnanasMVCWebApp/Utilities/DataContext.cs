@@ -23,8 +23,7 @@ namespace AnanasMVCWebApp.Utilities {
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<ProductSKU>().HasKey(t => new { t.SizeId, t.ProductVariantId });
-            modelBuilder.Entity<OrderDetail>().HasKey(t => new { t.ProductSKUId, t.OrderId });
-            modelBuilder.Entity<ShippingInfo>().HasNoKey();
+            modelBuilder.Entity<OrderDetail>().HasKey(t => new { t.ProductSKUSizeId, t.ProductSKUProductVariantId, t.OrderId });
         }
     }
 }

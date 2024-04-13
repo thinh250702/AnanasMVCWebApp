@@ -9,9 +9,9 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 namespace AnanasMVCWebApp.Controllers {
     public class AccountController : Controller {
         private readonly DataContext _context;
-        UserManager<Customer> _userManager;
-        SignInManager<Customer> _signInManager;
-        RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<Customer> _userManager;
+        private readonly SignInManager<Customer> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public AccountController(DataContext context, UserManager<Customer> userManager, SignInManager<Customer> signInManager, RoleManager<IdentityRole> roleManager) {
             _context = context;
@@ -19,8 +19,30 @@ namespace AnanasMVCWebApp.Controllers {
             _signInManager = signInManager;
             _roleManager = roleManager;
         }
-        public IActionResult Index() {
-            return View();
+        [Authorize(Roles = ApplicationRole.Customer)]
+        public async Task<IActionResult> Index() {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var model = new CustomerViewModel() {
+                FullName = user.FullName,
+                Phone = user.PhoneNumber,
+                Email = user.Email,
+                Dob = user.Dob,
+                Gender = user.Gender,
+            };
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Index(CustomerViewModel model) {
+            // Get user by email
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            // Update the user model
+            user.FullName = model.FullName;
+            user.Dob = model.Dob;
+            user.Gender = model.Gender;
+            // Apply the changes if any to the db
+            await _userManager.UpdateAsync(user);
+            TempData["success"] = "Cập nhật thông tin thành công";
+            return View(model);
         }
         public IActionResult Login() {
             return View();
@@ -66,7 +88,7 @@ namespace AnanasMVCWebApp.Controllers {
                 IdentityResult result = await _userManager.CreateAsync(customer, model.Password);
                 if (result.Succeeded) {
                     await _userManager.AddToRoleAsync(customer, ApplicationRole.Customer);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Login");
                 }
                 /*foreach (IdentityError error in result.Errors) {
                     ModelState.AddModelError("", error.Description);

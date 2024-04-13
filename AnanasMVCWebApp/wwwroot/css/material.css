@@ -306,6 +306,7 @@ hr.divider {
     border-radius: 10px;
     border: 1px solid var(--neutral-0);
     box-shadow: 0 4px 0 0 var(--neutral-0);
+    cursor: pointer
 }
 
 .summary-panel button:hover {
@@ -326,6 +327,7 @@ hr.divider {
     border-radius: 10px;
     border: 1px solid var(--neutral-0);
     box-shadow: none;
+    cursor: pointer;
 }
 
 .summary-panel button.small:hover {
@@ -577,7 +579,7 @@ hr.divider {
     width: 30%;
     bottom: 0;
     left: 0;
-    transform: translate(20px, -20px);
+    transform: translate(-100%, -20px);
     border-radius: 6px;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 3px 8px;
     color: var(--neutral-100);
