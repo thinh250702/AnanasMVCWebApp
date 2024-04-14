@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AnanasMVCWebApp.Migrations
 {
-    public partial class FirstMigration : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -32,9 +32,9 @@ namespace AnanasMVCWebApp.Migrations
                     Dob = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Gender = table.Column<bool>(type: "bit", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    District = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Ward = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProvinceId = table.Column<int>(type: "int", nullable: true),
+                    DistrictId = table.Column<int>(type: "int", nullable: true),
+                    WardCode = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -82,6 +82,26 @@ namespace AnanasMVCWebApp.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Colors", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Coupons",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Percentage = table.Column<int>(type: "int", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TotalUsage = table.Column<int>(type: "int", nullable: false),
+                    LimitAmount = table.Column<int>(type: "int", nullable: false),
+                    MaximumDiscount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Coupons", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -292,6 +312,8 @@ namespace AnanasMVCWebApp.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    GrandTotal = table.Column<int>(type: "int", nullable: false),
+                    Discount = table.Column<int>(type: "int", nullable: false),
                     OrderTotal = table.Column<int>(type: "int", nullable: false),
                     OrderStatusId = table.Column<int>(type: "int", nullable: false),
                     ShippingMethodId = table.Column<int>(type: "int", nullable: false),
@@ -357,9 +379,35 @@ namespace AnanasMVCWebApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OrderDetails",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<int>(type: "int", nullable: false),
+                    ImageName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Size = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ShippingInfos",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -371,6 +419,7 @@ namespace AnanasMVCWebApp.Migrations
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_ShippingInfos", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ShippingInfos_Orders_OrderId",
                         column: x => x.OrderId,
@@ -436,34 +485,6 @@ namespace AnanasMVCWebApp.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "OrderDetails",
-                columns: table => new
-                {
-                    ProductSKUId = table.Column<int>(type: "int", nullable: false),
-                    OrderId = table.Column<int>(type: "int", nullable: false),
-                    ProductSKUSizeId = table.Column<int>(type: "int", nullable: false),
-                    ProductSKUProductVariantId = table.Column<int>(type: "int", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    SubTotal = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OrderDetails", x => new { x.ProductSKUId, x.OrderId });
-                    table.ForeignKey(
-                        name: "FK_OrderDetails_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_OrderDetails_ProductSKUs_ProductSKUSizeId_ProductSKUProductVariantId",
-                        columns: x => new { x.ProductSKUSizeId, x.ProductSKUProductVariantId },
-                        principalTable: "ProductSKUs",
-                        principalColumns: new[] { "SizeId", "ProductVariantId" },
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -512,11 +533,6 @@ namespace AnanasMVCWebApp.Migrations
                 name: "IX_OrderDetails_OrderId",
                 table: "OrderDetails",
                 column: "OrderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OrderDetails_ProductSKUSizeId_ProductSKUProductVariantId",
-                table: "OrderDetails",
-                columns: new[] { "ProductSKUSizeId", "ProductSKUProductVariantId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_CustomerId",
@@ -587,7 +603,13 @@ namespace AnanasMVCWebApp.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Coupons");
+
+            migrationBuilder.DropTable(
                 name: "OrderDetails");
+
+            migrationBuilder.DropTable(
+                name: "ProductSKUs");
 
             migrationBuilder.DropTable(
                 name: "ShippingInfos");
@@ -596,16 +618,19 @@ namespace AnanasMVCWebApp.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "ProductSKUs");
+                name: "ProductVariants");
+
+            migrationBuilder.DropTable(
+                name: "Sizes");
 
             migrationBuilder.DropTable(
                 name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "ProductVariants");
+                name: "Colors");
 
             migrationBuilder.DropTable(
-                name: "Sizes");
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
@@ -618,12 +643,6 @@ namespace AnanasMVCWebApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "ShippingMethods");
-
-            migrationBuilder.DropTable(
-                name: "Colors");
-
-            migrationBuilder.DropTable(
-                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Collections");

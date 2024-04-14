@@ -1,0 +1,18 @@
+﻿@using AnanasMVCWebApp.Models
+@model Coupon
+@{
+    int index = @ViewBag.Index;
+}
+
+<div class="coupon-item">
+    <div>
+        <span>@(Model.Percentage)%</span>
+        <span>Off</span>
+    </div>
+    <div>
+        <span>@Model.Code</span>
+        <span>@Model.Description</span>
+    </div>
+    <input type="checkbox" name="Coupon[@(index)]" value="@Model.Code" checked hidden>
+    <div><button type="button">Remove</button></div>
+</div>

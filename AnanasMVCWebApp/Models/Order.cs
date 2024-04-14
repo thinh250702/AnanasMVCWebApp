@@ -1,8 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using AnanasMVCWebApp.Utilities.AdapterPattern;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AnanasMVCWebApp.Models {
-    public class Order {
+    public abstract class AbstractOrder
+    {
+        public abstract int calculatePrice();
+    }
+    
+    public class Order : AbstractOrder {
         [Key]
         public int Id { get; set; }
         public string Code { get; set; }
@@ -21,6 +27,9 @@ namespace AnanasMVCWebApp.Models {
         public virtual Customer Customer { get; set; }
         public Order() {
             Code = Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper();
+        }
+        public override int calculatePrice() {
+            return GrandTotal + ShippingFee;
         }
     }
     public class OrderStatus {

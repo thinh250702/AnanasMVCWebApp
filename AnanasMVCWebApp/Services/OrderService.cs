@@ -18,14 +18,22 @@ namespace AnanasMVCWebApp.Services {
             Order order = new Order() {
                 OrderDate = DateTime.UtcNow,
                 GrandTotal = model.GrandTotal,
-                Discount = model.DiscountAmount,
+                Discount = 0,
                 ShippingFee = model.ShippingFee,
-                OrderTotal = model.OrderTotal,
-                OrderStatus = _unitOfWork.OrderStatusRepository.GetStatusBySlug("placed-order"),
+                OrderTotal = 0, // default is 0 when create order
+                OrderStatus = _unitOfWork.OrderStatusRepository.GetStatusBySlug("placed"),
                 ShippingMethod = _unitOfWork.ShippingRepository.GetById(model.ShippingMethod),
                 PaymentMethod = _unitOfWork.PaymentRepository.GetById(model.PaymentMethod),
                 Customer = customer,
             };
+            // Decorate order with coupon and then assign OrderTotal by the value of calculatePrice function
+            /*
+            model.Coupons.ForEach(code => {
+                Coupon coupon = _couponRepo.GetCouponByCode(code);
+                order = coupon.SetWrappee(order)
+            });
+            order.OrderTotal = order.calculatePrice();
+             */
             _unitOfWork.OrderRepository.Insert(order);
             var shippingInfo = new ShippingInfo() {
                 Name = customer.FullName,
@@ -40,16 +48,17 @@ namespace AnanasMVCWebApp.Services {
             _unitOfWork.ShippingInfoRepository.Insert(shippingInfo);
             model.CartItems.ForEach(item => {
                 var orderDetail = new OrderDetail() {
-                    ProductSKU = _unitOfWork.ProductSKURepository.GetProductSKUByCode(item.ProductId)!,
-                    Order = order,
+                    ProductName = item.ProductName,
+                    Price = item.Price,
+                    ImageName = item.ImageName,
+                    Size = item.Size,
                     Quantity = item.Quantity,
-                    SubTotal = item.SubTotal,
+                    Order = order,
                 };
                 _unitOfWork.OrderDetailRepository.Insert(orderDetail);
             });
             return _unitOfWork.Complete() > 0 ? true : false;
         }
-       
 
         public CheckoutViewModel GetCheckoutModel(List<CartItemViewModel> cartItems) {
             CheckoutViewModel model = new() {
@@ -65,20 +74,9 @@ namespace AnanasMVCWebApp.Services {
             _unitOfWork.OrderRepository.GetAllOrdersByCustomer(customerId).ForEach(order => {
                 var itemList = new List<OrderItemViewModel>();
                 _unitOfWork.OrderDetailRepository.GetAllItemsInOrder(order.Id).ForEach(item => {
-                    itemList.Add(new OrderItemViewModel(item.ProductSKU, item.Quantity) {
-                        ImageName = GetProductImage(item.ProductSKU.ProductVariant.Code),
-                    });
+                    itemList.Add(new OrderItemViewModel(item));
                 });
-                orderList.Add(new OrderViewModel() {
-                    OrderItems = itemList,
-                    OrderCode = order.Code,
-                    OrderDate = order.OrderDate,
-                    Discount = order.Discount,
-                    ShippingFee = order.ShippingFee,
-                    GrandTotal = order.GrandTotal,
-                    OrderTotal = order.OrderTotal,
-                    StatusName = order.OrderStatus.Name
-                });
+                orderList.Add(new OrderViewModel(itemList, order));
             });
             return orderList;
         }
@@ -88,45 +86,17 @@ namespace AnanasMVCWebApp.Services {
             var order = _unitOfWork.OrderRepository.GetOrderByCode(orderCode);
             if (order != null) {
                 _unitOfWork.OrderDetailRepository.GetAllItemsInOrder(order.Id).ForEach(item => {
-                    itemList.Add(new OrderItemViewModel(item.ProductSKU, item.Quantity) {
-                        ImageName = GetProductImage(item.ProductSKU.ProductVariant.Code)
-                    });
+                    itemList.Add(new OrderItemViewModel(item));
                 });
                 var info = _unitOfWork.ShippingInfoRepository.GetShippingInfoByOrder(order.Id);
-                var model = new OrderViewModel() {
-                    OrderItems = itemList,
-                    OrderCode = order.Code,
-                    OrderDate = order.OrderDate,
-                    Discount = order.Discount,
-                    ShippingFee = order.ShippingFee,
-                    GrandTotal = order.GrandTotal,
-                    OrderTotal = order.OrderTotal,
-                    StatusName = order.OrderStatus.Name,
-                    StatusSlug = order.OrderStatus.Slug,
-                    ShippingMethod = order.ShippingMethod.Name,
-                    PaymentMethod = order.PaymentMethod.Name,
-                    FullName = info.Name,
-                    Phone = info.Phone,
-                    Email = info.Email,
-                    Address = info.Address,
-                    City = info.City,
-                    District = info.District,
-                    Ward = info.Ward,
-                };
+                var model = new OrderViewModel(itemList, order, info);
                 return model;
             }
             return null;
         }
 
-        private string GetProductImage(string code) {
-            string[] filePaths = Directory.GetFiles(Path.Combine(_environment.WebRootPath, "uploads/"));
-            foreach (string filePath in filePaths) {
-                string name = Path.GetFileName(filePath);
-                if (name.Contains($"{code}_1")) {
-                    return name;
-                }
-            }
-            return "";
+        public Coupon GetCouponByCode(string code) {
+            return _unitOfWork.CouponRepository.GetCouponByCode(code);
         }
     }
 }

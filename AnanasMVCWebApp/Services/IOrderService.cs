@@ -7,5 +7,6 @@ namespace AnanasMVCWebApp.Services {
         public bool CreateOrder(CheckoutViewModel model, Customer customer);
         public OrderViewModel? GetOrderByCode(string orderCode);
         public List<OrderViewModel> GetAllOrdersByCustomer(string customerId);
+        public Coupon GetCouponByCode(string code);
     }
 }

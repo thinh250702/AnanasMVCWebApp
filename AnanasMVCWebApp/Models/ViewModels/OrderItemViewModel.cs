@@ -2,7 +2,6 @@
 
 namespace AnanasMVCWebApp.Models.ViewModels {
     public class OrderItemViewModel {
-        public string ProductCode { get; set; }
         public string ProductName { get; set; }
         public string ImageName { get; set; }
         public string Size { get; set; }
@@ -11,22 +10,12 @@ namespace AnanasMVCWebApp.Models.ViewModels {
         public int SubTotal {
             get { return Quantity * Price; }
         }
-        public OrderItemViewModel(ProductSKU productSKU, int quantity) {
-            ProductCode = productSKU.Code;
-            ProductName = GetProductName(productSKU);
-            Quantity = quantity;
-            Price = productSKU.ProductVariant.Product.Price;
-            Size = productSKU.Size.Name;
-        }
-
-        private string GetProductName(ProductSKU sku) {
-            string name = "";
-            if (sku.ProductVariant.Product.Style != null) {
-                name = $"{sku.ProductVariant.Product.Name} - {sku.ProductVariant.Product.Style.Name} - {sku.ProductVariant.ColorName}";
-            } else {
-                name = $"{sku.ProductVariant.Product.Collection.Name} - {sku.ProductVariant.Product.Name} - {sku.ProductVariant.ColorName}";
-            }
-            return name;
+        public OrderItemViewModel(OrderDetail item) {
+            ProductName = item.ProductName;
+            Price = item.Price;
+            ImageName = item.ImageName;
+            Size = item.Size;
+            Quantity = item.Quantity;
         }
     }
 }

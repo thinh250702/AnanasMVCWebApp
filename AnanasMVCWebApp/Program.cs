@@ -56,6 +56,7 @@ builder.Services.AddTransient<IOrderStatusRepository, OrderStatusRepository>();
 builder.Services.AddTransient<IShippingRepository, ShippingRepository>();
 builder.Services.AddTransient<IPaymentRepository, PaymentRepository>();
 builder.Services.AddTransient<IShippingInfoRepository, ShippingInfoRepository>();
+builder.Services.AddTransient<ICouponRepository, CouponRepository>();
 
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<IProductService, ProductService>();

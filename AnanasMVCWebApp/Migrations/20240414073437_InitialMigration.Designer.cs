@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AnanasMVCWebApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240413080052_EditOrderModel")]
-    partial class EditOrderModel
+    [Migration("20240414073437_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -98,6 +98,45 @@ namespace AnanasMVCWebApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Colors");
+                });
+
+            modelBuilder.Entity("AnanasMVCWebApp.Models.Coupon", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LimitAmount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaximumDiscount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Percentage")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TotalUsage")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Coupons");
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.Customer", b =>
@@ -242,29 +281,36 @@ namespace AnanasMVCWebApp.Migrations
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.OrderDetail", b =>
                 {
-                    b.Property<int>("ProductSKUId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ImageName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductSKUProductVariantId")
+                    b.Property<int>("Price")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductSKUSizeId")
-                        .HasColumnType("int");
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("SubTotal")
-                        .HasColumnType("int");
+                    b.Property<string>("Size")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ProductSKUId", "OrderId");
+                    b.HasKey("Id");
 
                     b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductSKUSizeId", "ProductSKUProductVariantId");
 
                     b.ToTable("OrderDetails");
                 });
@@ -414,6 +460,12 @@ namespace AnanasMVCWebApp.Migrations
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.ShippingInfo", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -444,6 +496,8 @@ namespace AnanasMVCWebApp.Migrations
                     b.Property<string>("Ward")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("OrderId");
 
@@ -704,15 +758,7 @@ namespace AnanasMVCWebApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AnanasMVCWebApp.Models.ProductSKU", "ProductSKU")
-                        .WithMany()
-                        .HasForeignKey("ProductSKUSizeId", "ProductSKUProductVariantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Order");
-
-                    b.Navigation("ProductSKU");
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.Product", b =>

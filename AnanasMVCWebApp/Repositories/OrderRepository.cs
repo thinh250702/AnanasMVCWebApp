@@ -19,23 +19,30 @@ namespace AnanasMVCWebApp.Repositories {
         }
     }
     public class OrderStatusRepository : GenericRepository<OrderStatus>, IOrderStatusRepository {
-        public OrderStatusRepository(DataContext context) : base(context) { }
+        public OrderStatusRepository(DataContext context) : base(context) {}
 
         public OrderStatus GetStatusBySlug(string slug) {
             return _context.OrderStatus.Where(s => s.Slug == slug).FirstOrDefault();
         }
     }
     public class ShippingRepository : GenericRepository<ShippingMethod>, IShippingRepository {
-        public ShippingRepository(DataContext context) : base(context) { }
+        public ShippingRepository(DataContext context) : base(context) {}
     }
     public class PaymentRepository : GenericRepository<PaymentMethod>, IPaymentRepository {
-        public PaymentRepository(DataContext context) : base(context) { }
+        public PaymentRepository(DataContext context) : base(context) {}
     }
     public class ShippingInfoRepository : GenericRepository<ShippingInfo>, IShippingInfoRepository {
-        public ShippingInfoRepository(DataContext context) : base(context) { }
+        public ShippingInfoRepository(DataContext context) : base(context) {}
 
         public ShippingInfo GetShippingInfoByOrder(int orderId) {
             return _context.ShippingInfos.Where(c => c.OrderId == orderId).FirstOrDefault()!;
+        }
+    }
+    public class CouponRepository : GenericRepository<Coupon>, ICouponRepository {
+        public CouponRepository(DataContext context) : base(context) {}
+
+        public Coupon? GetCouponByCode(string code) {
+            return _context.Coupons.Where(c => c.Code == code).FirstOrDefault();
         }
     }
 }

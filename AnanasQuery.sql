@@ -1,6 +1,6 @@
 USE AnanasMVC
 GO
-Select * from ProductSKUs
+Delete from Orders
 Go
-Select * from ProductVariants
+Delete from OrderDetails
 Go

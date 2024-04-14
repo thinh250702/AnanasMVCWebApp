@@ -17,6 +17,7 @@ namespace AnanasMVCWebApp.Repositories {
         public IShippingRepository ShippingRepository { get; }
         public IPaymentRepository PaymentRepository { get; }
         public IShippingInfoRepository ShippingInfoRepository { get; }
+        public ICouponRepository CouponRepository { get; }
         public int Complete();
     }
     public class UnitOfWork : IUnitOfWork {
@@ -35,8 +36,9 @@ namespace AnanasMVCWebApp.Repositories {
         private readonly IShippingRepository _shippingRepo;
         private readonly IPaymentRepository _paymentRepo;
         private readonly IShippingInfoRepository _shippingInfoRepo;
+        private readonly ICouponRepository _couponRepo;
 
-        public UnitOfWork(DataContext context, IProductRepository productRepo, IProductVariantRepository productVariantRepo, IProductSKURepository productSKURepository, ICategoryRepository categoryRepo, ICollectionRepository collectionRepo, IStyleRepository styleRepo, IColorRepository colorRepo, ISizeRepository sizeRepo, IOrderRepository orderRepo, IOrderDetailRepository orderDetailRepo, IOrderStatusRepository orderStatusRepo, IShippingRepository shippingRepo, IPaymentRepository paymentRepo, IShippingInfoRepository shippingInfoRepo) {
+        public UnitOfWork(DataContext context, IProductRepository productRepo, IProductVariantRepository productVariantRepo, IProductSKURepository productSKURepository, ICategoryRepository categoryRepo, ICollectionRepository collectionRepo, IStyleRepository styleRepo, IColorRepository colorRepo, ISizeRepository sizeRepo, IOrderRepository orderRepo, IOrderDetailRepository orderDetailRepo, IOrderStatusRepository orderStatusRepo, IShippingRepository shippingRepo, IPaymentRepository paymentRepo, IShippingInfoRepository shippingInfoRepo, ICouponRepository couponRepo) {
             _context = context;
             _productRepo = productRepo;
             _productVariantRepo = productVariantRepo;
@@ -52,6 +54,7 @@ namespace AnanasMVCWebApp.Repositories {
             _shippingRepo = shippingRepo;
             _paymentRepo = paymentRepo;
             _shippingInfoRepo = shippingInfoRepo;
+            _couponRepo = couponRepo;
         }
 
         public IProductRepository ProductRepository { get { return _productRepo; } }
@@ -68,6 +71,7 @@ namespace AnanasMVCWebApp.Repositories {
         public IShippingRepository ShippingRepository { get { return _shippingRepo; } }
         public IPaymentRepository PaymentRepository { get { return _paymentRepo; } }
         public IShippingInfoRepository ShippingInfoRepository { get { return _shippingInfoRepo; } }
+        public ICouponRepository CouponRepository { get { return _couponRepo; } }
 
         public int Complete() {
             return _context.SaveChanges();

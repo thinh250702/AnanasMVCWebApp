@@ -4,6 +4,178 @@
     ViewData["Title"] = "Checkout";
 }
 
+@section Scripts {
+    <script>
+        var cities = $("select[name='Province']");
+        var districts = $("select[name='District']");
+        var wards = $("select[name='Ward']");
+        var apiToken = "760d5095-f700-11ee-893f-b6ed573185af";
+
+        var shippingRadios = $("input:radio[name='ShippingMethod']");
+        var paymentRadios = $("input:radio[name='PaymentMethod']");
+
+        shippingRadios.click(function () {
+            if (cities.val() == null || cities.val() == null || wards.val() == null) {
+                alert("Úi bạn hãy điền đầy đủ thông tin địa chỉ trước khi chọn phương thức giao hàng nhé ^^");
+                return false;
+            } else {
+                shippingRadios.change(function(){
+                    shippingRadios.each(function (index, element) {
+                        $(element).parent().removeClass("checked");
+                    })
+                    $(this).parent().addClass("checked");
+
+                    var selectedFee = $(this).attr("data-shipping-fee")
+                    $("input[name='ShippingFee']").val(selectedFee);
+                    $("#shipping-fee-display").html(formatCurrency(`${selectedFee}`))
+                })
+                paymentRadios.change(function () {
+                    paymentRadios.each(function (index, element) {
+                        $(element).parent().removeClass("checked");
+                    })
+                    $(this).parent().addClass("checked");
+                });
+            }
+        });
+
+        function formatCurrency(number) {
+            var n = number.split('').reverse().join("");
+            var n2 = n.replace(/\d\d\d(?!$)/g, "$&,");
+            return n2.split('').reverse().join('') + ' VNĐ';
+        }
+
+        $.ajax({
+            url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/province",
+            headers: { "Token": apiToken },
+            dataType: "json",
+            success: (response) => {
+                response.data.forEach(
+                    city => { cities.append(new Option(city.ProvinceName, city.ProvinceID)) }
+                );
+            },
+            error: () => {
+                alert("Failed to load province data!");
+            }
+        })
+        cities.change(function () {
+            districts.empty().append('<option value="" selected disabled>Quận/Huyện</option>');
+            wards.empty().append('<option value="" selected disabled>Phường/Xã</option>');
+
+            $('input:radio[name="ShippingMethod"]').prop('checked', false); // Reset radio button
+            $("label.shipping-method").removeClass("checked"); // Uncheck radio label
+            $("label.shipping-method .label-price").html("0 VND"); // Set label value to 0
+            $("input[name='ShippingFee']").val(0); // Set display value to 0
+            $("#shipping-fee-display").html(formatCurrency("0")) // Set hidden input value to 0
+
+            if (this.value != "") {
+                $("input[name='ProvinceName']").val($("select[name='Province'] option:selected").text())
+                $.ajax({
+                    url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/district",
+                    headers: { "Token": apiToken },
+                    data: { province_id: this.value },
+                    dataType: "json",
+                    success: (response) => {
+                        response.data.forEach(
+                            district => { districts.append(new Option(district.DistrictName, district.DistrictID)) }
+                        );
+                    },
+                    error: () => {
+                        alert("Failed to load district data!");
+                    }
+                });
+            }
+        })
+        districts.change(function () {
+            wards.empty().append('<option value="" selected disabled>Phường/Xã</option>');
+            if (this.value != "") {
+                $("input[name='DistrictName']").val($("select[name='District'] option:selected").text())
+                $.ajax({
+                    url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward",
+                    headers: { "Token": apiToken },
+                    data: { district_id: this.value },
+                    dataType: "json",
+                    success: (response) => {
+                        response.data.forEach(
+                            ward => { wards.append(new Option(ward.WardName, ward.WardCode)) }
+                        );
+                    },
+                    error: () => {
+                        alert("Failed to load ward data!");
+                    }
+                });
+            }
+        })
+        wards.change(function () {
+            if (this.value != "") {
+                $("input[name='WardName']").val($("select[name='Ward'] option:selected").text());
+                
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetGHNFee", "Checkout")',
+                    dataType: "json",
+                    data: { distrcitId: parseInt(districts.val()), wardCode: wards.val() },
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        $("input[type='radio']#ghn").attr("data-shipping-fee", result);
+                        $("#ghn-label").html(formatCurrency(`${result}`));
+                        console.log(result);
+                    },
+                    error: function () {
+                        alert("Đã xảy ra lỗi vui lòng thử lại!");
+                    }
+                });
+
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetGHTKFee", "Checkout")',
+                    dataType: "json",
+                    data: { address: $("input[name='Adress']").val(), 
+                        province: $("select[name='Province'] option:selected").text(),
+                        district: $("select[name='District'] option:selected").text()
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        $("input[type='radio']#ghtk").attr("data-shipping-fee", result);
+                        $("#ghtk-label").html(formatCurrency(`${result}`));
+                        console.log(result);
+                    },
+                    error: function () {
+                        alert("Đã xảy ra lỗi vui lòng thử lại!");
+                    }
+                });
+            }
+        });
+
+        var couponInput = $("#CouponInput");
+        $("#CouponSubmit").click(function () {
+            if (couponInput.val() == "") {
+                alert("Bạn chưa nhập mã giảm giá!");
+            } else {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetCoupon", "Checkout")',
+                    //dataType: "json",
+                    data: { code: couponInput.val(), count: $("#couponList").children().length },
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        if(result == ""){
+                            alert("Mã khuyến mãi này không hợp lệ mất rồi. Bạn hãy thử nhập lại nhé!")
+                        } else {
+                            $("#couponList").append(result);
+                        }
+                        
+                    },
+                    error: function () {
+                        alert("Đã xảy ra lỗi vui lòng thử lại!");
+                    }
+                });
+            }
+        });
+
+        
+    </script>
+}
+
 @using (Html.BeginForm("Index", "Checkout", FormMethod.Post)) {
     <div class="checkout-wrapper wide">
         <div class="checkout-info-wrapper">
@@ -76,18 +248,18 @@
                 </div>
                 <div class="checkout-info-body">
                     @foreach (var item in Model.ShippingMethods) {
-                        <label for="@item.Slug" class="radio-container @(item.Id == Model.ShippingMethod ? "checked" : "")">
+                        <label for="@item.Slug" class="shipping-method radio-container @(item.Id == Model.ShippingMethod ? "checked" : "")">
+                            <input type="radio" asp-for="@Model.ShippingMethod" id="@item.Slug" value="@item.Id" data-shipping-fee="">
                             <div>
                                 <div>
                                     <p class="label-title">@item.Name</p>
                                     <p class="label-subtitle">@item.Description</p>
                                 </div>
                                 <div>
-                                    <span class="label-price">20.000 VND</span>
+                                    <span id="@(item.Slug)-label" class="label-price">0 VND</span>
                                     <span class="checkmark"><i class="fa-solid fa-circle-check"></i></span>
                                 </div>
                             </div>
-                            <input type="radio" asp-for="@Model.ShippingMethod" id="@item.Slug" value="@item.Id">
                         </label>
                     }
                     <span asp-validation-for="@Model.ShippingMethod" style="color: var(--primary); margin-top: 10px; line-height: 20px; display: inline-block;"></span>
@@ -101,7 +273,7 @@
                 </div>
                 <div class="checkout-info-body">
                     @foreach (var item in Model.PaymentMethods) {
-                        <label for="@item.Slug" class="radio-container @(item.Id == Model.PaymentMethod ? "checked" : "")">
+                        <label for="@item.Slug" class="payment-method radio-container @(item.Id == Model.PaymentMethod ? "checked" : "")">
                             <div>
                                 <div>
                                     <p class="label-title">@item.Name</p>
@@ -131,9 +303,9 @@
                             <div>
                                 <p>@item.ProductName</p>
                                 <p>Size: @item.Size | Số lượng: @item.Quantity</p>
-                                <p>580.000 VND</p>
+                                <p>@item.Price.ToString("#,##0 VND")</p>
                             </div>
-                            <div>@Html.FormatValue(@item.Price, "{0:0,0}") VND</div>
+                            <div>@item.SubTotal.ToString("#,##0 VND")</div>
                         </div>
                     </div>
                 }
@@ -142,32 +314,11 @@
                 <h5>Nhập mã giảm giá</h5>
                 <div>
                     <div>
-                        <input type="text" name="" id="" placeholder="Nhập mã khuyến mãi">
-                        <button type="button">Áp dụng</button>
+                        <input type="text" id="CouponInput" placeholder="Nhập mã khuyến mãi">
+                        <button id="CouponSubmit" type="button">Áp dụng</button>
                     </div>
                     <div class="coupon-list" id="couponList">
-                        <div class="coupon-item">
-                            <div>
-                                <span>20%</span>
-                                <span>Off</span>
-                            </div>
-                            <div>
-                                <span>CGHKBM</span>
-                                <span>Giảm 20% Giảm tối đa 100k trên tổng giá trị đơn hàng</span>
-                            </div>
-                            <div><button type="button">Remove</button></div>
-                        </div>
-                        <div class="coupon-item">
-                            <div>
-                                <span>20%</span>
-                                <span>Off</span>
-                            </div>
-                            <div>
-                                <span>CGHKBM</span>
-                                <span>Giảm 20% Giảm tối đa 100k</span>
-                            </div>
-                            <div><button type="button">Remove</button></div>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -175,7 +326,7 @@
                 <ul>
                     <li>
                         <span>Đơn hàng</span>
-                        <span>2.140.000 VND</span>
+                        <span>@Model.GrandTotal.ToString("#,##0 VND")</span>
                     </li>
                     <li>
                         <span>Giảm</span>
@@ -183,14 +334,16 @@
                     </li>
                     <li>
                         <span>Phí vận chuyển</span>
-                        <span>20.000 VND</span>
+                        <span id="shipping-fee-display">0 VND</span>
+                        <input type="text" asp-for="@Model.ShippingFee" />
                     </li>
                 </ul>
-                <hr class="divider">
+                <hr class="divider grey">
                 <ul class="total">
                     <li>
                         <span>Tổng cộng</span>
                         <span class="primary-text-color">2.140.000 VND</span>
+                        <input type="text" id="name" hidden />
                     </li>
                 </ul>
                 <button type="submit">Hoàn tất đặt hàng</button>

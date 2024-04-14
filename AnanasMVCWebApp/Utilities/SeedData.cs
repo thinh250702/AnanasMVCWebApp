@@ -236,6 +236,29 @@ namespace AnanasMVCWebApp.Utilities {
                 _context.OrderStatus.AddRange(new List<OrderStatus>() { placed, logistic, delivering, success });
                 _context.SaveChanges();
             }
+
+            Coupon coupon1 = new Coupon() {
+                Description = "Giảm 10% tổng giá trị đơn hàng (giảm tối đa 100.000 VND). Áp dụng cho đơn từ 500.000 VND",
+                Percentage = 10,
+                StartDate = new DateTime(2024, 4, 10),
+                EndDate = new DateTime(2024, 4, 20),
+                Limit = 50,
+                MinimumAmount = 500000,
+                MaximumDiscount = 100000
+            };
+            Coupon coupon2 = new Coupon() {
+                Description = "Giảm 20% tổng giá trị đơn hàng (giảm tối đa 300.000 VND). Áp dụng cho đơn từ 1.000.000 VND",
+                Percentage = 20,
+                StartDate = new DateTime(2024, 4, 10),
+                EndDate = new DateTime(2024, 4, 20),
+                Limit = 20,
+                MinimumAmount = 1000000,
+                MaximumDiscount = 300000
+            };
+            if (!_context.Coupons.Any()) {
+                _context.Coupons.AddRange(new List<Coupon>() { coupon1, coupon2 });
+                _context.SaveChanges();
+            }
         }
     }
 }

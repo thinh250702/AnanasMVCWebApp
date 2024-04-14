@@ -16,4 +16,7 @@ namespace AnanasMVCWebApp.Repositories {
     public interface IShippingInfoRepository : IRepository<ShippingInfo> {
         public ShippingInfo GetShippingInfoByOrder(int orderId);
     }
+    public interface ICouponRepository : IRepository<Coupon> {
+        public Coupon? GetCouponByCode(string code);
+    }
 }

@@ -88,6 +88,7 @@ namespace AnanasMVCWebApp.Controllers {
                 IdentityResult result = await _userManager.CreateAsync(customer, model.Password);
                 if (result.Succeeded) {
                     await _userManager.AddToRoleAsync(customer, ApplicationRole.Customer);
+                    TempData["success"] = "Tạo tài khoản thành công. Vui lòng đăng nhập.";
                     return RedirectToAction("Login");
                 }
                 /*foreach (IdentityError error in result.Errors) {

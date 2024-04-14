@@ -31,8 +31,8 @@ namespace AnanasMVCWebApp.Models.ViewModels {
         public int PaymentMethod { get; set; }
         public List<PaymentMethod> PaymentMethods { get; set; } = new List<PaymentMethod>();
         public int ShippingFee { get; set; }
-        public int DiscountAmount { get; set; }
-        public List<string> Coupons { get; set; } = new List<string>();
+        /*public int DiscountAmount { get; set; }*/
+        public List<string> Coupons { get; set; } = new List<string>(); // Store the coupon code that has been used
         public int GrandTotal {
             get {
                 int grandTotal = 0;
@@ -42,10 +42,10 @@ namespace AnanasMVCWebApp.Models.ViewModels {
                 return grandTotal;
             }
         }
-        public int OrderTotal {
+        /*public int OrderTotal {
             get {
                 return GrandTotal + ShippingFee - DiscountAmount;
             }
-        }
+        }*/
     }
 }

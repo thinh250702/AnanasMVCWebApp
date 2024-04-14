@@ -18,5 +18,38 @@
         public string City { get; set; }
         public string District { get; set; }
         public string Ward { get; set; }
+        public OrderViewModel(List<OrderItemViewModel> itemList, Order order) {
+            OrderItems = itemList;
+            OrderCode = order.Code;
+            OrderDate = order.OrderDate;
+            Discount = order.Discount;
+            ShippingFee = order.ShippingFee;
+            GrandTotal = order.GrandTotal;
+            OrderTotal = order.OrderTotal;
+            StatusName = order.OrderStatus.Name;
+            StatusSlug = order.OrderStatus.Slug;
+            ShippingMethod = order.ShippingMethod.Name;
+            PaymentMethod = order.PaymentMethod.Name;
+        }
+        public OrderViewModel(List<OrderItemViewModel> itemList, Order order, ShippingInfo info) {
+            OrderItems = itemList;
+            OrderCode = order.Code;
+            OrderDate = order.OrderDate;
+            Discount = order.Discount;
+            ShippingFee = order.ShippingFee;
+            GrandTotal = order.GrandTotal;
+            OrderTotal = order.OrderTotal;
+            StatusName = order.OrderStatus.Name;
+            StatusSlug = order.OrderStatus.Slug;
+            ShippingMethod = order.ShippingMethod.Name;
+            PaymentMethod = order.PaymentMethod.Name;
+            FullName = info.Name;
+            Phone = info.Phone;
+            Email = info.Email;
+            Address = info.Address;
+            City = info.City;
+            District = info.District;
+            Ward = info.Ward;
+        }
     }
 }

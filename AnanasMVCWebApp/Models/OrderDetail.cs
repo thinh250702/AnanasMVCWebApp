@@ -1,13 +1,19 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AnanasMVCWebApp.Models {
     public class OrderDetail {
-        public int ProductSKUSizeId { get; set; }
-        public int ProductSKUProductVariantId { get; set; }
-        public int OrderId { get; set; }
-        public virtual ProductSKU ProductSKU { get; set; }
-        public virtual Order Order { get; set; }
+        [Key]
+        public int Id { get; set; }
+        public string ProductName { get; set; }
+        public int Price { get; set; }
+        public string ImageName { get; set; }
+        public string Size { get; set; }
         public int Quantity { get; set; }
-        public int SubTotal { get; set; }
+        public int SubTotal {
+            get { return Quantity * Price; }
+        }
+        public int OrderId { get; set; }
+        public virtual Order Order { get; set; }
     }
 }

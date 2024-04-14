@@ -224,9 +224,14 @@ hr.divider {
     margin: 16px 0;
 }
 
-    hr.divider.top {
-        margin: 0 0 16px 0;
-    }
+hr.divider.grey {
+    border-top: dashed #808080 1.6px;
+    background-color: transparent;
+}
+
+hr.divider.top {
+    margin: 0 0 16px 0;
+}
 
 .hidden {
     display: none;
@@ -273,6 +278,7 @@ hr.divider {
     flex-direction: column;
     gap: 8px;
     list-style: none;
+    color: #808080;
 }
 
 .summary-panel li {

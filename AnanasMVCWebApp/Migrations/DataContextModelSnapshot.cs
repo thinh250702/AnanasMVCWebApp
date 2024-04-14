@@ -40,7 +40,7 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.Collection", b =>
@@ -70,7 +70,7 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Collections");
+                    b.ToTable("Collections", (string)null);
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.Color", b =>
@@ -95,7 +95,49 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Colors");
+                    b.ToTable("Colors", (string)null);
+                });
+
+            modelBuilder.Entity("AnanasMVCWebApp.Models.Coupon", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Limit")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaximumDiscount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MinimumAmount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Percentage")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TotalUsage")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Coupons", (string)null);
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.Customer", b =>
@@ -235,31 +277,43 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.HasIndex("ShippingMethodId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.OrderDetail", b =>
                 {
-                    b.Property<int>("ProductSKUSizeId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductSKUProductVariantId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ImageName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("SubTotal")
-                        .HasColumnType("int");
+                    b.Property<string>("Size")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ProductSKUSizeId", "ProductSKUProductVariantId", "OrderId");
+                    b.HasKey("Id");
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderDetails");
+                    b.ToTable("OrderDetails", (string)null);
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.OrderStatus", b =>
@@ -280,7 +334,7 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderStatus");
+                    b.ToTable("OrderStatus", (string)null);
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.PaymentMethod", b =>
@@ -305,7 +359,7 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PaymentMethods");
+                    b.ToTable("PaymentMethods", (string)null);
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.Product", b =>
@@ -339,7 +393,7 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.HasIndex("StyleId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.ProductSKU", b =>
@@ -364,7 +418,7 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.HasIndex("ProductVariantId");
 
-                    b.ToTable("ProductSKUs");
+                    b.ToTable("ProductSKUs", (string)null);
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.ProductVariant", b =>
@@ -402,7 +456,7 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductVariants");
+                    b.ToTable("ProductVariants", (string)null);
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.ShippingInfo", b =>
@@ -448,7 +502,7 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("ShippingInfos");
+                    b.ToTable("ShippingInfos", (string)null);
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.ShippingMethod", b =>
@@ -473,7 +527,7 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ShippingMethods");
+                    b.ToTable("ShippingMethods", (string)null);
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.Size", b =>
@@ -494,7 +548,7 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sizes");
+                    b.ToTable("Sizes", (string)null);
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.Style", b =>
@@ -515,7 +569,7 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Styles");
+                    b.ToTable("Styles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -705,15 +759,7 @@ namespace AnanasMVCWebApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AnanasMVCWebApp.Models.ProductSKU", "ProductSKU")
-                        .WithMany()
-                        .HasForeignKey("ProductSKUSizeId", "ProductSKUProductVariantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Order");
-
-                    b.Navigation("ProductSKU");
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.Product", b =>

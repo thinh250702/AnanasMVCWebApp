@@ -76,86 +76,10 @@ $(document).ready(function(){
     
     // CHECKOUT
     //  ---Vietnam Location Select
-    var cities = $("select[name='Province']");
-    var districts = $("select[name='District']");
-    var wards = $("select[name='Ward']");
-    var apiToken = "760d5095-f700-11ee-893f-b6ed573185af";
-    $.ajax({
-        //url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
-        url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/province",
-        headers: { "Token": apiToken },
-        dataType: "json",
-        success: (response) => {
-            response.data.forEach(
-                city => { cities.append(new Option(city.ProvinceName, city.ProvinceID)) }
-            );
-        },
-        error: () => {
-            alert("Failed to load province data!");
-        }
-    })
-    cities.change(function () {
-        districts.empty().append('<option value="" selected disabled>Quận/Huyện</option>');
-        wards.empty().append('<option value="" selected disabled>Phường/Xã</option>');
-        if (this.value != "") {
-            $("input[name='ProvinceName']").val($("select[name='Province'] option:selected").text())
-            $.ajax({
-                url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/district",
-                headers: { "Token": apiToken },
-                data: { province_id: this.value },
-                dataType: "json",
-                success: (response) => {
-                    response.data.forEach(
-                        district => { districts.append(new Option(district.DistrictName, district.DistrictID)) }
-                    );
-                },
-                error: () => {
-                    alert("Failed to load district data!");
-                }
-            });
-        }
-    })
-    districts.change(function () {
-        wards.empty().append('<option value="" selected disabled>Phường/Xã</option>');
-        if (this.value != "") {
-            $("input[name='DistrictName']").val($("select[name='District'] option:selected").text())
-            $.ajax({
-                url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward",
-                headers: { "Token": apiToken },
-                data: { district_id: this.value },
-                dataType: "json",
-                success: (response) => {
-                    response.data.forEach(
-                        ward => { wards.append(new Option(ward.WardName, ward.WardCode)) }
-                    );
-                },
-                error: () => {
-                    alert("Failed to load ward data!");
-                }
-            });
-        }
-    })
-    wards.change(function () {
-        if (this.value != "") {
-            $("input[name='WardName']").val($("select[name='Ward'] option:selected").text())
-        }
-    });
+    
 
     // ---Checkout Radio Option
-    var shippingRadios = $("input:radio[name='ShippingMethod']");
-    var paymentRadios = $("input:radio[name='PaymentMethod']");
-    shippingRadios.on("change", function(){
-        shippingRadios.each(function(index, element){
-            $(element).parent().removeClass("checked");
-        })
-        $(this).parent().addClass("checked");
-    });
-    paymentRadios.on("change", function(){
-        paymentRadios.each(function(index, element){
-            $(element).parent().removeClass("checked");
-        })
-        $(this).parent().addClass("checked");
-    });
+    
 
     // ---Recommended Product Slider (INDEX & PRODUCT DETAIL)
     const productPrevButton = $(".recomended-wrapper .prevBtn");

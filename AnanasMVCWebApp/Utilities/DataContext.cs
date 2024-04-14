@@ -20,10 +20,10 @@ namespace AnanasMVCWebApp.Utilities {
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<ShippingInfo> ShippingInfos { get; set; }
+        public DbSet<Coupon> Coupons { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<ProductSKU>().HasKey(t => new { t.SizeId, t.ProductVariantId });
-            modelBuilder.Entity<OrderDetail>().HasKey(t => new { t.ProductSKUSizeId, t.ProductSKUProductVariantId, t.OrderId });
         }
     }
 }
