@@ -372,9 +372,13 @@ hr.divider.top {
     background-color: var(--neutral-100);
 }
 
-.product-row.big {
-    height: 200px;
-}
+    .product-row .expanded {
+        flex: 1;
+    }
+
+    .product-row.big {
+        height: 200px;
+    }
 
 .product-row.small {
     height: 80px;
@@ -388,7 +392,7 @@ hr.divider.top {
 }
 
 .product-row > div {
-    padding: 0 18px;
+    padding: 18px;
     display: flex;
     width: 100%;
 }

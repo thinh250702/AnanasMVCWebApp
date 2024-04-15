@@ -15,10 +15,11 @@ namespace AnanasMVCWebApp.Services {
         }
 
         public bool CreateOrder(CheckoutViewModel model, Customer customer) {
+            // Create order
             Order order = new Order() {
                 OrderDate = DateTime.UtcNow,
                 GrandTotal = model.GrandTotal,
-                Discount = 0,
+                Discount = 0, // default is 0 when create order
                 ShippingFee = model.ShippingFee,
                 OrderTotal = 0, // default is 0 when create order
                 OrderStatus = _unitOfWork.OrderStatusRepository.GetStatusBySlug("placed"),
@@ -26,15 +27,20 @@ namespace AnanasMVCWebApp.Services {
                 PaymentMethod = _unitOfWork.PaymentRepository.GetById(model.PaymentMethod),
                 Customer = customer,
             };
-            // Decorate order with coupon and then assign OrderTotal by the value of calculatePrice function
-            /*
-            model.Coupons.ForEach(code => {
-                Coupon coupon = _couponRepo.GetCouponByCode(code);
-                order = coupon.SetWrappee(order)
-            });
-            order.OrderTotal = order.calculatePrice();
-             */
+            // Apply coupon - Decorator Pattern
+            ConcreteCoupon decorator = new ConcreteCoupon(order);
+            if (model.Coupons.Count > 0) {
+                model.Coupons.ForEach(code => {
+                    Coupon coupon = _unitOfWork.CouponRepository.GetCouponByCode(code)!;
+                    decorator = new ConcreteCoupon(decorator);
+                    decorator.Coupon = coupon;
+                });
+            }
+            order.OrderTotal = decorator.calculatePrice() + order.ShippingFee;
+            order.Discount = order.OrderTotal - order.GrandTotal;
             _unitOfWork.OrderRepository.Insert(order);
+
+            // Get shipping info
             var shippingInfo = new ShippingInfo() {
                 Name = customer.FullName,
                 Phone = customer.PhoneNumber,
@@ -46,6 +52,7 @@ namespace AnanasMVCWebApp.Services {
                 Order = order,
             };
             _unitOfWork.ShippingInfoRepository.Insert(shippingInfo);
+
             model.CartItems.ForEach(item => {
                 var orderDetail = new OrderDetail() {
                     ProductName = item.ProductName,
@@ -56,6 +63,10 @@ namespace AnanasMVCWebApp.Services {
                     Order = order,
                 };
                 _unitOfWork.OrderDetailRepository.Insert(orderDetail);
+
+                var sku = _unitOfWork.ProductSKURepository.GetProductSKUByCode(item.ProductId);
+                sku.InStock = sku.InStock - 1;
+                _unitOfWork.ProductSKURepository.Update(sku);
             });
             return _unitOfWork.Complete() > 0 ? true : false;
         }

@@ -29,7 +29,7 @@ namespace AnanasMVCWebApp.Models {
             Code = Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper();
         }
         public override int calculatePrice() {
-            return GrandTotal + ShippingFee;
+            return GrandTotal;
         }
     }
     public class OrderStatus {

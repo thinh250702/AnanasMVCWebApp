@@ -27,9 +27,9 @@ namespace AnanasMVCWebApp.Controllers {
         [Authorize(Roles = ApplicationRole.Customer)]
         public IActionResult Index() {
             List<CartItemViewModel> cartItems = HttpContext.Session.GetJson<List<CartItemViewModel>>("Cart") ?? new List<CartItemViewModel>();
-            /*if (cartItems.Count < 1) {
+            if (cartItems.Count < 1) {
                 return RedirectToAction("Index", "Cart");
-            }*/
+            }
             var model = _orderService.GetCheckoutModel(cartItems);
             return View(model);
         }
@@ -39,12 +39,14 @@ namespace AnanasMVCWebApp.Controllers {
             List<CartItemViewModel> cartItems = HttpContext.Session.GetJson<List<CartItemViewModel>>("Cart") ?? new List<CartItemViewModel>();
             if (ModelState.IsValid) {
                 model.CartItems = cartItems;
-                var user = await _userManager.GetUserAsync(HttpContext.User);
-                bool result = _orderService.CreateOrder(model, user);
-                if (result) {
-                    HttpContext.Session.Remove("Cart"); // Clear the cart when create order successfully
-                    TempData["success"] = "Bạn đã đặt hàng thành công!";
-                    return RedirectToAction("Index", "Order");
+                if (model.CartItems.Count > 0) {
+                    var user = await _userManager.GetUserAsync(HttpContext.User);
+                    bool result = _orderService.CreateOrder(model, user);
+                    if (result) {
+                        HttpContext.Session.Remove("Cart"); // Clear the cart when create order successfully
+                        TempData["success"] = "Bạn đã đặt hàng thành công!";
+                        return RedirectToAction("Index", "Order");
+                    }
                 }
             }
             var newModel = _orderService.GetCheckoutModel(cartItems);
@@ -119,8 +121,13 @@ namespace AnanasMVCWebApp.Controllers {
             return Json("");
         }
         [HttpGet]
-        public IActionResult UpdateTotal(int tempPrice, int percent) {
-            return Json("hello");
+        public IActionResult GetDiscount(int tempPrice, string code) {
+            var coupon = _orderService.GetCouponByCode(code);
+            if (coupon != null) {
+                int result = tempPrice - (tempPrice * coupon.Percentage / 100);
+                return Json(new {newPrice = result, discountAmount = tempPrice * coupon.Percentage / 100 });
+            }
+            return Json("");
         }
     }
 }

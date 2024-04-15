@@ -13,6 +13,6 @@
         <span>@Model.Code</span>
         <span>@Model.Description</span>
     </div>
-    <input type="checkbox" name="Coupon[@(index)]" value="@Model.Code" checked hidden>
+    <input type="checkbox" name="Coupons[@(index)]" value="@Model.Code" data-percentage="@Model.Percentage" checked hidden>
     <div><button type="button">Remove</button></div>
 </div>

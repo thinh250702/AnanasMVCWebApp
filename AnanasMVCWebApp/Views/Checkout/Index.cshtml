@@ -13,6 +13,18 @@
 
         var shippingRadios = $("input:radio[name='ShippingMethod']");
         var paymentRadios = $("input:radio[name='PaymentMethod']");
+        var shippingLabel = $("label.shipping-method");
+        var shippingLabelPrice = $("label.shipping-method .label-price");
+
+        var couponInput = $("#CouponInput");
+        var grandTotalInput = $("input[name='GrandTotal']");
+        var discountInput = $("input[name='DiscountAmount']");
+        var orderTotalInput = $("input[name='OrderTotal']");
+        var shippingFeeInput = $("input[name='ShippingFee']");
+
+        var orderTotalDisplay = $("#order-total-display");
+        var discountDisplay = $("#discount-display");
+        var shippingFeeDisplay = $("#shipping-fee-display");
 
         shippingRadios.click(function () {
             if (cities.val() == null || cities.val() == null || wards.val() == null) {
@@ -25,9 +37,11 @@
                     })
                     $(this).parent().addClass("checked");
 
-                    var selectedFee = $(this).attr("data-shipping-fee")
-                    $("input[name='ShippingFee']").val(selectedFee);
-                    $("#shipping-fee-display").html(formatCurrency(`${selectedFee}`))
+                    var selectedFee = $(this).attr("data-shipping-fee");
+                    shippingFeeInput.val(selectedFee);
+                    shippingFeeDisplay.html(formatCurrency(`${selectedFee}`));
+
+                    updateOrderTotal();
                 })
                 paymentRadios.change(function () {
                     paymentRadios.each(function (index, element) {
@@ -44,6 +58,12 @@
             return n2.split('').reverse().join('') + ' VNĐ';
         }
 
+        function updateOrderTotal(){
+            var orderTotalFinal = parseInt(grandTotalInput.val()) - parseInt(discountInput.val()) + parseInt(shippingFeeInput.val());
+            orderTotalInput.val(orderTotalFinal);
+            orderTotalDisplay.html(formatCurrency(`${orderTotalFinal}`));
+        }
+        
         $.ajax({
             url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/province",
             headers: { "Token": apiToken },
@@ -61,11 +81,13 @@
             districts.empty().append('<option value="" selected disabled>Quận/Huyện</option>');
             wards.empty().append('<option value="" selected disabled>Phường/Xã</option>');
 
-            $('input:radio[name="ShippingMethod"]').prop('checked', false); // Reset radio button
-            $("label.shipping-method").removeClass("checked"); // Uncheck radio label
-            $("label.shipping-method .label-price").html("0 VND"); // Set label value to 0
-            $("input[name='ShippingFee']").val(0); // Set display value to 0
-            $("#shipping-fee-display").html(formatCurrency("0")) // Set hidden input value to 0
+            shippingRadios.prop('checked', false); // Reset radio button
+            shippingFeeInput.val(0); // Set display value to 0
+            shippingFeeDisplay.html(formatCurrency("0")) // Set hidden input value to 0
+            shippingLabel.removeClass("checked"); // Uncheck radio label
+            shippingLabelPrice.html("0 VND"); // Set label value to 0
+
+            updateOrderTotal();
 
             if (this.value != "") {
                 $("input[name='ProvinceName']").val($("select[name='Province'] option:selected").text())
@@ -80,7 +102,7 @@
                         );
                     },
                     error: () => {
-                        alert("Failed to load district data!");
+                        alert("Không thể load dữ liệu Quận/Huyện!");
                     }
                 });
             }
@@ -100,7 +122,7 @@
                         );
                     },
                     error: () => {
-                        alert("Failed to load ward data!");
+                        alert("Không thể load dữ liệu Phường/Xã!");
                     }
                 });
             }
@@ -108,7 +130,7 @@
         wards.change(function () {
             if (this.value != "") {
                 $("input[name='WardName']").val($("select[name='Ward'] option:selected").text());
-                
+                // Call GHN API to calculate shipping fee
                 $.ajax({
                     type: "GET",
                     url: '@Url.Action("GetGHNFee", "Checkout")',
@@ -124,7 +146,7 @@
                         alert("Đã xảy ra lỗi vui lòng thử lại!");
                     }
                 });
-
+                // Call GHTK API to calculate shipping fee
                 $.ajax({
                     type: "GET",
                     url: '@Url.Action("GetGHTKFee", "Checkout")',
@@ -145,30 +167,62 @@
                 });
             }
         });
-
-        var couponInput = $("#CouponInput");
+        // Handle coupon input
         $("#CouponSubmit").click(function () {
             if (couponInput.val() == "") {
                 alert("Bạn chưa nhập mã giảm giá!");
             } else {
-                $.ajax({
-                    type: "GET",
-                    url: '@Url.Action("GetCoupon", "Checkout")',
-                    //dataType: "json",
-                    data: { code: couponInput.val(), count: $("#couponList").children().length },
-                    contentType: "application/json; charset=utf-8",
-                    success: function (result) {
-                        if(result == ""){
-                            alert("Mã khuyến mãi này không hợp lệ mất rồi. Bạn hãy thử nhập lại nhé!")
-                        } else {
-                            $("#couponList").append(result);
-                        }
-                        
-                    },
-                    error: function () {
-                        alert("Đã xảy ra lỗi vui lòng thử lại!");
+                var canApply = true;
+                $("#couponList").children('.coupon-item').each(function () {
+                    if ($(this).find("input[type='checkbox']").val() == couponInput.val()) {
+                        alert("Bạn đã sử dụng mã khuyễn mãi này rồi nên không được dùng nữa nè!");
+                        canApply = false;
                     }
                 });
+                if (canApply) {
+                    $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetCoupon", "Checkout")',
+                        //dataType: "json",
+                        data: { code: couponInput.val(), count: $("#couponList").children().length },
+                        contentType: "application/json; charset=utf-8",
+                        success: function (result) {
+                            if (result == "") {
+                                alert("Mã khuyến mãi này không hợp lệ mất rồi. Bạn hãy thử nhập lại nhé!")
+                                return false;
+                            } else {
+                                alert("Bạn đã áp dụng mã khuyến mãi thành công!")
+                                $("#couponList").append(result);
+                                $.ajax({
+                                    type: "GET",
+                                    url: '@Url.Action("GetDiscount", "Checkout")',
+                                    dataType: "json",
+                                    data: {
+                                        tempPrice: parseInt(grandTotalInput.val()) - parseInt(discountInput.val()),
+                                        code: couponInput.val()
+                                    },
+                                    contentType: "application/json; charset=utf-8",
+                                    success: function (result) {
+                                        var discountFinal = parseInt(discountInput.val()) + result.discountAmount
+                                        discountDisplay.html(formatCurrency(`${discountFinal}`));
+                                        discountInput.val(discountFinal);
+
+                                        updateOrderTotal();
+
+                                        couponInput.val("");
+                                    },
+                                    error: function () {
+                                        alert("Đã xảy ra lỗi vui lòng thử lại!");
+                                    }
+                                });
+                            }
+                        },
+                        error: function () {
+                            alert("Đã xảy ra lỗi vui lòng thử lại!");
+                        }
+                    });
+                    
+                }
             }
         });
 
@@ -327,10 +381,12 @@
                     <li>
                         <span>Đơn hàng</span>
                         <span>@Model.GrandTotal.ToString("#,##0 VND")</span>
+                        <input type="text" asp-for="@Model.GrandTotal" />
                     </li>
                     <li>
                         <span>Giảm</span>
-                        <span>0 VND</span>
+                        <span id="discount-display">0 VND</span>
+                        <input type="text" name="DiscountAmount" value="0" />
                     </li>
                     <li>
                         <span>Phí vận chuyển</span>
@@ -342,8 +398,8 @@
                 <ul class="total">
                     <li>
                         <span>Tổng cộng</span>
-                        <span class="primary-text-color">2.140.000 VND</span>
-                        <input type="text" id="name" hidden />
+                        <span id="order-total-display" class="primary-text-color">@Model.GrandTotal.ToString("#,##0 VND")</span>
+                        <input type="text" name="OrderTotal" value="@Model.GrandTotal" />
                     </li>
                 </ul>
                 <button type="submit">Hoàn tất đặt hàng</button>

@@ -42,10 +42,5 @@ namespace AnanasMVCWebApp.Models.ViewModels {
                 return grandTotal;
             }
         }
-        /*public int OrderTotal {
-            get {
-                return GrandTotal + ShippingFee - DiscountAmount;
-            }
-        }*/
     }
 }
