@@ -2,7 +2,6 @@
 using AnanasMVCWebApp.Models.ViewModels;
 using AnanasMVCWebApp.Services;
 using AnanasMVCWebApp.Utilities;
-using AnanasMVCWebApp.Utilities.AdapterPattern;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

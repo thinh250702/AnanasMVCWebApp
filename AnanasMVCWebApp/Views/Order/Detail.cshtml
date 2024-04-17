@@ -2,7 +2,8 @@
 @model OrderViewModel
 @{
     ViewData["Title"] = "Order Detail";
-    string status = Model.StatusSlug;
+    OrderStatus status = Model.Status;
+    /*string status = Model.StatusSlug;*/
 }
 
 <div class="order-progress-wrapper wide">
@@ -21,17 +22,17 @@
                     <p>Đặt hàng<br>thành công</p>
                 </li>
                 <li><i class="fa-solid fa-angle-right"></i></li>
-                <li class=@((status == "logistic" || status == "delivering" || status == "success") ? "finished" : "")>
+                <li class=@((status.Slug == "logistic" || status.Slug == "delivering" || status.Slug == "success") ? "finished" : "")>
                     <span><i class="fa-solid fa-boxes-packing"></i></span>
                     <p>Chuyển qua<br>giao nhận</p>
                 </li>
                 <li><i class="fa-solid fa-angle-right"></i></li>
-                <li class=@((status == "delivering" || status == "success") ? "finished" : "")>
+                <li class=@((status.Slug == "delivering" || status.Slug == "success") ? "finished" : "")>
                     <span><i class="fa-solid fa-truck-arrow-right"></i></span>
                     <p>Đang giao hàng</p>
                 </li>
                 <li><i class="fa-solid fa-angle-right"></i></li>
-                <li class=@((status == "success") ? "finished" : "")>
+                <li class=@((status.Slug == "success") ? "finished" : "")>
                     <span><i class="fa-solid fa-house-circle-check"></i></span>
                     <p>Giao hàng<br>thành công</p>
                 </li>
@@ -147,7 +148,7 @@
                 </li>
                 <li>
                     <span><strong>Trạng thái</strong></span>
-                    <span>@Model.StatusName</span>
+                    <span>@Model.Status.Name</span>
                 </li>
                 <li>
                     <span><strong>Phương thức thanh toán</strong></span>

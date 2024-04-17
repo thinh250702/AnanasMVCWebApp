@@ -1,5 +1,7 @@
-﻿@{
-    ViewData["Title"] = "Order List";
+﻿@using AnanasMVCWebApp.Models.ViewModels
+@model List<OrderViewModel>
+@{
+    ViewData["Title"] = "Admin - Order List";
     ViewBag.Menu = "order";
 }
 
@@ -73,17 +75,19 @@
                 </div>
             </div>
             <div class="tb-body">
-                <div class="tb-row" style="padding: 18px 0;">
-                    <div style="width: 5%;" class="tb-cell"><input type="radio" name="" id=""></div>
-                    <div style="flex: 1;" class="tb-cell">AV00149</div>
-                    <div style="flex: 1;" class="tb-cell">12/02/2023</div>
-                    <div style="flex: 1;" class="tb-cell">Nguyễn Trường Thịnh</div>
-                    <div style="flex: 1;" class="tb-cell">12.500.000 VND</div>
-                    <div style="flex: 1;" class="tb-cell">Giao hàng thành công</div>
-                    <div style="flex: 1;" class="tb-cell action">
-                        <a href=""><i class="fa-solid fa-pen-to-square"></i> Xem chi tiết</a>
+                @foreach (var order in Model) {
+                    <div class="tb-row" style="padding: 18px 0;">
+                        <div style="width: 5%;" class="tb-cell"><input type="radio" name="" id=""></div>
+                        <div style="flex: 1;" class="tb-cell">@order.OrderCode</div>
+                        <div style="flex: 1;" class="tb-cell">@order.OrderDate.ToString("dd/MM/yyyy")</div>
+                        <div style="flex: 1;" class="tb-cell">@order.FullName</div>
+                        <div style="flex: 1;" class="tb-cell">@order.GrandTotal.ToString("#,##0 VND")</div>
+                        <div style="flex: 1;" class="tb-cell">@order.Status.Name</div>
+                        <div style="flex: 1;" class="tb-cell action">
+                            <a asp-controller="Order" asp-action="Detail" asp-area="Admin" asp-route-id="@order.OrderCode"><i class="fa-solid fa-pen-to-square"></i> Xem chi tiết</a>
+                        </div>
                     </div>
-                </div>
+                }
             </div>
         </div>
         <div class="pagination">

@@ -18,7 +18,7 @@ namespace AnanasMVCWebApp.Controllers {
             var list = _productService.GetAllProductByFilters(category, collection, style, color, price);
             return View(list);
         }
-        public async Task<IActionResult> Detail(string id = "") {
+        public IActionResult Detail(string id = "") {
             if (id == "") return RedirectToAction("Index");
             ProductViewModel? product = _productService.GetProductByCode(id);
             if (product == null) {

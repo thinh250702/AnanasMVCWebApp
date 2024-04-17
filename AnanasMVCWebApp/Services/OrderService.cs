@@ -1,17 +1,18 @@
 ﻿using AnanasMVCWebApp.Models;
 using AnanasMVCWebApp.Models.ViewModels;
 using AnanasMVCWebApp.Repositories;
+using AnanasMVCWebApp.Utilities.ObserverPattern;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace AnanasMVCWebApp.Services {
     public class OrderService : IOrderService {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IWebHostEnvironment _environment;
+        public List<IOrderObserver> Observers = new List<IOrderObserver>();
 
-        public OrderService(IUnitOfWork unitOfWork, IWebHostEnvironment environment) {
+        public OrderService(IUnitOfWork unitOfWork) {
             _unitOfWork = unitOfWork;
-            _environment = environment;
         }
 
         public bool CreateOrder(CheckoutViewModel model, Customer customer) {
@@ -37,14 +38,14 @@ namespace AnanasMVCWebApp.Services {
                 });
             }
             order.OrderTotal = decorator.calculatePrice() + order.ShippingFee;
-            order.Discount = order.OrderTotal - order.GrandTotal;
+            order.Discount = order.OrderTotal - order.GrandTotal - order.ShippingFee;
             _unitOfWork.OrderRepository.Insert(order);
 
             // Get shipping info
             var shippingInfo = new ShippingInfo() {
-                Name = customer.FullName,
-                Phone = customer.PhoneNumber,
-                Email = customer.Email,
+                Name = model.FullName,
+                Phone = model.Phone,
+                Email = model.Email,
                 Address = model.Adress,
                 City = model.ProvinceName,
                 District = model.DistrictName,
@@ -101,6 +102,7 @@ namespace AnanasMVCWebApp.Services {
                 });
                 var info = _unitOfWork.ShippingInfoRepository.GetShippingInfoByOrder(order.Id);
                 var model = new OrderViewModel(itemList, order, info);
+                model.StatusList = _unitOfWork.OrderStatusRepository.GetAll().ToList();
                 return model;
             }
             return null;
@@ -108,6 +110,46 @@ namespace AnanasMVCWebApp.Services {
 
         public Coupon GetCouponByCode(string code) {
             return _unitOfWork.CouponRepository.GetCouponByCode(code);
+        }
+
+        public List<OrderViewModel> GetAllOrders() {
+            var orderList = new List<OrderViewModel>();
+            _unitOfWork.OrderRepository.GetAll().ToList().ForEach(order => {
+                var itemList = new List<OrderItemViewModel>();
+                var info = _unitOfWork.ShippingInfoRepository.GetShippingInfoByOrder(order.Id);
+                orderList.Add(new OrderViewModel(itemList, order, info));
+            });
+            return orderList;
+        }
+
+        public bool UpdateOrderStatus(string orderCode, int statusId) {
+            var order = _unitOfWork.OrderRepository.GetOrderByCode(orderCode);
+            if (order != null) {
+                var status = _unitOfWork.OrderStatusRepository.GetById(statusId);
+                order.OrderStatus = status;
+                if (status.Slug == "success") {
+                    Notify(order);
+                }
+                _unitOfWork.OrderRepository.Update(order);
+                _unitOfWork.Complete();
+                
+                return true;
+            }
+            return false;
+        }
+
+        public void Attach(IOrderObserver observer) {
+            Observers.Add(observer);
+        }
+
+        public void Detach(IOrderObserver observer) {
+            Observers.Remove(observer);
+        }
+
+        public void Notify(Order order) {
+            foreach (var observer in Observers) {
+                observer.UpdateAsync(order);
+            }
         }
     }
 }

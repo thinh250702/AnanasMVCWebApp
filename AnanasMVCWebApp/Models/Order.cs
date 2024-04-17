@@ -1,4 +1,4 @@
-﻿using AnanasMVCWebApp.Utilities.AdapterPattern;
+﻿using AnanasMVCWebApp.Utilities.ObserverPattern;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

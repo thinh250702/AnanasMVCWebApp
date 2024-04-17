@@ -511,8 +511,13 @@ table, th, td {
     border-radius: 6px;
     color: var(--neutral-100);
     font-weight: 700;
-    outline: 1px solid var(--neutral-0);
     width: 150px;
+    cursor: pointer;
+}
+
+.order-status-action button:hover {
+    background-color: var(--dark-primary);
+    transition: 0.2s;
 }
 
 .order-detail-list {

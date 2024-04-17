@@ -7,8 +7,10 @@
         public int ShippingFee { get; set; }
         public int GrandTotal { get; set; }
         public int OrderTotal { get; set; }
-        public string StatusName { get; set; }
-        public string StatusSlug { get; set; }
+        public OrderStatus Status { get; set; }
+        public List<OrderStatus> StatusList { get; set; } = new List<OrderStatus>();
+        /*public string StatusName { get; set; }
+        public string StatusSlug { get; set; }*/
         public string ShippingMethod { get; set; }
         public string PaymentMethod { get; set; }
         public string FullName { get; set; }
@@ -18,6 +20,7 @@
         public string City { get; set; }
         public string District { get; set; }
         public string Ward { get; set; }
+        public OrderViewModel() { }
         public OrderViewModel(List<OrderItemViewModel> itemList, Order order) {
             OrderItems = itemList;
             OrderCode = order.Code;
@@ -26,8 +29,9 @@
             ShippingFee = order.ShippingFee;
             GrandTotal = order.GrandTotal;
             OrderTotal = order.OrderTotal;
-            StatusName = order.OrderStatus.Name;
-            StatusSlug = order.OrderStatus.Slug;
+            Status = order.OrderStatus;
+            /*StatusName = order.OrderStatus.Name;
+            StatusSlug = order.OrderStatus.Slug;*/
             ShippingMethod = order.ShippingMethod.Name;
             PaymentMethod = order.PaymentMethod.Name;
         }
@@ -39,8 +43,9 @@
             ShippingFee = order.ShippingFee;
             GrandTotal = order.GrandTotal;
             OrderTotal = order.OrderTotal;
-            StatusName = order.OrderStatus.Name;
-            StatusSlug = order.OrderStatus.Slug;
+            Status = order.OrderStatus;
+            /*StatusName = order.OrderStatus.Name;
+            StatusSlug = order.OrderStatus.Slug;*/
             ShippingMethod = order.ShippingMethod.Name;
             PaymentMethod = order.PaymentMethod.Name;
             FullName = info.Name;

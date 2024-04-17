@@ -1,1 +1,208 @@
-﻿
+﻿@using AnanasMVCWebApp.Models.ViewModels
+@model OrderViewModel
+@{
+    ViewData["Title"] = "Admin - Order Detail";
+    ViewBag.Menu = "order";
+}
+@section Scripts {
+    <script>
+        var updateStatusBtn = $("#updateStatusBtn");
+        var orderCodeInput = $("input[name='OrderCode']");
+        var statusSelect = $("select[name='Status']");
+        updateStatusBtn.click(function(){
+            console.log(orderCodeInput.val())
+            console.log(statusSelect.val())
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("UpdateStatus", "Order", new { Area = "Admin" })',
+                dataType: "json",
+                data: {
+                    code: orderCodeInput.val(),
+                    status: parseInt(statusSelect.val()),
+                },
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    if (result == ""){
+                        alert("Cập nhật trạng thái thất bại!");
+                    } else {
+                        //alert("Cập nhật trạng thái thành công!");
+                        window.location.href = result.redirectToUrl;
+                    }
+                    //window.location.href = result.redirectToUrl;
+                },
+                error: function () {
+                    alert("Đã xảy ra lỗi vui lòng thử lại!");
+                }
+            });
+        });
+    </script>
+}
+
+<div class="row-wrapper">
+    <h4>Chi tiết đơn hàng</h4>
+</div>
+<div class="row-wrapper">
+    <div class="order-status-action">
+        <span>Trạng thái</span>
+        <form>
+            @Html.HiddenFor(i => i.OrderCode)
+            <select asp-for="@Model.Status">
+                @foreach (var option in Model.StatusList) {
+                    if (option.Id == Model.Status.Id) {
+                        <option selected value="@option.Id">@option.Name</option>
+                    } else {
+                        <option value="@option.Id">@option.Name</option>
+                    }
+                    
+                }
+                @* <option value="">Đã xử lý</option>
+                <option value="">Đang giao</option>
+                <option value="">Giao thành công</option> *@
+            </select>
+            <button id="updateStatusBtn" type="button">Cập nhật</button>
+        </form>
+    </div>
+</div>
+<div class="row-wrapper order">
+    <div>
+        <div class="summary-panel">
+            <h5>Thông tin khách hàng</h5>
+            <hr class="divider top">
+            <ul>
+                <li>
+                    <span><strong>Họ tên</strong></span>
+                    <span>@Model.FullName</span>
+                </li>
+                <li>
+                    <span><strong>Điện thoại</strong></span>
+                    <span>@Model.Phone</span>
+                </li>
+                <li>
+                    <span><strong>Email</strong></span>
+                    <span>@Model.Email</span>
+                </li>
+                <li>
+                    <span><strong>Địa chỉ</strong></span>
+                    <span>@Model.Address</span>
+                </li>
+                <li>
+                    <span><strong>Phường/xã</strong></span>
+                    <span>@Model.Ward</span>
+                </li>
+                <li>
+                    <span><strong>Quận/Huyện</strong></span>
+                    <span>@Model.District</span>
+                </li>
+                <li>
+                    <span><strong>Thành phố/Tỉnh</strong></span>
+                    <span>@Model.City</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div>
+        <div class="summary-panel">
+            <h5>Thông tin khách hàng</h5>
+            <hr class="divider top">
+            <ul>
+                <li>
+                    <span><strong>Họ tên</strong></span>
+                    <span>@Model.FullName</span>
+                </li>
+                <li>
+                    <span><strong>Điện thoại</strong></span>
+                    <span>@Model.Phone</span>
+                </li>
+                <li>
+                    <span><strong>Email</strong></span>
+                    <span>@Model.Email</span>
+                </li>
+                <li>
+                    <span><strong>Địa chỉ</strong></span>
+                    <span>@Model.Address</span>
+                </li>
+                <li>
+                    <span><strong>Phường/xã</strong></span>
+                    <span>@Model.Ward</span>
+                </li>
+                <li>
+                    <span><strong>Quận/Huyện</strong></span>
+                    <span>@Model.District</span>
+                </li>
+                <li>
+                    <span><strong>Thành phố/Tỉnh</strong></span>
+                    <span>@Model.City</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row-wrapper order">
+    <div>
+        <div class="summary-panel">
+            <h5>Danh sách sản phẩm</h5>
+            <hr class="divider top">
+            <div class="order-detail-list">
+                @foreach (var item in Model.OrderItems) {
+                    <div class="product-row">
+                        <img src="~/uploads/@item.ImageName" alt="">
+                        <div>
+                            <div>
+                                <p>@item.ProductName</p>
+                                <p>Size: @item.Size | Số lượng: @item.Quantity</p>
+                                <p>@item.Price.ToString("#,##0 VND")</p>
+                            </div>
+                            <div>@item.SubTotal.ToString("#,##0 VND")</div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="summary-panel">
+            <h5>Thông tin đơn hàng</h5>
+            <hr class="divider top">
+            <ul>
+                <li>
+                    <span><strong>Ngày tạo</strong></span>
+                    <span>@Model.OrderDate.ToString("dd/MM/yyyy")</span>
+                </li>
+                <li>
+                    <span><strong>Trạng thái</strong></span>
+                    <span>@Model.Status.Name</span>
+                </li>
+                <li>
+                    <span><strong>Phương thức thanh toán</strong></span>
+                    <span>@Model.PaymentMethod</span>
+                </li>
+                <li>
+                    <span><strong>Phương thức vận chuyển</strong></span>
+                    <span>@Model.ShippingMethod</span>
+                </li>
+            </ul>
+            <hr class="divider grey">
+            <ul>
+                <li>
+                    <span><strong>Đơn hàng</strong></span>
+                    <span>@Model.GrandTotal.ToString("#,##0 VND")</span>
+                </li>
+                <li>
+                    <span><strong>Giảm</strong></span>
+                    <span>@Model.Discount.ToString("#,##0 VND")</span>
+                </li>
+                <li>
+                    <span><strong>Phí vận chuyển</strong></span>
+                    <span>@Model.ShippingFee.ToString("#,##0 VND")</span>
+                </li>
+            </ul>
+            <hr class="divider grey">
+            <ul class="total">
+                <li>
+                    <span>Tổng cộng</span>
+                    <span class="primary-text-color">@Model.OrderTotal.ToString("#,##0 VND")</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -22,18 +22,17 @@ namespace AnanasMVCWebApp.Areas.Admin.Controllers {
         [HttpPost]
         public IActionResult Create(ProductBaseEM model) {
             if (ModelState.IsValid) {
-                TempData["success"] = "Thêm sản phẩm thành công";
-                /*bool result = _productService.CreateProduct(model);*/
+                bool result = _productService.CreateProduct(model);
+                if (result) {
+                    TempData["success"] = "Thêm sản phẩm thành công";
+                    return RedirectToAction("Index");
+                } else {
+                    TempData["error"] = "Thêm sản phẩm thất bại";
+                    return View(model);
+                }
             }
-            TempData["error"] = "Thêm sản phẩm thất bại";
+            TempData["error"] = "Vui lòng nhập đầy đủ thông tin sản phẩm";
             return View(_productService.GetProductForCreate());
-            /*if (result) {
-                TempData["success"] = "Thêm sản phẩm thành công";
-                return RedirectToAction("Index");
-            } else {
-                TempData["error"] = "Thêm sản phẩm thất bại";
-                return View(model);
-            }*/
         }
         public IActionResult Edit(string id) {
             return View(_productService.GetProductForEdit(id));
