@@ -1,4 +1,5 @@
 ﻿using AnanasMVCWebApp.Models;
+using AnanasMVCWebApp.Models.ViewModels;
 
 namespace AnanasMVCWebApp.Utilities.ObserverPattern {
     public interface IOrderNotifier {
@@ -9,6 +10,6 @@ namespace AnanasMVCWebApp.Utilities.ObserverPattern {
         public void Detach(IOrderObserver observer);
 
         // Notify all order observers about an event.
-        public void Notify(Order order);
+        public void Notify(OrderViewModel order);
     }
 }

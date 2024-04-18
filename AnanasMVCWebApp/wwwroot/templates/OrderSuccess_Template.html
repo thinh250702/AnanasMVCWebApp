@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            box-sizing: border-box;
+        }
+        html {
+            font-family: "Roboto", sans-serif;
+            font-size: 16px;
+            font-weight: normal;
+            color: #202020;
+            user-select: none;
+        }
+        h1, .h1 {
+            font-size: 96px;
+            letter-spacing: -1.5px;
+        }
+
+        h2, .h2 {
+            font-size: 60px;
+            letter-spacing: -0.5px;
+        }
+        h3, .h3 {
+            font-size: 48px;
+            letter-spacing: 0px;
+        }
+
+        h4, .h4 {
+            font-size: 32px;
+            letter-spacing: 0.25px;
+        }
+        h5, .h5 {
+            font-size: 24px;
+            letter-spacing: 0px;
+        }
+        h6, .h6 {
+            font-size: 20px;
+            letter-spacing: 0.15px;
+        }
+    </style>
+</head>
+<body style="width: 600px; margin: auto;">
+    <header style="background-color: #303030; display: flex; justify-content: center; padding: 24px 0;">
+        <img style="height: 40px;" src="{orange-logo}" alt="">
+    </header>
+    <section>
+        <div style="background-color: #cccccb; color: #555; font-size: 14px; text-align: center; padding: 12px 0; font-style: italic;">Cuộc sống vốn có rất nhiều lựa chọn, cảm ơn vì bạn đã chọn Ananas.</div>
+        <div style="font-size: 14px; padding: 20px 40px 24px;">
+            <h5 style="text-align: center; margin-bottom: 20px; line-height: 36px;">Đơn hàng <span style="color: #f15f2e; text-decoration: underline; font-weight: 700;">#{order-code}</span><br>đã được giao thành công!</h5>
+            <p style="line-height: 24px; text-align: justify;">Xin chào <strong>Nguyễn Trường Thịnh</strong>,</p>
+            <p style="line-height: 24px; text-align: justify;">Ananas đã giao cho bạn đầy đủ với các sản phẩm được liệt kê bên dưới theo đơn hàng <span style="color: #f15f2e; text-decoration: underline; font-weight: 700;">#{order-code}</span> của bạn, Ananas hi vọng bạn hài lòng với các sản phẩm này!</p>
+        </div>
+        <div style="padding: 0px 40px; margin-bottom: 24px;">
+            <div style="border-radius: 100px; outline: 1px solid #202020; background-color: #f1f1f1; display: flex; align-items: center;">
+                <span style="background-color: #fff; border-radius: 100px; outline: 1px solid #202020; display: flex;">
+                    <img style="width: 54px; height: 54px; padding: 15px;" src="{order-icon}" alt="">
+                </span>
+                <h6 style="margin-left: 16px; font-size: 20px; text-transform: uppercase; font-weight: 700;">Chi tiết đơn hàng</h6>
+            </div>
+            <div>
+                <div style="display: flex; flex-direction: column; gap: 26px; margin: 24px;">
+                    {order-list}
+                </div>
+                <ul style="list-style: none; font-size: 14px; margin: 0 24px; font-weight: 700;">
+                    <li style="display: flex; justify-content: space-between;">
+                        <span style="line-height: 28px;">Tổng giá trị đơn hàng</span>
+                        <span style="line-height: 28px;">{grand-total}</span>
+                    </li>
+                    <li style="display: flex; justify-content: space-between;">
+                        <span style="line-height: 28px;">Khuyến mãi</span>
+                        <span style="line-height: 28px;">{discount}</span>
+                    </li>
+                    <li style="display: flex; justify-content: space-between;">
+                        <span style="line-height: 28px;">Phí vận chuyển</span>
+                        <span style="line-height: 28px;">{shipping-fee}</span>
+                    </li>
+                    <li style="display: flex; justify-content: space-between; color: #f15f2e; font-weight: 800; font-size: 18px;">
+                        <span style="line-height: 28px;">Tổng thanh toán</span>
+                        <span style="line-height: 28px;">{order-total}</span>
+                    </li>
+                </ul>
+                <hr style="border: 1px solid #484649; margin: 16px 24px;">
+                <ul style="list-style: none; font-size: 14px; margin: 0 24px; font-weight: 700;">
+                    <li style="display: flex; justify-content: space-between;">
+                        <span style="line-height: 28px;">Phương thức thanh toán</span>
+                        <span style="line-height: 28px;">{payment-method}</span>
+                    </li>
+                    <li style="display: flex; justify-content: space-between;">
+                        <span style="line-height: 28px;">Phương thức vận chuyển</span>
+                        <span style="line-height: 28px;">{shipping-method}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div style="padding: 0px 40px; margin-bottom: 24px;">
+            <div style="border-radius: 100px; outline: 1px solid #202020; background-color: #f1f1f1; display: flex; align-items: center;">
+                <span style="background-color: #fff; border-radius: 100px; outline: 1px solid #202020; display: flex;">
+                    <img style="width: 54px; height: 54px; padding: 16px;" src="{address-icon}" alt="">
+                </span>
+                <h6 style="margin-left: 16px; font-size: 20px; text-transform: uppercase; font-weight: 700;">Thông tin giao hàng</h6>
+            </div>
+            <div>
+                <ul style="list-style: none; font-size: 14px; margin: 0 24px; font-weight: 700; margin-top: 18px;">
+                    <li style="display: flex; justify-content: space-between;">
+                        <span style="line-height: 28px;">Họ tên</span>
+                        <span style="line-height: 28px;">{fullname}</span>
+                    </li>
+                    <li style="display: flex; justify-content: space-between;">
+                        <span style="line-height: 28px;">Điện thoại</span>
+                        <span style="line-height: 28px;">{phone}</span>
+                    </li>
+                    <li style="display: flex; justify-content: space-between;">
+                        <span style="line-height: 28px;">Email</span>
+                        <span style="line-height: 28px;">{email}</span>
+                    </li>
+                    <li style="display: flex; justify-content: space-between;">
+                        <span style="line-height: 28px;">Địa chỉ</span>
+                        <span style="line-height: 28px;">{address}</span>
+                    </li>
+                    <li style="display: flex; justify-content: space-between;">
+                        <span style="line-height: 28px;">Phường/xã</span>
+                        <span style="line-height: 28px;">{city}</span>
+                    </li>
+                    <li style="display: flex; justify-content: space-between;">
+                        <span style="line-height: 28px;">Quận/Huyện</span>
+                        <span style="line-height: 28px;">{district}</span>
+                    </li>
+                    <li style="display: flex; justify-content: space-between;">
+                        <span style="line-height: 28px;">Thành phố/Tỉnh</span>
+                        <span style="line-height: 28px;">{ward}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div style="margin: 0 40px; font-size: 12px; line-height: 18px; border-top: 1px dashed #787579; padding: 16px 0 28px; text-align: justify; color: #787579; font-weight: 500; font-style: italic;">
+            Đây là email được gửi tự động, vui lòng không phản hồi email này. Để tìm hiểu thêm các quy định về đơn hàng hay các chính sách sau bán hàng của Ananas, vui lòng truy cập tại link hoặc gọi đến <strong>096 3429749</strong> (trong giờ hành chính) để được hướng dẫn.
+        </div>
+    </section>
+    <footer style="background-color: #4d4d4d; padding: 20px 40px; display: flex; justify-content: space-between;">
+        <img style="height: 32px;" src="{grey-logo}" alt="">
+        <div style="display: flex; gap: 12px;">
+            <a style="color: #808080; font-size: 32px;" href="https://www.facebook.com/Ananas.vietnam"><i class="fa-brands fa-square-facebook"></i></a>
+            <a style="color: #808080; font-size: 32px;" href="https://www.instagram.com/ananasvn/"><i class="fa-brands fa-square-instagram"></i></a>
+            <a style="color: #808080; font-size: 32px;" href="https://www.youtube.com/@DiscoverYOU"><i class="fa-brands fa-square-youtube"></i></a>
+        </div>
+    </footer>
+</body>
+</html>

@@ -11,25 +11,25 @@ namespace AnanasMVCWebApp.Areas.Admin.Controllers {
     public class OrderController : Controller {
         private readonly IOrderService _orderService;
         private readonly ISendMailService _sendMailService;
+        private readonly IWebHostEnvironment _environment;
 
-        public OrderController(IOrderService orderService, ISendMailService sendMailService) {
+        public OrderController(IOrderService orderService, ISendMailService sendMailService, IWebHostEnvironment environment) {
             _orderService = orderService;
             _sendMailService = sendMailService;
+            _environment = environment;
 
-            var emailObserver = EmailObserver.GetInstance(_sendMailService);
+            //var emailObserver = EmailObserver.GetInstance();
+            var emailObserver = new EmailObserver(_sendMailService, _environment);
+            //emailObserver.init(_sendMailService, _environment);
             _orderService.Attach(emailObserver);
+            _environment = environment;
         }
 
-        /*public OrderController(IOrderService orderService) {
-            _orderService = orderService;
-            // Singleton Pattern
-            var emailObserver = EmailObserver.GetInstance();
-            _orderService.Attach(emailObserver);
-        }*/
         public IActionResult Index() {
             var result = _orderService.GetAllOrders();
             return View(result);
         }
+
         public IActionResult Detail(string id) {
             if (id == "") return RedirectToAction("Index");
             OrderViewModel? order = _orderService.GetOrderByCode(id);

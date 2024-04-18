@@ -109,7 +109,7 @@ namespace AnanasMVCWebApp.Services {
         }
 
         public Coupon GetCouponByCode(string code) {
-            return _unitOfWork.CouponRepository.GetCouponByCode(code);
+            return _unitOfWork.CouponRepository.GetCouponByCode(code)!;
         }
 
         public List<OrderViewModel> GetAllOrders() {
@@ -128,7 +128,7 @@ namespace AnanasMVCWebApp.Services {
                 var status = _unitOfWork.OrderStatusRepository.GetById(statusId);
                 order.OrderStatus = status;
                 if (status.Slug == "success") {
-                    Notify(order);
+                    Notify(GetOrderByCode(orderCode)!);
                 }
                 _unitOfWork.OrderRepository.Update(order);
                 _unitOfWork.Complete();
@@ -146,7 +146,7 @@ namespace AnanasMVCWebApp.Services {
             Observers.Remove(observer);
         }
 
-        public void Notify(Order order) {
+        public void Notify(OrderViewModel order) {
             foreach (var observer in Observers) {
                 observer.UpdateAsync(order);
             }
