@@ -11,26 +11,23 @@ namespace AnanasMVCWebApp.Utilities.ObserverPattern {
     public interface IOrderObserver {
         public Task UpdateAsync(OrderViewModel order);
     }
-    public class EmailObserver : IOrderObserver {
-        //private static EmailObserver _instance;
+    public sealed class EmailObserver : IOrderObserver {
+        private static EmailObserver _instance;
         private ISendMailService _sendMailService;
         private IWebHostEnvironment _environment;
 
-        public EmailObserver(ISendMailService sendMailService, IWebHostEnvironment environment) {
-            _sendMailService = sendMailService;
-            _environment = environment;
-        }
+        public EmailObserver() {}
 
-        /*public static EmailObserver GetInstance() {
+        public static EmailObserver GetInstance() {
             if (_instance == null) {
                 _instance = new EmailObserver();
             }
             return _instance;
-        }*/
-        /*public void init(ISendMailService sendMailService, IWebHostEnvironment environment) {
+        }
+        public void init(ISendMailService sendMailService, IWebHostEnvironment environment) {
             _sendMailService = sendMailService;
             _environment = environment;
-        }*/
+        }
         private string ConvertImageToBase64(string path) {
             if (File.Exists(path)) {
                 byte[] imageArray = File.ReadAllBytes(path);

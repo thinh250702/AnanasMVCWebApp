@@ -18,9 +18,9 @@ namespace AnanasMVCWebApp.Areas.Admin.Controllers {
             _sendMailService = sendMailService;
             _environment = environment;
 
-            //var emailObserver = EmailObserver.GetInstance();
-            var emailObserver = new EmailObserver(_sendMailService, _environment);
-            //emailObserver.init(_sendMailService, _environment);
+            var emailObserver = EmailObserver.GetInstance();
+            //var emailObserver = new EmailObserver(_sendMailService, _environment);
+            emailObserver.init(_sendMailService, _environment);
             _orderService.Attach(emailObserver);
             _environment = environment;
         }
