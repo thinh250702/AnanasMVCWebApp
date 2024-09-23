@@ -26,7 +26,7 @@ namespace AnanasMVCWebApp.Controllers
             return View(cart);
         }
         [HttpPost]
-        public async Task<IActionResult> Add(string quantity, string size) {
+        public IActionResult Add(string quantity, string size) {
             List<CartItemViewModel> cart = HttpContext.Session.GetJson<List<CartItemViewModel>>("Cart") ?? new List<CartItemViewModel>();
             var newCart = _cartService.AddItemToCart(cart, size, int.Parse(quantity));
             HttpContext.Session.SetJson("Cart", newCart);
@@ -34,7 +34,7 @@ namespace AnanasMVCWebApp.Controllers
             return Redirect(Request.Headers["Referer"].ToString());
         }
         [HttpGet]
-        public async Task<IActionResult> ModifyQuantity(string id, int quantity) {
+        public IActionResult ModifyQuantity(string id, int quantity) {
             List<CartItemViewModel> cart = HttpContext.Session.GetJson<List<CartItemViewModel>>("Cart");
             var newCart = _cartService.UpdateItemQuantity(cart, id, quantity);
             HttpContext.Session.SetJson("Cart", newCart);
@@ -42,14 +42,14 @@ namespace AnanasMVCWebApp.Controllers
             return Json(new { redirectToUrl = Url.Action("Index", "Cart") });
         }
         [HttpGet]
-        public async Task<IActionResult> ModifySize(string id, string sizeCode) {
+        public IActionResult ModifySize(string id, string sizeCode) {
             List<CartItemViewModel> cart = HttpContext.Session.GetJson<List<CartItemViewModel>>("Cart");
             var newCart = _cartService.UpdateItemSize(cart, id, sizeCode);
             HttpContext.Session.SetJson("Cart", newCart);
             TempData["success"] = "Cập nhật kích thước thành công";
             return Json(new { redirectToUrl = Url.Action("Index", "Cart") });
         }
-        public async Task<IActionResult> Remove(string id) {
+        public IActionResult Remove(string id) {
             List<CartItemViewModel> cart = HttpContext.Session.GetJson<List<CartItemViewModel>>("Cart");
             cart.RemoveAll(p => p.ProductId == id);
             if (cart.Count == 0) {
