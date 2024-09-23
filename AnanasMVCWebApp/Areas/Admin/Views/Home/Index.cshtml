@@ -1,9 +1,9 @@
 ﻿@{
     ViewData["Title"] = "Dashboard";
-    ViewBag.Menu = "dashboard";
 }
 
 @section Scripts {
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script>
         var radio = $("input[type='radio']");
         radio.click(function () {
@@ -12,7 +12,87 @@
             })
             $(this).parent().addClass("checked");
         })
+
+        
+
+        var data = [
+            { year: 2010, count: 1000 },
+            { year: 2011, count: 2000 },
+            { year: 2012, count: 1500 },
+            { year: 2013, count: 2500 },
+            { year: 2014, count: 2200 },
+            { year: 2015, count: 3000 },
+            { year: 2016, count: 2800 },
+        ];
+        var salesChartConfig = {
+            type: 'bar',
+            data: {
+                labels: data.map(row => row.year),
+                datasets: [{
+                    label: 'Doanh thu',
+                    data: data.map(row => row.count),
+                    backgroundColor: 'rgb(241, 94, 44, 0.2)',
+                    borderColor: 'rgb(241, 94, 44)',
+                    borderWidth: 1,
+                    tension: 0.2,
+                    fill: 'origin',
+                }],
+
+            }
+        }
+        var salesChartContext = document.getElementById("totalSalesChart");
+        var salesChart = new Chart(salesChartContext, salesChartConfig);
+
+        /*$("input[name='salesType']").change(function () {
+            // Remove the old chart and all its event handles
+            if (salesChart) {
+                salesChart.destroy();
+            }
+            var temp = jQuery.extend(true, {}, salesChartConfig);
+            temp.type = $(this).val();
+            salesChart = new Chart(salesChartContext, temp);
+        });*/
+
+        const myChart2 = new Chart(document.getElementById("totalOrdersChart"), {
+            type: 'line',
+            data: {
+                labels: data.map(row => row.year),
+                datasets: [{
+                    label: 'Đơn hàng',
+                    data: data.map(row => row.count),
+                    backgroundColor: 'rgb(241, 94, 44, 0.2)',
+                    borderColor: 'rgb(241, 94, 44)',
+                    borderWidth: 1,
+                    tension: 0.2,
+                    fill: 'origin',
+                }]
+            }
+        });
+
+        const myPieChart = new Chart(document.getElementById("pieChart"), {
+            type: 'pie',
+            data: {
+                labels: [
+                    'Giày',
+                    'Quần áo',
+                    'Phụ kiện'
+                ],
+                datasets: [{
+                    label: 'My First Dataset',
+                    data: [300, 50, 100],
+                    backgroundColor: [
+                        'rgb(241, 94, 44, 1)',
+                        'rgb(241, 94, 44, .6)',
+                        'rgb(241, 94, 44, .2)'
+                    ],
+                    // borderColor: 'rgb(241, 94, 44)',
+                    hoverOffset: 5,
+                    borderWidth: 1
+                }]
+            },
+        });
     </script>
+
 }
 
 <div class="row-wrapper">
@@ -43,13 +123,13 @@
                 </div>
                 <div class="actions__chart-type">
                     <span>Chart Type</span>
-                    <label class="bar-label" for="bar-sales">
+                    <label class="bar-label checked" for="bar-sales">
                         Bar
-                        <input type="radio" name="chart-type" id="bar-sales" hidden>
+                        <input type="radio" checked name="salesType" id="bar-sales" value="bar" hidden>
                     </label>
                     <label class="line-label" for="line-sales">
                         Line
-                        <input type="radio" name="chart-type" id="line-sales" hidden>
+                        <input type="radio" name="salesType" id="line-sales" value="line" hidden>
                     </label>
                 </div>
             </div>
@@ -80,13 +160,13 @@
                 </div>
                 <div class="actions__chart-type">
                     <span>Chart Type</span>
-                    <label class="bar-label" for="bar-orders">
+                    <label class="bar-label checked" for="bar-orders">
                         Bar
-                        <input type="radio" name="sales-chart-type" id="bar-orders" hidden>
+                        <input type="radio" checked name="ordersType" id="bar-orders" value="bar" hidden>
                     </label>
                     <label class="line-label" for="line-orders">
                         Line
-                        <input type="radio" name="sales-chart-type" id="line-orders" hidden>
+                        <input type="radio" name="ordersType" id="line-orders" value="line" hidden>
                     </label>
                 </div>
             </div>
@@ -154,15 +234,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>
-                            <img src="../public/image/product.jpg" alt="">
-                            <span>Basas Workaday - Low Top</span>
-                        </td>
-                        <td>200.000 VND</td>
-                        <td>200</td>
-                    </tr>
                     <tr>
                         <td>1</td>
                         <td>

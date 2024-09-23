@@ -353,6 +353,7 @@ hr.divider.top {
     border-radius: 10px;
     outline: 1px solid var(--neutral-0);
     box-shadow: 0 4px 0 1px var(--neutral-0);
+    cursor: pointer;
 }
 
 .primary-btn:hover {
@@ -558,6 +559,12 @@ hr.divider.top {
 .product-card > div:last-child a {
     font-weight: 700;
     text-decoration: none;
+    min-height: 40px;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    justify-content: center;
+    line-height: 20px;
 }
 .product-card > div:last-child a:active {
     color: var(--primary);

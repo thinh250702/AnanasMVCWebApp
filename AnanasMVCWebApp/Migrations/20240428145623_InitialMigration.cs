@@ -95,8 +95,9 @@ namespace AnanasMVCWebApp.Migrations
                     Percentage = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Limit = table.Column<int>(type: "int", nullable: false),
                     TotalUsage = table.Column<int>(type: "int", nullable: false),
-                    LimitAmount = table.Column<int>(type: "int", nullable: false),
+                    MinimumAmount = table.Column<int>(type: "int", nullable: false),
                     MaximumDiscount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

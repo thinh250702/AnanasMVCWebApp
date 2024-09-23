@@ -12,73 +12,83 @@
     </ul>
 </div>
 <div class="user-container wide">
-    <div class="order-list-container">
-        @foreach (var order in Model) {
-            <div class="order-row">
-                <div class="order-row__header">
-                    <div>
-                        <span>ID (-> <strong>@order.OrderCode</strong>)</span><span>@order.Status.Name</span>
+    @if (Model.Count == 0) {
+        <div class="empty-cart-wrapper wide">
+            <div>
+                <h4>LỊCH SỬ MUA HÀNG</h4>
+                <p>Bạn chưa có bất kì đơn hàng nào!</p>
+                @Html.ActionLink("Tiếp tục mua sắm", "Index", "Product")
+            </div>
+        </div>
+    } else {
+        <div class="order-list-container">
+            @foreach (var order in Model) {
+                <div class="order-row">
+                    <div class="order-row__header">
+                        <div>
+                            <span>ID (-> <strong>@order.OrderCode</strong>)</span><span>@order.Status.Name</span>
+                        </div>
+                        <span class="toggle-button"><i class="fa-solid fa-chevron-down"></i></span>
                     </div>
-                    <span class="toggle-button"><i class="fa-solid fa-chevron-down"></i></span>
-                </div>
-                <div class="order-row__body">
-                    <div>
-                        @foreach (var item in order.OrderItems) {
-                            <div class="product-row">
-                                <img src="~/uploads/@item.ImageName" alt="">
-                                <div>
+                    <div class="order-row__body">
+                        <div>
+                            @foreach (var item in order.OrderItems) {
+                                <div class="product-row">
+                                    <img src="~/uploads/@item.ImageName" alt="">
                                     <div>
-                                        <p>@item.ProductName</p>
-                                        <div class="expanded"></div>
-                                        <p>Size: @item.Size | Số lượng: @item.Quantity</p>
-                                        <p>@item.Price.ToString("#,##0 VND")</p>
+                                        <div>
+                                            <p>@item.ProductName</p>
+                                            <div class="expanded"></div>
+                                            <p>Size: @item.Size | Số lượng: @item.Quantity</p>
+                                            <p>@item.Price.ToString("#,##0 VND")</p>
+                                        </div>
+                                        <div>@item.SubTotal.ToString("#,##0 VND")</div>
                                     </div>
-                                    <div>@item.SubTotal.ToString("#,##0 VND")</div>
                                 </div>
+                            }
+                        </div>
+                        <div>
+                            <div class="summary-panel">
+                                <h5>Order Summary</h5>
+                                <hr class="divider top">
+                                <ul>
+                                    <li>
+                                        <span><strong>Ngày tạo</strong></span>
+                                        <span>@order.OrderDate.ToString("dd/MM/yyyy")</span>
+                                    </li>
+                                    <li>
+                                        <span><strong>Trạng thái</strong></span>
+                                        <span>@order.Status.Name</span>
+                                    </li>
+                                </ul>
+                                <hr class="divider grey">
+                                <ul>
+                                    <li>
+                                        <span><strong>Đơn hàng</strong></span>
+                                        <span>@order.GrandTotal.ToString("#,##0 VND")</span>
+                                    </li>
+                                    <li>
+                                        <span><strong>Giảm</strong></span>
+                                        <span>@order.Discount.ToString("#,##0 VND")</span>
+                                    </li>
+                                    <li>
+                                        <span><strong>Phí vận chuyển</strong></span>
+                                        <span>@order.ShippingFee.ToString("#,##0 VND")</span>
+                                    </li>
+                                </ul>
+                                <hr class="divider grey">
+                                <ul class="total">
+                                    <li>
+                                        <span>Tổng cộng</span>
+                                        <span class="primary-text-color">@order.OrderTotal.ToString("#,##0 VND")</span>
+                                    </li>
+                                </ul>
+                                <a asp-action="Detail" asp-controller="Order" asp-route-id="@order.OrderCode"><button>Xem chi tiết</button></a>
                             </div>
-                        }
-                    </div>
-                    <div>
-                        <div class="summary-panel">
-                            <h5>Order Summary</h5>
-                            <hr class="divider top">
-                            <ul>
-                                <li>
-                                    <span><strong>Ngày tạo</strong></span>
-                                    <span>@order.OrderDate.ToString("dd/MM/yyyy")</span>
-                                </li>
-                                <li>
-                                    <span><strong>Trạng thái</strong></span>
-                                    <span>@order.Status.Name</span>
-                                </li>
-                            </ul>
-                            <hr class="divider grey">
-                            <ul>
-                                <li>
-                                    <span><strong>Đơn hàng</strong></span>
-                                    <span>@order.GrandTotal.ToString("#,##0 VND")</span>
-                                </li>
-                                <li>
-                                    <span><strong>Giảm</strong></span>
-                                    <span>@order.Discount.ToString("#,##0 VND")</span>
-                                </li>
-                                <li>
-                                    <span><strong>Phí vận chuyển</strong></span>
-                                    <span>@order.ShippingFee.ToString("#,##0 VND")</span>
-                                </li>
-                            </ul>
-                            <hr class="divider grey">
-                            <ul class="total">
-                                <li>
-                                    <span>Tổng cộng</span>
-                                    <span class="primary-text-color">@order.OrderTotal.ToString("#,##0 VND")</span>
-                                </li>
-                            </ul>
-                            <a asp-action="Detail" asp-controller="Order" asp-route-id="@order.OrderCode"><button>Xem chi tiết</button></a>
                         </div>
                     </div>
                 </div>
-            </div>
-        }
-    </div>
+            }
+        </div>
+    }
 </div>

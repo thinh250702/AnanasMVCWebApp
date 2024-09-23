@@ -9,10 +9,20 @@ using System;
 namespace AnanasMVCWebApp.Services {
     public class OrderService : IOrderService {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IWebHostEnvironment _environment;
         public List<IOrderObserver> Observers = new List<IOrderObserver>();
 
-        public OrderService(IUnitOfWork unitOfWork) {
+        public OrderService(IUnitOfWork unitOfWork, IWebHostEnvironment environment) {
             _unitOfWork = unitOfWork;
+            _environment = environment;
+        }
+
+        private byte[] GetBlobImage(string name) {
+            string uploadDir = Path.Combine(this._environment.WebRootPath, "uploads/");
+            string filePath = Path.Combine(uploadDir, name);
+            using (FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read)) {
+                return File.ReadAllBytes(filePath);
+            }
         }
 
         public bool CreateOrder(CheckoutViewModel model, Customer customer) {
@@ -35,9 +45,12 @@ namespace AnanasMVCWebApp.Services {
                     Coupon coupon = _unitOfWork.CouponRepository.GetCouponByCode(code)!;
                     decorator = new ConcreteCoupon(decorator);
                     decorator.Coupon = coupon;
+                    // Update coupon usage
+                    coupon.TotalUsage++;
+                    _unitOfWork.CouponRepository.Update(coupon);
                 });
             }
-            order.OrderTotal = decorator.calculatePrice() + order.ShippingFee;
+            order.OrderTotal = decorator.CalculatePrice() + order.ShippingFee;
             order.Discount = order.OrderTotal - order.GrandTotal - order.ShippingFee;
             _unitOfWork.OrderRepository.Insert(order);
 
@@ -65,8 +78,9 @@ namespace AnanasMVCWebApp.Services {
                 };
                 _unitOfWork.OrderDetailRepository.Insert(orderDetail);
 
-                var sku = _unitOfWork.ProductSKURepository.GetProductSKUByCode(item.ProductId);
-                sku.InStock = sku.InStock - 1;
+                var sku = _unitOfWork.ProductSKURepository.GetProductSKUByCode(item.ProductId)!;
+                sku.InStock = sku.InStock - item.Quantity;
+                sku.Sold = sku.Sold + item.Quantity;
                 _unitOfWork.ProductSKURepository.Update(sku);
             });
             return _unitOfWork.Complete() > 0 ? true : false;

@@ -1,11 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 
 namespace AnanasMVCWebApp.Utilities {
-    public class ApiResponse<T> {
-        public int StatusCode { get; set; }
-        public string Message { get; set; }
-        public T Data { get; set; }
-    }
     public class GHNRequestData {
         public int service_type_id { get; set; }
         public int to_district_id { get; set; }

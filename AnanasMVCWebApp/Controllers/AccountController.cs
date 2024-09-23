@@ -62,14 +62,16 @@ namespace AnanasMVCWebApp.Controllers {
                 if (user != null) {
                     var result = await _signInManager.PasswordSignInAsync(user.Email, model.Password, false, false);
                     if (result.Succeeded) {
-                        if (await _userManager.IsInRoleAsync(user, ApplicationRole.Admin)) {
+                        /*if (await _userManager.IsInRoleAsync(user, ApplicationRole.Admin)) {
                             return RedirectToAction("Index", "Home", new { area = "Admin" });
-                        }
+                        }*/
                         return RedirectToAction("Index", "Home");
+                    } else {
+                        TempData["error"] = "Mật khẩu không đúng. Vui lòng thử lại";
                     }
-                    TempData["error"] = "Mật khẩu không đúng. Vui lòng thử lại";
+                } else {
+                    TempData["error"] = "Email không tồn tại. Vui lòng thử lại";
                 }
-                TempData["error"] = "Email không tồn tại. Vui lòng thử lại";
             }
             return View(model);
         }
@@ -77,24 +79,26 @@ namespace AnanasMVCWebApp.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model){
             if (ModelState.IsValid) {
-                Customer customer = new Customer {
-                    FullName = model.FullName,
-                    UserName = model.Email,
-                    Email = model.Email,
-                    PhoneNumber = model.Phone,
-                    Dob = model.Dob,
-                    Gender = model.Gender
-                };
-                IdentityResult result = await _userManager.CreateAsync(customer, model.Password);
-                if (result.Succeeded) {
-                    await _userManager.AddToRoleAsync(customer, ApplicationRole.Customer);
-                    TempData["success"] = "Tạo tài khoản thành công. Vui lòng đăng nhập.";
-                    return RedirectToAction("Login");
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user != null) {
+                    TempData["error"] = "Email đã tồn tại trong hệ thống. Vui lòng thử lại";
+                } else {
+                    Customer customer = new Customer {
+                        FullName = model.FullName,
+                        UserName = model.Email,
+                        Email = model.Email,
+                        PhoneNumber = model.Phone,
+                        Dob = model.Dob,
+                        Gender = model.Gender
+                    };
+                    IdentityResult result = await _userManager.CreateAsync(customer, model.Password);
+                    if (result.Succeeded) {
+                        await _userManager.AddToRoleAsync(customer, ApplicationRole.Customer);
+                        TempData["success"] = "Tạo tài khoản thành công. Vui lòng đăng nhập.";
+                        return RedirectToAction("Login");
+                    }
+                    TempData["error"] = "Tạo tài khoản không thành công. Vui lòng thử lại";
                 }
-                /*foreach (IdentityError error in result.Errors) {
-                    ModelState.AddModelError("", error.Description);
-                }*/
-                TempData["error"] = "Tạo tài khoản không thành công. Vui lòng thử lại";
             }
             return View(model);
         }

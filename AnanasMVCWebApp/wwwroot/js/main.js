@@ -26,12 +26,14 @@ $(document).ready(function(){
     $(".product-card").hover(function () {
         /*$(this).find("img.normal").hide();
         $(this).find("img.hover").show();*/
-        $(this).find("img.hover").animate({ opacity: '1' });
+        $(this).find("img.hover").css("opacity", "1");
+        /*$(this).find("img.hover").animate({ opacity: '1' }, "fast");*/
         $(this).find("div:first-child > div:first-child a").fadeIn({queue: false, duration: 'fast'}).animate({marginBottom: "14px", }, "fast")
     }, function() {
         /*$(this).find("img.normal").show();
         $(this).find("img.hover").hide();*/
-        $(this).find("img.hover").animate({ opacity: '0' });
+        /*$(this).find("img.hover").animate({ opacity: '0' }, "fast");*/
+        $(this).find("img.hover").css("opacity", "0");
         $(this).find("div:first-child > div:first-child a").fadeOut({queue: false, duration: 'fast'}).animate({marginBottom: "0px"}, "fast")
     })
     // ---Dropdown Filter

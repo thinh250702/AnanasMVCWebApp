@@ -7,13 +7,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
-using NuGet.Protocol;
-using System;
-using System.Drawing.Drawing2D;
-using System.Net.Http.Json;
 using System.Text;
 
 namespace AnanasMVCWebApp.Controllers {
+    [Authorize(Roles = ApplicationRole.Customer)]
     public class CheckoutController : Controller {
         private readonly IOrderService _orderService;
         private readonly UserManager<Customer> _userManager;
@@ -22,8 +19,7 @@ namespace AnanasMVCWebApp.Controllers {
             _orderService = orderService;
             _userManager = userManager;
         }
-
-        [Authorize(Roles = ApplicationRole.Customer)]
+        
         public IActionResult Index() {
             List<CartItemViewModel> cartItems = HttpContext.Session.GetJson<List<CartItemViewModel>>("Cart") ?? new List<CartItemViewModel>();
             if (cartItems.Count < 1) {
@@ -32,7 +28,7 @@ namespace AnanasMVCWebApp.Controllers {
             var model = _orderService.GetCheckoutModel(cartItems);
             return View(model);
         }
-        [Authorize(Roles = ApplicationRole.Customer)]
+
         [HttpPost]
         public async Task<IActionResult> Index(CheckoutViewModel model) {
             List<CartItemViewModel> cartItems = HttpContext.Session.GetJson<List<CartItemViewModel>>("Cart") ?? new List<CartItemViewModel>();
@@ -57,6 +53,7 @@ namespace AnanasMVCWebApp.Controllers {
             TempData["error"] = "Đặt hàng không thành công. Vui lòng thử lại.";
             return View(newModel);
         }
+
         [HttpGet]
         public async Task<IActionResult> GetGHNFee(int distrcitId, string wardCode) {
             int shippingFee = 0;
@@ -82,6 +79,7 @@ namespace AnanasMVCWebApp.Controllers {
             }
             return Json(shippingFee);
         }
+
         [HttpGet]
         public async Task<IActionResult> GetGHTKFee(string address, string province, string district) {
             int shippingFee = 0;
@@ -110,21 +108,28 @@ namespace AnanasMVCWebApp.Controllers {
             }
             return Json(shippingFee);
         }
+
         [HttpGet]
-        public IActionResult GetCoupon(string code, int count) {
+        public IActionResult GetCoupon(string code, int count, int tempPrice) {
             var result = _orderService.GetCouponByCode(code);
             if (result != null) {
-                ViewBag.Index = count;
-                return PartialView("_CouponPartial", result);
+                if (tempPrice > result.MinimumAmount) {
+                    ViewBag.Index = count;
+                    return PartialView("_CouponPartial", result);
+                }
+                return Json("not-condition");
             }
-            return Json("");
+            return Json("not-found");
         }
+
         [HttpGet]
         public IActionResult GetDiscount(int tempPrice, string code) {
             var coupon = _orderService.GetCouponByCode(code);
             if (coupon != null) {
-                int result = tempPrice - (tempPrice * coupon.Percentage / 100);
-                return Json(new {newPrice = result, discountAmount = tempPrice * coupon.Percentage / 100 });
+                var amount = (tempPrice * coupon.Percentage / 100 > coupon.MaximumDiscount) ? coupon.MaximumDiscount : (tempPrice * coupon.Percentage / 100);
+                int newPrice = tempPrice - amount;
+                int discountAmount = amount;
+                return Json(new { newPrice = newPrice, discountAmount = discountAmount });
             }
             return Json("");
         }

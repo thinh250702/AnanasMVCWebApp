@@ -43,13 +43,15 @@
 
                     updateOrderTotal();
                 })
-                paymentRadios.change(function () {
-                    paymentRadios.each(function (index, element) {
-                        $(element).parent().removeClass("checked");
-                    })
-                    $(this).parent().addClass("checked");
-                });
+                
             }
+        });
+
+        paymentRadios.change(function () {
+            paymentRadios.each(function (index, element) {
+                $(element).parent().removeClass("checked");
+            })
+            $(this).parent().addClass("checked");
         });
 
         function formatCurrency(number) {
@@ -183,12 +185,18 @@
                     $.ajax({
                         type: "GET",
                         url: '@Url.Action("GetCoupon", "Checkout")',
-                        //dataType: "json",
-                        data: { code: couponInput.val(), count: $("#couponList").children().length },
+                        data: {
+                            code: couponInput.val(),
+                            count: $("#couponList").children().length,
+                            tempPrice: parseInt(grandTotalInput.val()) - parseInt(discountInput.val())
+                        },
                         contentType: "application/json; charset=utf-8",
                         success: function (result) {
-                            if (result == "") {
+                            if (result == "not-found") {
                                 alert("Mã khuyến mãi này không hợp lệ mất rồi. Bạn hãy thử nhập lại nhé!")
+                                return false;
+                            } else if (result == "not-condition") {
+                                alert("Đơn hàng chưa đạt giá trị tối thiểu của mã khuyến mãi. Bạn hãy shopping thêm nhé!")
                                 return false;
                             } else {
                                 alert("Bạn đã áp dụng mã khuyến mãi thành công!")
@@ -381,17 +389,17 @@
                     <li>
                         <span>Đơn hàng</span>
                         <span>@Model.GrandTotal.ToString("#,##0 VND")</span>
-                        <input type="text" asp-for="@Model.GrandTotal" />
+                        <input type="text" asp-for="@Model.GrandTotal" hidden />
                     </li>
                     <li>
                         <span>Giảm</span>
                         <span id="discount-display">0 VND</span>
-                        <input type="text" name="DiscountAmount" value="0" />
+                        <input type="text" name="DiscountAmount" value="0" hidden />
                     </li>
                     <li>
                         <span>Phí vận chuyển</span>
                         <span id="shipping-fee-display">0 VND</span>
-                        <input type="text" asp-for="@Model.ShippingFee" />
+                        <input type="text" asp-for="@Model.ShippingFee" hidden />
                     </li>
                 </ul>
                 <hr class="divider grey">
@@ -399,7 +407,7 @@
                     <li>
                         <span>Tổng cộng</span>
                         <span id="order-total-display" class="primary-text-color">@Model.GrandTotal.ToString("#,##0 VND")</span>
-                        <input type="text" name="OrderTotal" value="@Model.GrandTotal" />
+                        <input type="text" name="OrderTotal" value="@Model.GrandTotal" hidden />
                     </li>
                 </ul>
                 <button type="submit">Hoàn tất đặt hàng</button>

@@ -65,19 +65,27 @@ namespace AnanasMVCWebApp.Repositories {
             result["B"] = Convert.ToInt32(hexCode.Substring(4, 2), 16);
             return result;
         }
+        private double CalculateColorDistance(Color source, string target) {
+            var targetColor = ConvertHextoRGB(target);
+            var sourceColor = ConvertHextoRGB(source.HexCode);
+            return Math.Sqrt(Math.Pow(targetColor["R"] - sourceColor["R"], 2) + Math.Pow(targetColor["G"] - sourceColor["G"], 2) + Math.Pow(targetColor["B"] - sourceColor["B"], 2));
+        }
         public Color GetNearestColor(string hexCode) {
-            double closestDistance = -1;
-            Color closestColor = null!;
-
             List<Color> colorList = GetAll().ToList();
 
-            var targetColor = ConvertHextoRGB(hexCode);
-            colorList.ForEach(color => {
-                var sourceColor = ConvertHextoRGB(color.HexCode);
-                double distance = Math.Sqrt(Math.Pow(targetColor["R"] - sourceColor["R"], 2) + Math.Pow(targetColor["G"] - sourceColor["G"], 2) + Math.Pow(targetColor["B"] - sourceColor["B"], 2));
-                if (closestDistance == -1) {
+            double closestDistance = CalculateColorDistance(colorList[0], hexCode);
+            Color? closestColor = colorList[0];
+            /*foreach (var color in colorList)
+            {
+                var distance = CalculateColorDistance(color, hexCode);
+                if (distance < closestDistance) {
                     closestDistance = distance;
-                } else if(distance < closestDistance) {
+                    closestColor = color;
+                }
+            }*/
+            colorList.ForEach(color => {
+                var distance = CalculateColorDistance(color, hexCode);
+                if (distance < closestDistance) {
                     closestDistance = distance;
                     closestColor = color;
                 }

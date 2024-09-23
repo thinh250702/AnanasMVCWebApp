@@ -4,18 +4,18 @@
         public CouponDecorator(AbstractOrder order) {
             wrappee = order;
         }
-        public override int calculatePrice() {
-            return wrappee.calculatePrice();
+        public override int CalculatePrice() {
+            return wrappee.CalculatePrice();
         }
     }
     public class ConcreteCoupon : CouponDecorator {
         public Coupon Coupon { get; set; }
         public ConcreteCoupon(AbstractOrder order) : base(order) {}
-        public override int calculatePrice() {
+        public override int CalculatePrice() {
             if (Coupon != null) {
-                return base.calculatePrice() - (base.calculatePrice() * Coupon.Percentage / 100);
+                return base.CalculatePrice() - (base.CalculatePrice() * Coupon.Percentage / 100);
             }
-            return base.calculatePrice();
+            return base.CalculatePrice();
         }
     }
 

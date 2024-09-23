@@ -40,19 +40,21 @@
         })
         $("button.remove-btn").click(function () {
             var skuId = $(this).closest(".cart-list__item").attr("id");
-            $.ajax({
-                type: "GET",
-                url: '@Url.Action("Remove", "Cart")',
-                dataType: "json",
-                data: { id: skuId },
-                contentType: "application/json; charset=utf-8",
-                success: function (result) {
-                    window.location.href = result.redirectToUrl;
-                },
-                error: function () {
-                    alert("Some errors occured!");
-                }
-            });
+            if(confirm("Bạn có chắc chắn muốn xoá sản phẩm này khỏi giỏ hàng?")){
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("Remove", "Cart")',
+                    dataType: "json",
+                    data: { id: skuId },
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        window.location.href = result.redirectToUrl;
+                    },
+                    error: function () {
+                        alert("Some errors occured!");
+                    }
+                });
+            }
         });
     </script>
 }

@@ -807,7 +807,7 @@
 }
 
 .image-item {
-    width: 100%;
+    /*width: 100%;*/
     height: 100%;
     display: inline-block;
     border-radius: 20px;
@@ -1276,12 +1276,14 @@ ul#colors-wrapper a.selected {
     font-size: 20px;
     background-color: var(--neutral-100);
     margin-bottom: 8px;
+    cursor: pointer;
 }
 
 .cart-item__actions .item-subtotal {
     font-size: 20px;
     font-weight: 800;
     color: var(--primary);
+    text-align: right;
 }
 
 .cart-summary-wrapper {
@@ -1354,7 +1356,7 @@ label.radio-container > div {
     margin-top: 22px;
     cursor: pointer;
 }
-    /* label.radio-container .label-wrapper:hover {
+/* label.radio-container .label-wrapper:hover {
     background-color: var(--primary);
     color: var(--neutral-100);
     transition: 0.3s;

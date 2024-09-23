@@ -14,11 +14,11 @@ namespace AnanasMVCWebApp.Utilities.StrategyPattern
         {
             return items;
         }
-        public void setFilterStrategy(IProductFilterStrategy strategy)
+        public void SetFilterStrategy(IProductFilterStrategy strategy)
         {
             filterStrategy = strategy;
         }
-        public void performFilter(string options)
+        public void PerformFilter(string options)
         {
             items = filterStrategy.filter(items, options);
         }

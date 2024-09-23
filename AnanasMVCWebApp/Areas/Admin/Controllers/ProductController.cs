@@ -2,21 +2,25 @@
 using AnanasMVCWebApp.Models.ViewModels;
 using AnanasMVCWebApp.Services;
 using AnanasMVCWebApp.Utilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
 using System.Security.Cryptography.X509Certificates;
 
 namespace AnanasMVCWebApp.Areas.Admin.Controllers {
     [Area("Admin")]
+    [Authorize(Roles = ApplicationRole.Admin)]
     public class ProductController : Controller {
         private readonly IProductService _productService;
         public ProductController(IProductService productService) {
             _productService = productService;
         }
         public IActionResult Index() {
+            ViewBag.Menu = "product";
             return View(_productService.GetProductList());
         }
         public IActionResult Create() {
+            ViewBag.Menu = "product";
             return View(_productService.GetProductForCreate());
         }
         [HttpPost]
@@ -32,9 +36,11 @@ namespace AnanasMVCWebApp.Areas.Admin.Controllers {
                 }
             }
             TempData["error"] = "Vui lòng nhập đầy đủ thông tin sản phẩm";
+            ViewBag.Menu = "product";
             return View(_productService.GetProductForCreate());
         }
         public IActionResult Edit(string id) {
+            ViewBag.Menu = "product";
             return View(_productService.GetProductForEdit(id));
         }
         [HttpPost]
@@ -45,6 +51,7 @@ namespace AnanasMVCWebApp.Areas.Admin.Controllers {
             } else {
                 TempData["error"] = "Cập nhật sản phẩm thất bại";
             }
+            ViewBag.Menu = "product";
             return View(_productService.GetProductForEdit(id));
         }
         [HttpGet]

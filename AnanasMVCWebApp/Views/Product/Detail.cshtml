@@ -7,6 +7,7 @@
 @section Scripts {
     <script type="text/javascript">
         var selectQuantity = $("select[name='quantity']")
+
         $("input[name='size']").change(function(){
             var skuId = $(this).val();
             $.ajax({
@@ -18,6 +19,7 @@
                 success: function (result) {
                     var stock = result.stock;
                     selectQuantity.empty();
+                    selectQuantity.append('<option selected disabled>Chọn số lượng</option>')
                     if (stock != 0) {
                         selectQuantity.prop("disabled", false);
                         for (let i = 1; i<= stock; i++) {
@@ -32,6 +34,19 @@
                 }
             });
         });
+        
+        function validate(){
+            var sizeVal = $('input[name="size"]:checked').val()
+            var quantityVal = selectQuantity.val()
+            if (!sizeVal) {
+                alert("Hãy chọn kích thước sản phẩm nhé!");
+                return false;
+            }
+            if (!quantityVal) {
+                alert("Bạn chưa chọn số lượng sản phẩm cần mua nè!");
+                return false;
+            }
+        }
     </script>
 }
 
@@ -71,10 +86,10 @@
             </div>
             <div class="product-info-price">@Html.FormatValue(Model.Price, "{0:0,0}") VND</div>
             <div class="product-add-form">
-                @using (Html.BeginForm("Add", "Cart", FormMethod.Post)) {
+                <form asp-action="Add" asp-controller="Cart" method="POST" onsubmit="return validate()">
                     <div class="product-options-wrapper">
                         <div class="option-attribute color">
-                            <div class="option-label">Color</div>
+                            <div class="option-label">Màu sắc</div>
                             <ul id="colors-wrapper">
                                 <li><a style="background-color: #@Model.HexCode;" class="selected"></a></li>
                                 @if (Model.SiblingProducts != null) {
@@ -86,13 +101,13 @@
                         </div>
                         <div class="option-attribute size">
                             <div class="option-label">
-                                <span>Size</span>
+                                <span>Kích cỡ</span>
                                 <span id="size-chart-label">Size Chart</span>
                             </div>
                             <div id="size-wrapper">
                                 @if (Model.SKUList != null) {
                                     @foreach (var sku in Model.SKUList) {
-                                        <label class=@(sku.InStock == 0 ? "disabled" : "" ) for="@sku.Size.Code">
+                                        <label for="@sku.Size.Code" style="@(sku.Size.Code == "00" ? "width: 120px" : "")" class=@(sku.InStock == 0 ? "disabled" : "")>
                                             @sku.Size.Name
                                             <input type="radio" name="size" id="@sku.Size.Code" value="@sku.Code" hidden>
                                         </label>
@@ -101,10 +116,12 @@
                             </div>
                         </div>
                         <div class="option-attribute quantity">
-                            <div class="option-label">Quantity</div>
+                            <div class="option-label">Số lượng</div>
                             <div id="select-control">
                                 <i class="fa-solid fa-angle-down"></i>
-                                <select disabled name="quantity"></select>
+                                <select disabled name="quantity">
+                                    
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -112,7 +129,7 @@
                         <button id="add-to-cart-btn" type="submit">Thêm vào giỏ hàng</button>
                         <button id="like-btn" type="button"><i class="fa-regular fa-heart"></i></button>
                     </div>
-                }
+                </form>
             </div>
         </div>
         <div class="product__info-container">

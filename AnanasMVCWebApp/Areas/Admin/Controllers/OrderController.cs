@@ -3,11 +3,13 @@ using AnanasMVCWebApp.Models.ViewModels;
 using AnanasMVCWebApp.Services;
 using AnanasMVCWebApp.Utilities;
 using AnanasMVCWebApp.Utilities.ObserverPattern;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnanasMVCWebApp.Areas.Admin.Controllers {
     [Area("Admin")]
+    [Authorize(Roles = ApplicationRole.Admin)]
     public class OrderController : Controller {
         private readonly IOrderService _orderService;
         private readonly ISendMailService _sendMailService;
@@ -19,14 +21,15 @@ namespace AnanasMVCWebApp.Areas.Admin.Controllers {
             _environment = environment;
 
             var emailObserver = EmailObserver.GetInstance();
-            //var emailObserver = new EmailObserver(_sendMailService, _environment);
-            emailObserver.init(_sendMailService, _environment);
+            emailObserver.init(_sendMailService);
+
             _orderService.Attach(emailObserver);
             _environment = environment;
         }
 
         public IActionResult Index() {
             var result = _orderService.GetAllOrders();
+            ViewBag.Menu = "order";
             return View(result);
         }
 
@@ -36,6 +39,7 @@ namespace AnanasMVCWebApp.Areas.Admin.Controllers {
             if (order == null) {
                 return NotFound();
             } else {
+                ViewBag.Menu = "order";
                 return View(order);
             }
         }

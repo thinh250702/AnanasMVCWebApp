@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AnanasMVCWebApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240414074514_EditCoupon")]
-    partial class EditCoupon
+    [Migration("20240425124818_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -116,10 +116,13 @@ namespace AnanasMVCWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Discount")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Limit")
+                    b.Property<int>("LimitUsage")
                         .HasColumnType("int");
 
                     b.Property<int>("MaximumDiscount")
@@ -136,6 +139,10 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.Property<int>("TotalUsage")
                         .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

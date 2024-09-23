@@ -89,10 +89,10 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<DataContext>();
+/*var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<DataContext>();
 var roleManager = app.Services.CreateScope().ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 var userManager = app.Services.CreateScope().ServiceProvider.GetRequiredService<UserManager<Customer>>();
 
-await SeedData.SeedingDataAsync(context, roleManager, userManager);
+await SeedData.SeedingDataAsync(context, roleManager, userManager);*/
 
 app.Run();

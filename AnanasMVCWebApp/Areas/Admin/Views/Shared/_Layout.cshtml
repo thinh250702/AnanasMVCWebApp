@@ -19,7 +19,7 @@
                     <a class=@(ViewBag.Menu == "dashboard" ? "selected" : "") asp-action="Index" asp-controller="Home"><i class="fa-solid fa-house"></i> Trang chủ</a>
                     <a class=@(ViewBag.Menu == "product" ? "selected" : "") asp-action="Index" asp-controller="Product"><i class="fa-solid fa-shirt"></i> Sản phẩm</a>
                     <a class=@(ViewBag.Menu == "order" ? "selected" : "") asp-action="Index" asp-controller="Order"><i class="fa-solid fa-clipboard-list"></i> Đơn hàng</a>
-                    <a href="#"><i class="fa-solid fa-user"></i> Tài khoản</a>
+                    @* <a href="#"><i class="fa-solid fa-user"></i> Tài khoản</a> *@
                 </div>
                 <div>
                     <a asp-action="Logout" asp-controller="Account" asp-area=""><i class="fa-solid fa-arrow-right-from-bracket"></i> Đăng xuất</a>

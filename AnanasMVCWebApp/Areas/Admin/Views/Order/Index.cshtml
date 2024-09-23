@@ -1,8 +1,7 @@
 ﻿@using AnanasMVCWebApp.Models.ViewModels
 @model List<OrderViewModel>
 @{
-    ViewData["Title"] = "Admin - Order List";
-    ViewBag.Menu = "order";
+    ViewData["Title"] = "Order List";
 }
 
 <div class="row-wrapper">
@@ -13,28 +12,35 @@
         <form action="">
             <div class="actions-group">
                 <div class="actions__search">
-                    <select name="" id="">
-                        <option value="" selected>Mã đơn hàng</option>
-                        <option value="">Mã vận đơn</option>
-                        <option value="">Tên người mua</option>
-                        <option value="">Sản phẩm</option>
-                    </select>
+                    <div style="position: relative;">
+                        <select name="" id="" style="width: 160px">
+                            <option value="" selected>Mã đơn hàng</option>
+                            <option value="">Mã vận đơn</option>
+                            <option value="">Tên người mua</option>
+                            <option value="">Sản phẩm</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down select-arrow"></i>
+                    </div>
                     <input type="text" name="" id="searchInput" placeholder="Please enter name">
                 </div>
                 <div class="actions__filter">
-                    <span>Filter</span>
-                    <select name="" id="">
-                        <optgroup label="Current">
-                            <option value="" selected>Tuần này</option>
-                            <option value="">Tháng này</option>
-                            <option value="">Năm nay</option>
-                        </optgroup>
-                        <optgroup label="Previous">
-                            <option value="">Tuần trước</option>
-                            <option value="">Tháng trước</option>
-                            <option value="">Năm trước</option>
-                        </optgroup>
-                    </select>
+                    <span>Bộ lọc</span>
+                    <div style="position: relative;">
+                        <select name="" id="">
+                            <optgroup label="Current">
+                                <option value="" selected>Tuần này</option>
+                                <option value="">Tháng này</option>
+                                <option value="">Năm nay</option>
+                            </optgroup>
+                            <optgroup label="Previous">
+                                <option value="">Tuần trước</option>
+                                <option value="">Tháng trước</option>
+                                <option value="">Năm trước</option>
+                            </optgroup>
+                        </select>
+                        <i class="fa-solid fa-chevron-down select-arrow"></i>
+                    </div>
+                    
                 </div>
                 <button type="button">Search</button>
             </div>
@@ -42,67 +48,84 @@
     </div>
 </div>
 <div class="row-wrapper">
-    <div class="panel-wrapper--large width-100">
+    <div style="min-height: 520px; display: flex; flex-direction: column;" class="panel-wrapper--large width-100">
         <div class="panel-header">
             <div class="tab-section">
-                <a class="selected" href="">Tất cả</a>
-                <a href="">Chưa xử lý</a>
-                <a href="">Đã xử lý</a>
-                <a href="">Đang giao</a>
-                <a href="">Giao thành công</a>
-            </div>
-            <div class="sort-section">
-                <span>Sort by</span>
-                <select name="" id="">
-                    <option value="" selected>Default</option>
-                    <option value="">Ngày tạo: Mới nhất</option>
-                    <option value="">Ngày tạo: Cũ nhất</option>
-                    <option value="">Tổng đơn: Low-High</option>
-                    <option value="">Tổng đơn: High-Low</option>
+                <select name="categorySelect" id="categorySelect" hidden>
+                    <option value="all" selected></option>
+                    <option value="shoes"></option>
+                    <option value="clothing"></option>
+                    <option value="accessories"></option>
                 </select>
+                <button name="all" class="selected" type="button">Tất cả</button>
+                <button name="shoes" type="button">Chưa xử lý</button>
+                <button name="clothing" type="button">Đã xử lý</button>
+                <button name="accessories" type="button">Đang giao</button>
+                <button name="accessories" type="button">Giao thành công</button>
             </div>
-        </div>
-        <div class="table-section">
-            <div class="tb-header">
-                <div class="tb-row">
-                    <div style="width: 5%;" class="tb-cell"></div>
-                    <div style="flex: 1;" class="tb-cell">Mã đơn hàng</div>
-                    <div style="flex: 1;" class="tb-cell">Ngày tạo</div>
-                    <div style="flex: 1;" class="tb-cell">Khách hàng</div>
-                    <div style="flex: 1;" class="tb-cell">Tổng đơn hàng</div>
-                    <div style="flex: 1;" class="tb-cell">Trạng thái</div>
-                    <div style="flex: 1;" class="tb-cell">Thao tác</div>
+            <div class="sort-section" style="display: flex; flex-direction: row; align-items: center">
+                <span>Sort by</span>
+                <div style="position: relative;">
+                    <select name="" id="" style="width: 200px">
+                        <option value="" disabled selected>Default</option>
+                        <option value="">Ngày tạo: Mới nhất</option>
+                        <option value="">Ngày tạo: Cũ nhất</option>
+                        <option value="">Tổng đơn: Low-High</option>
+                        <option value="">Tổng đơn: High-Low</option>
+                    </select>
+                    <i class="fa-solid fa-chevron-down select-arrow"></i>
                 </div>
             </div>
-            <div class="tb-body">
-                @foreach (var order in Model) {
-                    <div class="tb-row" style="padding: 18px 0;">
-                        <div style="width: 5%;" class="tb-cell"><input type="radio" name="" id=""></div>
-                        <div style="flex: 1;" class="tb-cell">@order.OrderCode</div>
-                        <div style="flex: 1;" class="tb-cell">@order.OrderDate.ToString("dd/MM/yyyy")</div>
-                        <div style="flex: 1;" class="tb-cell">@order.FullName</div>
-                        <div style="flex: 1;" class="tb-cell">@order.GrandTotal.ToString("#,##0 VND")</div>
-                        <div style="flex: 1;" class="tb-cell">@order.Status.Name</div>
-                        <div style="flex: 1;" class="tb-cell action">
-                            <a asp-controller="Order" asp-action="Detail" asp-area="Admin" asp-route-id="@order.OrderCode"><i class="fa-solid fa-pen-to-square"></i> Xem chi tiết</a>
+        </div>
+        @{
+            if (Model.Count > 0) {
+                <div style="flex: 1;" class="table-section">
+                    <div class="tb-header">
+                        <div class="tb-row">
+                            @* <div style="width: 5%;" class="tb-cell"></div> *@
+                            <div style="flex: 1;" class="tb-cell">Mã đơn hàng</div>
+                            <div style="flex: 1;" class="tb-cell">Ngày tạo</div>
+                            <div style="flex: 1;" class="tb-cell">Khách hàng</div>
+                            <div style="flex: 1;" class="tb-cell">Tổng đơn hàng</div>
+                            <div style="flex: 1;" class="tb-cell">Trạng thái</div>
+                            <div style="flex: 1;" class="tb-cell">Thao tác</div>
                         </div>
                     </div>
-                }
-            </div>
-        </div>
-        <div class="pagination">
-            <div class="prevBtn">(Prev)</div>
-            <div>
-                <ul>
-                    <li>1</li>
-                    <li>2</li>
-                    <li class="checked">3</li>
-                    <li>4</li>
-                    <li class="empty">...</li>
-                    <li>20</li>
-                </ul>
-            </div>
-            <div class="nextBtn">(Next)</div>
-        </div>
+                    <div class="tb-body">
+                        @foreach (var order in Model) {
+                            <div class="tb-row" style="padding: 18px 0;">
+                                @* <div style="width: 5%;" class="tb-cell"><input type="radio" name="" id=""></div> *@
+                                <div style="flex: 1;" class="tb-cell">@order.OrderCode</div>
+                                <div style="flex: 1;" class="tb-cell">@order.OrderDate.ToString("dd/MM/yyyy")</div>
+                                <div style="flex: 1;" class="tb-cell">@order.FullName</div>
+                                <div style="flex: 1;" class="tb-cell">@order.GrandTotal.ToString("#,##0 VND")</div>
+                                <div style="flex: 1;" class="tb-cell">@order.Status.Name</div>
+                                <div style="flex: 1;" class="tb-cell action">
+                                    <a asp-controller="Order" asp-action="Detail" asp-area="Admin" asp-route-id="@order.OrderCode"><i class="fa-solid fa-pen-to-square"></i> Xem chi tiết</a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="pagination">
+                    <div class="prevBtn">(Prev)</div>
+                    <div>
+                        <ul>
+                            <li>1</li>
+                            <li>2</li>
+                            <li class="checked">3</li>
+                            <li>4</li>
+                            <li class="empty">...</li>
+                            <li>20</li>
+                        </ul>
+                    </div>
+                    <div class="nextBtn">(Next)</div>
+                </div>
+            } else {
+                <div style="flex: 1;" id="empty-order">
+                    Hệ thống chưa ghi nhận đơn hàng nào
+                </div>
+            }
+        }
     </div>
 </div>

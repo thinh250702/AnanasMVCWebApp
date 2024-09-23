@@ -1,8 +1,7 @@
 ﻿@using AnanasMVCWebApp.Areas.Admin.Models
 @model ProductBaseEM
 @{
-    ViewData["Title"] = "Admin - Product Edit";
-    ViewBag.Menu = "product";
+    ViewData["Title"] = "Product Edit";
 }
 @section Scripts {
     <script>
@@ -16,7 +15,6 @@
         });
         $("input[type='file']").bind({
             change: function () {
-                console.log("Hello");
                 var fileList = $(this)[0].files;
                 $(this).closest(".image-grid").find(".image-item").remove();
                 for (let index = 0; index < fileList.length; index++) {
@@ -29,6 +27,73 @@
                 }
             }
         })
+        
+        var variantContainer = $("#variantContainer");
+        var currentVariant = variantContainer.children().length;
+
+        var categorySelect = $("#CategoryId");
+        var styleSelect = $("#StyleId");
+        var collectionSelect = $("#CollectionId");
+        var styleFormRow = $("#styleFormRow");
+
+        var addVariantBtn = $("#add-variant-btn");
+        var deleteVariantBtn = $(".variant-item.old .delete-variant-btn");
+
+        addVariantBtn.click(function(){
+            if (categorySelect.val() == null || collectionSelect.val() == null) {
+                alert("Vui lòng chọn danh mục và dòng sản phẩm!");
+            } else {
+                //console.log(categorySelect.val(), collectionSelect.val(), variantContainer.children().length)
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetVariantTemplate", "Product", new { Area = "Admin" })',
+                    data: {
+                        categoryId: categorySelect.val(),
+                        collectionId: collectionSelect.val(),
+                        count: variantContainer.children().length
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        variantContainer.append(result);
+                        $(".variant-item.new .delete-variant-btn").bind({
+                            click: function() {
+                                if (confirm("Bạn có chắc chắn muốn xoá phân loại sản phẩm này?")) {
+                                    $(this).parent().remove();
+                                }
+                            }
+                        });
+                        $("input[type='color']").bind({
+                            change: function () {
+                                $(this).parent().css("background-color", $(this).val());
+                            }
+                        });
+                        $("input[type='file']").bind({
+                            change: function () {
+                                console.log("Hello");
+                                var fileList = $(this)[0].files;
+                                $(this).closest(".image-grid").find(".image-item").remove();
+                                for (let index = 0; index < fileList.length; index++) {
+                                    $(`
+                                        <div class="image-item">
+                                            <div class="overlay"><i class="fa-solid fa-trash-can"></i></div>
+                                            <img data-img-index="${index}" src="${URL.createObjectURL(fileList[index])}" alt="">
+                                        </div>
+                                    `).insertBefore($(this).parent());
+                                }
+                            }
+                        })
+                    },
+                    error: function (req, err) {
+                        console.log(err);
+                        alert("Falied to create product variant template!");
+                    }
+                });
+            }
+        });
+
+        deleteVariantBtn.click(function () {
+            console.log("Old")
+        });
     </script>
     <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
     <script type="text/javascript">
@@ -113,9 +178,9 @@
                 <div>
                     <h5>Thông tin phân loại</h5>
                     <hr class="divider top">
-                    <div class="variant-list">
+                    <div class="variant-list" id="variantContainer">
                         @for (int i= 0; i < Model.Variants.Count; i++) {
-                            <div class="variant-item">
+                            <div class="variant-item old">
                                 <button class="delete-variant-btn" type="button"><i class="fa-solid fa-xmark"></i></button>
                                 <div class="form-row">
                                     <div class="input-group">

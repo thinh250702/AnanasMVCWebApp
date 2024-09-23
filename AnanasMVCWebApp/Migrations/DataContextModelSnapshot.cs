@@ -40,7 +40,7 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.Collection", b =>
@@ -70,7 +70,7 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Collections", (string)null);
+                    b.ToTable("Collections");
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.Color", b =>
@@ -95,7 +95,7 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Colors", (string)null);
+                    b.ToTable("Colors");
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.Coupon", b =>
@@ -137,7 +137,7 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Coupons", (string)null);
+                    b.ToTable("Coupons");
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.Customer", b =>
@@ -277,7 +277,7 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.HasIndex("ShippingMethodId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.OrderDetail", b =>
@@ -313,7 +313,7 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderDetails", (string)null);
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.OrderStatus", b =>
@@ -334,7 +334,7 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderStatus", (string)null);
+                    b.ToTable("OrderStatus");
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.PaymentMethod", b =>
@@ -359,7 +359,7 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PaymentMethods", (string)null);
+                    b.ToTable("PaymentMethods");
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.Product", b =>
@@ -393,7 +393,7 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.HasIndex("StyleId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.ProductSKU", b =>
@@ -418,7 +418,7 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.HasIndex("ProductVariantId");
 
-                    b.ToTable("ProductSKUs", (string)null);
+                    b.ToTable("ProductSKUs");
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.ProductVariant", b =>
@@ -456,7 +456,7 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductVariants", (string)null);
+                    b.ToTable("ProductVariants");
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.ShippingInfo", b =>
@@ -502,7 +502,7 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("ShippingInfos", (string)null);
+                    b.ToTable("ShippingInfos");
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.ShippingMethod", b =>
@@ -527,7 +527,7 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ShippingMethods", (string)null);
+                    b.ToTable("ShippingMethods");
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.Size", b =>
@@ -548,7 +548,7 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sizes", (string)null);
+                    b.ToTable("Sizes");
                 });
 
             modelBuilder.Entity("AnanasMVCWebApp.Models.Style", b =>
@@ -569,7 +569,7 @@ namespace AnanasMVCWebApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Styles", (string)null);
+                    b.ToTable("Styles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

@@ -38,6 +38,26 @@
     width: 100%;
 }
 
+select {
+  /* for Firefox */
+  -moz-appearance: none;
+  /* for Chrome */
+  -webkit-appearance: none;
+}
+
+/* For IE10 */
+select::-ms-expand {
+  display: none;
+}
+
+.select-arrow {
+    font-size: 12px;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(-10px, -50%);
+}
+
 .sidebar__logo {
     height: 32px;
     filter: invert(41%) sepia(99%) saturate(1914%) hue-rotate(346deg) brightness(100%) contrast(90%);
@@ -811,4 +831,13 @@ table.stock-table td {
 .sort-section span {
     margin-right: 12px;
     font-weight: 700;
+}
+
+#empty-order {
+    height: 380px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    color: var(--neutral-80);
 }

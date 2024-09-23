@@ -145,7 +145,7 @@ namespace AnanasMVCWebApp.Utilities {
                 Color = teal,
                 Product = product2
             };
-            ProductVariant variant3 = new ProductVariant {
+            /*ProductVariant variant3 = new ProductVariant {
                 Code = $"A{product4.Collection.Code}001",
                 ColorName = "Snow White",
                 HexCode = "f0f0ec",
@@ -158,10 +158,10 @@ namespace AnanasMVCWebApp.Utilities {
                 HexCode = "2a4656",
                 Color = navy,
                 Product = product5
-            };
+            };*/
             if (!_context.ProductVariants.Any()) {
                 _context.ProductVariants.AddRange(new List<ProductVariant>() {
-                    variant1, variant2, variant3, variant4
+                    variant1, variant2
                 });
                 _context.SaveChanges();
             }
@@ -204,7 +204,7 @@ namespace AnanasMVCWebApp.Utilities {
                 var admin = new Customer {
                     UserName = "admin@ananas.vn",
                     Email = "admin@ananas.vn",
-                    FullName = "Nguyễn Trường Thịnh",
+                    FullName = "Admin",
                     Dob = new DateTime(2002, 7, 25),
                 };
                 string adminPassword = "Ananas123456";

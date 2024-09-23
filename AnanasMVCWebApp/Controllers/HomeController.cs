@@ -13,6 +13,9 @@ namespace AnanasMVCWebApp.Controllers {
             _logger = logger;
         }
         public IActionResult Index() {
+            if (HttpContext.User.IsInRole(ApplicationRole.Admin)) {
+                return RedirectToAction("Index", "Home", new { area = "Admin" });
+            }
             return View();
         }
 

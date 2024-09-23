@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace AnanasMVCWebApp.Models {
     public abstract class AbstractOrder
     {
-        public abstract int calculatePrice();
+        public abstract int CalculatePrice();
     }
     
     public class Order : AbstractOrder {
@@ -28,7 +28,7 @@ namespace AnanasMVCWebApp.Models {
         public Order() {
             Code = Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper();
         }
-        public override int calculatePrice() {
+        public override int CalculatePrice() {
             return GrandTotal;
         }
     }

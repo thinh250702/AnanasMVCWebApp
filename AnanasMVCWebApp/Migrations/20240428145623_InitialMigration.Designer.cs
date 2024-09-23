@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AnanasMVCWebApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240414073437_InitialMigration")]
+    [Migration("20240428145623_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -119,10 +119,13 @@ namespace AnanasMVCWebApp.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("LimitAmount")
+                    b.Property<int>("Limit")
                         .HasColumnType("int");
 
                     b.Property<int>("MaximumDiscount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MinimumAmount")
                         .HasColumnType("int");
 
                     b.Property<int>("Percentage")

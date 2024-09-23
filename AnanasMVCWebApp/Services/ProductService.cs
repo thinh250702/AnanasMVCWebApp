@@ -6,6 +6,39 @@ using AnanasMVCWebApp.Utilities.StrategyPattern;
 
 namespace AnanasMVCWebApp.Services
 {
+    public class ProductSKUFactory {
+        public static List<ProductSkuEM> CreateProductSKUList(IUnitOfWork unitOfWork, string categorySlug, string code) {
+            var result = new List<ProductSkuEM>();
+            switch (categorySlug) {
+                case "shoes":
+                    for (int i = 35; i <= 46; i++) {
+                        var shoeSize = unitOfWork.SizeRepository.GetSizeByCode(i.ToString());
+                        result.Add(new ProductSkuEM() {
+                            Code = $"{code}-{shoeSize.Code}",
+                            SizeName = shoeSize.Name
+                        });
+                    }
+                    break;
+                case "clothing":
+                    for (int i = 1; i <= 5; i++) {
+                        var clothingSize = unitOfWork.SizeRepository.GetSizeByCode($"0{i}");
+                        result.Add(new ProductSkuEM() {
+                            Code = $"{code}-{clothingSize.Code}",
+                            SizeName = clothingSize.Name
+                        });
+                    }
+                    break;
+                case "accessories":
+                    var accessorySize = unitOfWork.SizeRepository.GetSizeByCode("00");
+                    result.Add(new ProductSkuEM() {
+                        Code = $"{code}-{accessorySize.Code}",
+                        SizeName = accessorySize.Name
+                    });
+                    break;
+            }
+            return result;
+        }
+    }
     public class ProductService : IProductService {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _environment;
@@ -24,20 +57,20 @@ namespace AnanasMVCWebApp.Services
             Category? queryCategory = _unitOfWork.CategoryRepository.GetCategoryBySlug(category);
             // Filter products by using Startegy Pattern
             if (queryCategory != null) {
-                queryable.setFilterStrategy(new FilterByCategory());
-                queryable.performFilter(queryCategory.Slug);
+                queryable.SetFilterStrategy(new FilterByCategory());
+                queryable.PerformFilter(queryCategory.Slug);
             }
             if (collection != null) {
-                queryable.setFilterStrategy(new FilterByCollection());
-                queryable.performFilter(collection);
+                queryable.SetFilterStrategy(new FilterByCollection());
+                queryable.PerformFilter(collection);
             }
             if (style != null) {
-                queryable.setFilterStrategy(new FilterByStyle());
-                queryable.performFilter(style);
+                queryable.SetFilterStrategy(new FilterByStyle());
+                queryable.PerformFilter(style);
             }
             if (color != null) {
-                queryable.setFilterStrategy(new FilterByColor());
-                queryable.performFilter(color);
+                queryable.SetFilterStrategy(new FilterByColor());
+                queryable.PerformFilter(color);
             }
             // Set property of result
             products.Category = queryCategory;
@@ -179,7 +212,8 @@ namespace AnanasMVCWebApp.Services
                 variantList.Add(variant);
 
                 // File Upload
-                UploadFileToFolder(uploadDir, item.ProductCode, item.FilesUpload);
+                var sortedList = item.FilesUpload.OrderBy(f => f.FileName).ToList();
+                UploadFileToFolder(uploadDir, item.ProductCode, sortedList);
 
                 item.SKUs.ForEach(skuItem => {
                     ProductSKU sku = new ProductSKU() {
@@ -219,7 +253,8 @@ namespace AnanasMVCWebApp.Services
 
                         // Update Image
                         if (item.FilesUpload.Count > 0) {
-                            UploadFileToFolder(uploadDir, item.ProductCode, item.FilesUpload);
+                            var sortedList = item.FilesUpload.OrderBy(f => f.FileName).ToList();
+                            UploadFileToFolder(uploadDir, item.ProductCode, sortedList);
                         }
 
                         if (item.SKUs != null) {
@@ -232,6 +267,36 @@ namespace AnanasMVCWebApp.Services
                             });
                         }
                         _unitOfWork.ProductVariantRepository.Update(variant);
+                    } else {
+                        List<ProductVariant> variantList = new List<ProductVariant>();
+                        List<ProductSKU> skuList = new List<ProductSKU>();
+
+                        ProductVariant newVariant = new ProductVariant() {
+                            Code = item.ProductCode,
+                            ColorName = item.ColorName,
+                            HexCode = item.HexCode.Replace("#", ""),
+                            Color = _unitOfWork.ColorRepository.GetNearestColor(item.HexCode.Replace("#", "")),
+                            Product = product
+                        };
+                        variantList.Add(newVariant);
+
+                        // Update Image
+                        if (item.FilesUpload.Count > 0) {
+                            var sortedList = item.FilesUpload.OrderBy(f => f.FileName).ToList();
+                            UploadFileToFolder(uploadDir, item.ProductCode, sortedList);
+                        }
+
+                        item.SKUs.ForEach(skuItem => {
+                            ProductSKU sku = new ProductSKU() {
+                                Code = skuItem.Code,
+                                InStock = skuItem.InStock,
+                                Size = _unitOfWork.SizeRepository.GetSizeByCode(skuItem.Code.Split("-")[1]),
+                                ProductVariant = newVariant
+                            };
+                            skuList.Add(sku);
+                        });
+                        _unitOfWork.ProductVariantRepository.InsertRange(variantList);
+                        _unitOfWork.ProductSKURepository.InsertRange(skuList);
                     }
                 });
                 _unitOfWork.ProductRepository.Update(product);
@@ -241,34 +306,7 @@ namespace AnanasMVCWebApp.Services
         }
         public List<ProductSkuEM> GenerateSKUList(int categoryId, string code) {
             string categorySlug = _unitOfWork.CategoryRepository.GetById(categoryId).Slug;
-            var result = new List<ProductSkuEM>();
-            switch(categorySlug) {
-                case "shoes":
-                    for (int i = 35; i <= 46; i++) {
-                        var shoeSize = _unitOfWork.SizeRepository.GetSizeByCode(i.ToString());
-                        result.Add(new ProductSkuEM() {
-                            Code = $"{code}-{shoeSize.Code}",
-                            SizeName = shoeSize.Name
-                        });
-                    }
-                    break;
-                case "clothing":
-                    for(int i = 1; i <= 5; i++) {
-                        var clothingSize = _unitOfWork.SizeRepository.GetSizeByCode($"0{i}");
-                        result.Add(new ProductSkuEM() {
-                            Code = $"{code}-{clothingSize.Code}",
-                            SizeName = clothingSize.Name
-                        });
-                    }
-                    break;
-                case "accessories":
-                    var accessorySize = _unitOfWork.SizeRepository.GetSizeByCode("00");
-                    result.Add(new ProductSkuEM() {
-                        Code = $"{code}-{accessorySize.Code}",
-                        SizeName = accessorySize.Name
-                    });
-                    break;
-            }
+            var result = ProductSKUFactory.CreateProductSKUList(_unitOfWork, categorySlug, code);
             return result;
         }
         private List<string> GetAllProductImages(string code) {
